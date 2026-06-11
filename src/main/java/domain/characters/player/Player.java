@@ -30,10 +30,10 @@ public class Player extends Character implements Movement {
 
 
     @Override
-    public ImmutablePosition move(DirectionType direction, int distance) {
+    public ImmutablePosition move(DirectionType direction) {
         Position currentPos = getPosition();
         ImmutablePosition pos = new ImmutablePosition(currentPos.getX(), currentPos.getY());
-        ImmutablePosition newPos = pos.move(direction, 1);
+        ImmutablePosition newPos = pos.move(direction);
         setPosition(newPos);
         return newPos;
     }
