@@ -4,8 +4,8 @@ import domain.navigator.interfaces.Movement;
 import domain.navigator.interfaces.Position;
 
 public final class ImmutablePosition implements Position, Movement {
-    private final int x;
-    private final int y;
+    private int x;
+    private int y;
 
     public ImmutablePosition(int x, int y) {
         this.x = x;
@@ -23,12 +23,17 @@ public final class ImmutablePosition implements Position, Movement {
     }
 
     @Override
-    public ImmutablePosition move(DirectionType direction, int distance) {
+    public Position move(DirectionType direction, int distance) {
+        return null;
+    }
+
+    @Override
+    public ImmutablePosition move(DirectionType direction) {
         return switch (direction) {
-            case FORWARD -> new ImmutablePosition(x, y + distance);
-            case DOWN -> new ImmutablePosition(x, y - distance);
-            case LEFT -> new ImmutablePosition(x - distance, y);
-            case RIGHT -> new ImmutablePosition(x + distance, y);
+            case FORWARD -> new ImmutablePosition(x, y++);
+            case DOWN -> new ImmutablePosition(x, y--);
+            case LEFT -> new ImmutablePosition(x--, y);
+            case RIGHT -> new ImmutablePosition(x++, y);
         };
     }
 
