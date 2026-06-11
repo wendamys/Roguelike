@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'application' // Обязательный плагин для запуска приложения через Gradle
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Подключаем Lanterna вместо старого JCurses
+    implementation 'com.googlecode.lanterna:lanterna:3.1.2'
+
+    // Зависимости для автоматических тестов JUnit 5
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = 'org.example.Main' // Временно меняем на шаблонный класс
+    // Главный класс вашего приложения
+    // mainClass = 'presentation.Main'
+}
