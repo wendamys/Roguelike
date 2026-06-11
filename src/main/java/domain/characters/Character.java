@@ -8,7 +8,6 @@ import domain.navigator.interfaces.Position;
  * {@link #health} - очки жизни
  * {@link #agility} - ловкость
  * {@link #strength} - сила
- * {@link #isAlive} - состояние жизни/смерти
  * {@link #position} - координаты позиции (x, y)
  */
 public abstract class Character {
@@ -16,7 +15,6 @@ public abstract class Character {
     private int health;
     private final int agility;
     private final int strength;
-    private boolean isAlive;
     private Position position;
 
     public Character(String name, int health, int agility, int strength, boolean isAlive, Position position) {
@@ -33,7 +31,6 @@ public abstract class Character {
         this.health = health;
         this.agility = agility;
         this.strength = strength;
-        this.isAlive = true;
         this.position = position;
     }
 
@@ -53,10 +50,6 @@ public abstract class Character {
         return strength;
     }
 
-    public boolean getIsAlive() {
-        return isAlive;
-    }
-
     public Position getPosition() {
         return position;
     }
@@ -71,17 +64,12 @@ public abstract class Character {
      *
      * @param damage очки урона
      */
+    /**
+     * # -5, 10, 100 -0, -1, 1
+     * */
     public void acceptDamage(int damage) {
-        if (!isAlive) return;
-
-        int actualDamage = Math.max(0, damage);
-        int newHealth = health - actualDamage;
-
-        if (newHealth <= 0) {
-            health = 0;
-            isAlive = false;
-        } else {
-            health = newHealth;
-        }
+        if (damage < 0 || health <= 0) return;
+        int newHealth = health - damage;
+        health = Math.max(newHealth, 0);
     }
 }

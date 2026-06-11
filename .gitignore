@@ -34,3 +34,4 @@ nbdist/
 .DS_Store
 Thumbs.db
 *.log
+/.gigaide/gigaide.properties

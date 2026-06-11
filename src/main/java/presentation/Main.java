@@ -27,6 +27,11 @@ public class Main {
         ImmutableDistance distance = new ImmutableDistance(0, 0);
         double range = distance.distanceTo(player.getPosition());
         System.out.println(range);
+        int damage = 50;
+        player1.acceptDamage(damage);
+        System.out.println(player1.getHealth());
+
+
 
     }
 }
