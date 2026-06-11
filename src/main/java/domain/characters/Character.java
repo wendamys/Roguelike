@@ -61,7 +61,7 @@ public abstract class Character {
         return position;
     }
 
-    public void setPosition(Position position) {
+    protected void setPosition(Position position) {
         this.position = position;
     }
 
