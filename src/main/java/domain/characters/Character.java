@@ -1,6 +1,6 @@
 package domain.characters;
 
-import domain.navigator.Position;
+import domain.navigator.interfaces.Position;
 
 /**
  * Абстрактный класс {@link #Character} описывает главные характеристики персонажей в игре
