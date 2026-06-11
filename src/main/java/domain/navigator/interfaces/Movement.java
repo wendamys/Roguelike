@@ -11,4 +11,8 @@ public interface Movement {
      * @return объект с координатами (x, y)
      */
     Position move(DirectionType direction, int distance);
+
+    default Position move(DirectionType direction) {
+        return move(direction, 1);
+    }
 }
