@@ -10,14 +10,14 @@ import domain.navigator.interfaces.Position;
  * {@link #strength} - сила
  * {@link #position} - координаты позиции (x, y)
  */
-public abstract class Character {
+public abstract class Character implements DamageDiller {
     private final String name;
     private int health;
     private final int agility;
     private final int strength;
     private Position position;
 
-    public Character(String name, int health, int agility, int strength, boolean isAlive, Position position) {
+    public Character(String name, int health, int agility, int strength, Position position) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name cannot be null or blank");
         }
@@ -58,15 +58,7 @@ public abstract class Character {
         this.position = position;
     }
 
-    /**
-     * метод {@link #acceptDamage(int)} описывает получение урона персонажем.
-     * Если {@link #health} опускается до 0 или ниже наступает смерть
-     *
-     * @param damage очки урона
-     */
-    /**
-     * # -5, 10, 100 -0, -1, 1
-     * */
+    @Override
     public void acceptDamage(int damage) {
         if (damage < 0 || health <= 0) return;
         int newHealth = health - damage;

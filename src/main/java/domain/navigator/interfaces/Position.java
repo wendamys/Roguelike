@@ -5,5 +5,6 @@ package domain.navigator.interfaces;
  */
 public interface Position {
     int getX();
+
     int getY();
 }
