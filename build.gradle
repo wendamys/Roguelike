@@ -25,7 +25,6 @@ test {
 }
 
 application {
-    mainClass = 'org.example.Main' // Временно меняем на шаблонный класс
     // Главный класс вашего приложения
-    // mainClass = 'presentation.Main'
+    mainClass = 'presentation.Main'
 }
