@@ -14,12 +14,12 @@ public class Main {
         Player player = new Player("wqer", 100, 100, 100, 100, 0, position);
         System.out.println(player.getPosition() + "main");
 
-        ImmutablePosition position1 = player.move(DirectionType.FORWARD, 1);
+        ImmutablePosition position1 = player.move(DirectionType.FORWARD);
         System.out.println(position1 + "main");
-        ImmutablePosition position2 = player.move(DirectionType.FORWARD, 1);
-        ImmutablePosition position3 = player.move(DirectionType.FORWARD, 1);
-        ImmutablePosition position4 = player.move(DirectionType.FORWARD, 1);
-        ImmutablePosition position5 = player.move(DirectionType.RIGHT, 1);
+        ImmutablePosition position2 = player.move(DirectionType.FORWARD);
+        ImmutablePosition position3 = player.move(DirectionType.FORWARD);
+        ImmutablePosition position4 = player.move(DirectionType.FORWARD);
+        ImmutablePosition position5 = player.move(DirectionType.RIGHT);
 
 //        System.out.println(player.move(Direction.FORWARD, 1) + "main");
         System.out.println(position5 + "player");
