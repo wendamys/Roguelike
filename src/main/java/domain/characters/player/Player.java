@@ -24,22 +24,13 @@ public class Player extends Character implements Movement {
 
     public int getGold() { return gold; }
 
-//    /**
-//     * метод {@link  #playerMove(Direction)} двигает игрока на одну клетку
-//     * @param direction направление движения
-//     */
-//    public Position playerMove(Direction direction) {
-//        Position currentPos = getPosition();
-//        Position newPos = currentPos.move(direction, 1);
-//        setPosition(newPos);
-//        return newPos;
-//        // дописать утыкание в стены
-//    }
 
     @Override
     public ImmutablePosition move(Direction direction, int distance) {
         Position currentPos = getPosition();
         ImmutablePosition pos = new ImmutablePosition(currentPos.getX(), currentPos.getY());
-        return pos.move(direction, 1);
+        ImmutablePosition newPos = pos.move(direction, 1);
+        setPosition(newPos);
+        return newPos;
     }
 }

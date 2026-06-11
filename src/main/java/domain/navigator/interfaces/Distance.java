@@ -7,12 +7,5 @@ public interface Distance {
      * @param other позиция второго объекта
      * @return дистанция до объекта
      */
-//    default double distanceTo(Position other) {
-//        if (other == null) {
-//            throw new NullPointerException("Other position cannot be null");
-//        }
-//        int dx = this.getX() - other.getX();
-//        int dy = this.getY() - other.getY();
-//        return Math.sqrt(dx * dx + dy * dy);
-//    }
+    double distanceTo(Position other);
 }
