@@ -1,6 +1,6 @@
 package domain.characters.enemies.interfaces;
-
 import domain.navigator.DirectionType;
+import java.util.Random;
 
 public interface RandomDirection {
 
@@ -9,6 +9,17 @@ public interface RandomDirection {
      *
      * @return направление движения
      */
-    public DirectionType randomDirection();
-
+    default DirectionType randomDirection() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(4) + 1;
+        System.out.println(randomNumber);
+        return switch (randomNumber) {
+            case 1 -> DirectionType.FORWARD;
+            case 2 -> DirectionType.DOWN;
+            case 3 -> DirectionType.RIGHT;
+            case 4 -> DirectionType.LEFT;
+            default -> null;
+        };
+    }
 }
+

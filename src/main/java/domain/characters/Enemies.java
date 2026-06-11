@@ -27,11 +27,4 @@ abstract public class Enemies extends Character implements RandomDirection {
     public EnemiesType getType() {
         return type;
     }
-
-    @Override
-    public DirectionType randomDirection() {
-        int rand = random.ints(1, 4).sum();
-        System.out.println(123);
-        return null;
-    }
 }
