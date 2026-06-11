@@ -4,7 +4,7 @@ public final class ImmutablePosition implements Position {
     private final int x;
     private final int y;
 
-    ImmutablePosition(int x, int y) {
+    public ImmutablePosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -22,8 +22,8 @@ public final class ImmutablePosition implements Position {
     @Override
     public Position move(Direction direction, int distance) {
         return switch (direction) {
-            case FORWARD -> new ImmutablePosition(x, y - distance);
-            case DOWN -> new ImmutablePosition(x, y + distance);
+            case FORWARD -> new ImmutablePosition(x, y + distance);
+            case DOWN -> new ImmutablePosition(x, y - distance);
             case LEFT -> new ImmutablePosition(x - distance, y);
             case RIGHT -> new ImmutablePosition(x + distance, y);
         };
