@@ -18,7 +18,7 @@ public interface RandomDirection {
             case 2 -> DirectionType.DOWN;
             case 3 -> DirectionType.RIGHT;
             case 4 -> DirectionType.LEFT;
-            default -> null;
+            default -> throw new IllegalStateException("Unexpected value: " + randomNumber);
         };
     }
 }
