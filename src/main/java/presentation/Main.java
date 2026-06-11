@@ -1,17 +1,25 @@
 package presentation;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+import domain.characters.player.Player;
+import domain.navigator.Direction;
+import domain.navigator.ImmutablePosition;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!\n");
+        ImmutablePosition position = new ImmutablePosition(0, 0);
+        Player player = new Player("wqer", 100, 100,100, true,100,0, position);
+        System.out.println(player.getPosition());
+        player.playerMove(Direction.FORWARD);
+        System.out.println(player.getPosition());
+        player.playerMove(Direction.DOWN);
+        System.out.println(player.getPosition());
+        player.playerMove(Direction.LEFT);
+        System.out.println(player.getPosition());
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        for (int i = 0; i < 10; i++) {
+            player.playerMove(Direction.RIGHT);
         }
+        System.out.println(player.getPosition());
     }
 }

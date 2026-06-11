@@ -17,7 +17,7 @@ public abstract class Character {
     private final int agility;
     private final int strength;
     private boolean isAlive;
-    private final Position position;
+    private Position position;
 
     public Character(String name, int health, int agility, int strength, boolean isAlive, Position position) {
         if (name == null || name.isBlank()) {
@@ -59,6 +59,10 @@ public abstract class Character {
 
     public Position getPosition() {
         return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     /**
