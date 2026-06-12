@@ -15,7 +15,7 @@ public class Main {
         System.out.println(player.getPosition() + "main");
 
         for (int i = 0; i < 10; i++) {
-            player.move(DirectionType.RIGHT, 1);
+            player.move(DirectionType.LEFT, 1);
         }
         System.out.println(player.getPosition() + "main");
 //
