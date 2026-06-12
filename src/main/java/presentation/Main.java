@@ -1,8 +1,6 @@
 package presentation;
 
 
-import domain.characters.enemies.EnemiesType;
-import domain.characters.enemies.Zombie;
 import domain.characters.player.Player;
 import domain.navigator.DirectionType;
 import domain.navigator.ImmutableDistance;
@@ -15,7 +13,7 @@ public class Main {
         System.out.println(player.getPosition() + "main");
 
         for (int i = 0; i < 10; i++) {
-            player.move(Direction.FORWARD, 1);
+            player.move(DirectionType.FORWARD, 1);
         }
         System.out.println(player.getPosition() + "main");
 

@@ -23,7 +23,7 @@ public final class ImmutablePosition implements Position, MovementDir {
     }
 
     @Override
-    public ImmutablePosition moveDir(Direction direction, int distance) {
+    public ImmutablePosition moveDir(DirectionType direction, int distance) {
         return switch (direction) {
             case FORWARD -> new ImmutablePosition(x, y + distance);
             case DOWN -> new ImmutablePosition(x, y - distance);

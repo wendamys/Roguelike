@@ -28,10 +28,15 @@ abstract public class Enemies extends Character implements RandomDirection {
         return type;
     }
 
-    @Override
     public DirectionType randomDirection() {
-        int rand = random.ints(1, 4).sum();
-        System.out.println(123);
-        return null;
+        int randomNumber = random.nextInt(4) + 1;
+        System.out.println(randomNumber);
+        return switch (randomNumber) {
+            case 1 -> DirectionType.FORWARD;
+            case 2 -> DirectionType.DOWN;
+            case 3 -> DirectionType.RIGHT;
+            case 4 -> DirectionType.LEFT;
+            default -> throw new IllegalArgumentException("Error num randomDirection");
+        };
     }
 }
