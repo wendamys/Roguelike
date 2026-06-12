@@ -9,6 +9,8 @@ import domain.navigator.interfaces.Convergence;
 import domain.navigator.interfaces.MovementRandom;
 import domain.navigator.interfaces.Position;
 import domain.MathUtils.RandomNumber;
+import java.util.ArrayList;
+import java.util.Collections;
 
 abstract public class Enemies extends Character implements RandomDirection, MovementRandom, Convergence {
 
@@ -39,6 +41,7 @@ abstract public class Enemies extends Character implements RandomDirection, Move
             default -> throw new IllegalArgumentException("Error num randomDirection");
         };
     }
+
     @Override
     public void moveRandom(int distance) {
         Position currentPos = getPosition();
@@ -48,19 +51,67 @@ abstract public class Enemies extends Character implements RandomDirection, Move
     }
     @Override
     public void convergence(Position positionPlayer, int distance) {
-        Position currentPos = getPosition();
-        ImmutableDistance dis = new ImmutableDistance(positionPlayer.getX(), positionPlayer.getY());
-        double range = dis.distanceTo(currentPos);
-        System.out.println(range);
-        ImmutablePosition positionEnemy = new ImmutablePosition(currentPos.getX(), currentPos.getY());
-//        ImmutablePosition positionForward = new ImmutablePosition(currentPos.getX(), currentPos.getY() - 1);
-//        ImmutablePosition positionDown = new ImmutablePosition(currentPos.getX(), currentPos.getY() + 1);
-//        ImmutablePosition positionRight = new ImmutablePosition(currentPos.getX() - 1, currentPos.getY());
-//        ImmutablePosition positionLeft = new ImmutablePosition(currentPos.getX() + 1, currentPos.getY());
-        ImmutablePosition posFor = positionEnemy.moveDir(DirectionType.FORWARD, 1);
-        ImmutableDistance distanceForward = new ImmutableDistance(posFor.getX(), posFor.getY());
 
-        double rangeForward = distanceForward.distanceTo(currentPos);
-        System.out.println(rangeForward);
+        // Определяем позицию врага
+        Position currentPosEnemies = getPosition();
+
+        // создаем новый объект плеера с позицией плеера
+        ImmutableDistance playerDis = new ImmutableDistance(positionPlayer.getX(), positionPlayer.getY());
+
+        //  Создали нового врага с позицией текущего врага
+        ImmutableDistance enemyDis = new ImmutableDistance(currentPosEnemies.getX(), currentPosEnemies.getY());
+
+        // 0, 10
+        System.out.println("Coordinate player: " + positionPlayer.getX() + positionPlayer.getY());
+        // 0, 0
+        System.out.println("Coordinate enemy: " + enemyDis.getX() + enemyDis.getY());
+
+        //лист для вычисления наименьшей дистанции до игрока
+        ArrayList<Double> distanceToList = new ArrayList<>();
+
+        //Мы создали новые позицию врага и определяем куда ему лучше пойти
+        ImmutablePosition enemyPos = new ImmutablePosition(enemyDis.getX(), enemyDis.getX());
+
+        ImmutablePosition enemyMoveF = enemyPos.moveDir(DirectionType.FORWARD, 1);
+        ImmutablePosition enemyMoveD = enemyPos.moveDir(DirectionType.DOWN, 1);
+        ImmutablePosition enemyMoveL = enemyPos.moveDir(DirectionType.LEFT, 1);
+        ImmutablePosition enemyMoveR = enemyPos.moveDir(DirectionType.RIGHT, 1);
+
+        //Создаем объекты, которые сходили в разные стороны
+        ImmutableDistance enemyDisF = new ImmutableDistance(enemyMoveF.getX(), enemyMoveF.getY());
+        ImmutableDistance enemyDisD = new ImmutableDistance(enemyMoveD.getX(), enemyMoveD.getY());
+        ImmutableDistance enemyDisL = new ImmutableDistance(enemyMoveL.getX(), enemyMoveL.getY());
+        ImmutableDistance enemyDisR = new ImmutableDistance(enemyMoveR.getX(), enemyMoveR.getY());
+
+        //Вычисляем дистанцию по формуле радиуса для всех враждебных позиций
+        double rangeF = enemyDisF.distanceTo(positionPlayer);
+        double rangeD = enemyDisD.distanceTo(positionPlayer);
+        double rangeL = enemyDisL.distanceTo(positionPlayer);
+        double rangeR = enemyDisR.distanceTo(positionPlayer);
+
+        System.out.println("Range to player F: " + rangeF);
+        System.out.println("Range to player D: " + rangeD);
+        System.out.println("Range to player L: " + rangeL);
+        System.out.println("Range to player R: " + rangeR);
+
+        distanceToList.add(rangeF);
+        distanceToList.add(rangeD);
+        distanceToList.add(rangeL);
+        distanceToList.add(rangeR);
+
+        Collections.sort(distanceToList);
+
+
+        //Свитч выбирает наименьший элемент т.к. Он отсортирован и сам выбирает направление и позиция врага изменяется в наименьшую сторону
+        switch (distanceToList.getFirst()) {
+            case Object o when o.equals(rangeF) -> setPosition(enemyPos.moveDir(DirectionType.FORWARD, 1));
+            case Object o when o.equals(rangeD) -> setPosition(enemyPos.moveDir(DirectionType.DOWN, 1));
+            case Object o when o.equals(rangeL) -> setPosition(enemyPos.moveDir(DirectionType.LEFT, 1));
+            case Object o when o.equals(rangeR) -> setPosition(enemyPos.moveDir(DirectionType.RIGHT, 1));
+            default -> {}
+        }
+
+        System.out.println(getPosition());
+
     }
 }
