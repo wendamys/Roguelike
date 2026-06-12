@@ -4,15 +4,9 @@ import domain.navigator.DirectionType;
 
 public interface Movement {
     /**
-     * метод {@link #move(DirectionType, int)} перемещает персонажа на определенную дистанцию по игровому полю
-     *
-     * @param direction Направление движения
-     * @param distance  дистанция перемещения
-     * @return объект с координатами (x, y)
+     * метод {@link #move(Direction, int)} перемещает выбранного персонажа на дистанцию по игровому полю
+     * @param direction направление движения
+     * @param distance дистанция перемещения
      */
-    Position move(DirectionType direction, int distance);
-
-    default Position move(DirectionType direction) {
-        return move(direction, 1);
-    }
+    void move(Direction direction, int distance);
 }

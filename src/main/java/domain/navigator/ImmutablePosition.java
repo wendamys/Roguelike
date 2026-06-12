@@ -1,11 +1,11 @@
 package domain.navigator;
 
-import domain.navigator.interfaces.Movement;
+import domain.navigator.interfaces.MovementDir;
 import domain.navigator.interfaces.Position;
 
-public final class ImmutablePosition implements Position, Movement {
-    private int x;
-    private int y;
+public final class ImmutablePosition implements Position, MovementDir {
+    private final int x;
+    private final int y;
 
     public ImmutablePosition(int x, int y) {
         this.x = x;
@@ -23,12 +23,7 @@ public final class ImmutablePosition implements Position, Movement {
     }
 
     @Override
-    public Position move(DirectionType direction, int distance) {
-        return null;
-    }
-
-    @Override
-    public ImmutablePosition move(DirectionType direction) {
+    public ImmutablePosition moveDir(Direction direction, int distance) {
         return switch (direction) {
             case FORWARD -> new ImmutablePosition(x, y++);
             case DOWN -> new ImmutablePosition(x, y--);
