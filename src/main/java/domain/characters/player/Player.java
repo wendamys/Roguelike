@@ -1,7 +1,7 @@
 package domain.characters.player;
 
 import domain.characters.Character;
-import domain.navigator.Direction;
+import domain.navigator.DirectionType;
 import domain.navigator.ImmutablePosition;
 import domain.navigator.interfaces.Movement;
 import domain.navigator.interfaces.Position;
@@ -20,9 +20,13 @@ public class Player extends Character implements Movement {
         this.gold = 0;
     }
 
-    public int getMaxHealth() { return maxHealth; }
+    public int getMaxHealth() {
+        return maxHealth;
+    }
 
-    public int getGold() { return gold; }
+    public int getGold() {
+        return gold;
+    }
 
     @Override
     public void move(Direction direction, int distance) {

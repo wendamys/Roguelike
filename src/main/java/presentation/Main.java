@@ -1,8 +1,10 @@
 package presentation;
 
 
+import domain.characters.enemies.EnemiesType;
+import domain.characters.enemies.Zombie;
 import domain.characters.player.Player;
-import domain.navigator.Direction;
+import domain.navigator.DirectionType;
 import domain.navigator.ImmutableDistance;
 import domain.navigator.ImmutablePosition;
 

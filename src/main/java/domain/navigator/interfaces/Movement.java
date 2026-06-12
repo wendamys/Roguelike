@@ -1,6 +1,6 @@
 package domain.navigator.interfaces;
 
-import domain.navigator.Direction;
+import domain.navigator.DirectionType;
 
 public interface Movement {
     /**
