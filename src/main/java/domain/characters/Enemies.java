@@ -3,10 +3,12 @@ package domain.characters;
 import domain.characters.enemies.EnemiesType;
 import domain.characters.enemies.interfaces.RandomDirection;
 import domain.navigator.DirectionType;
+import domain.navigator.ImmutablePosition;
+import domain.navigator.interfaces.MovementRandom;
 import domain.navigator.interfaces.Position;
 import domain.MathUtils.RandomNumber;
 
-abstract public class Enemies extends Character implements RandomDirection {
+abstract public class Enemies extends Character implements RandomDirection, MovementRandom {
 
     private final EnemiesType type;
     private final int hostility;
@@ -34,5 +36,12 @@ abstract public class Enemies extends Character implements RandomDirection {
             case 4 -> DirectionType.LEFT;
             default -> throw new IllegalArgumentException("Error num randomDirection");
         };
+    }
+    @Override
+    public void moveRandom(int distance) {
+        Position currentPos = getPosition();
+        ImmutablePosition pos = new ImmutablePosition(currentPos.getX(), currentPos.getY());
+        ImmutablePosition newPos = pos.moveDir(randomDirection(), 1);
+        setPosition(newPos);
     }
 }

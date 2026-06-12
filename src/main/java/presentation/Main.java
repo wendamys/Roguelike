@@ -1,6 +1,8 @@
 package presentation;
 
 
+import domain.characters.enemies.EnemiesType;
+import domain.characters.enemies.Zombie;
 import domain.characters.player.Player;
 import domain.navigator.DirectionType;
 import domain.navigator.ImmutableDistance;
@@ -25,5 +27,11 @@ public class Main {
         int damage = 20;
         player1.acceptDamage(damage);
         System.out.println(player1.getHealth() + " health");
+
+        Zombie zombie = new Zombie("Zombie", EnemiesType.ZOMBIE, 100,100, 100, 100, position);
+        for(int i = 0; i < 10; i++) {
+            zombie.moveRandom(1);
+            System.out.println(zombie.getPosition());
+        }
     }
 }
