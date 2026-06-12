@@ -7,7 +7,6 @@ public class RandomNumber {
 
     public int randomNumber(int from, int before) {
         int randomNumber = random.nextInt(from, before + 1);
-        System.out.println(randomNumber);
         return randomNumber;
     }
 }
