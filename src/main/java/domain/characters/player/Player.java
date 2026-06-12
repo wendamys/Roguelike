@@ -28,13 +28,11 @@ public class Player extends Character implements Movement {
         return gold;
     }
 
-
     @Override
-    public ImmutablePosition move(DirectionType direction, int distance) {
+    public void move(Direction direction, int distance) {
         Position currentPos = getPosition();
         ImmutablePosition pos = new ImmutablePosition(currentPos.getX(), currentPos.getY());
-        ImmutablePosition newPos = pos.move(direction, 1);
+        ImmutablePosition newPos = pos.moveDir(direction, 1);
         setPosition(newPos);
-        return newPos;
     }
 }
