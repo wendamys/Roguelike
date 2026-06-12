@@ -17,7 +17,7 @@ public abstract class Character {
     private final int strength;
     private Position position;
 
-    public Character(String name, int health, int agility, int strength, boolean isAlive, Position position) {
+    public Character(String name, int health, int agility, int strength, Position position) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name cannot be null or blank");
         }
