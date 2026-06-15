@@ -5,12 +5,12 @@ import domain.characters.enemies.EnemiesType;
 import domain.characters.enemies.Zombie;
 import domain.characters.player.Player;
 import domain.navigator.DirectionType;
-import domain.navigator.ImmutableDistance;
-import domain.navigator.ImmutablePosition;
+import domain.navigator.ImmutablePositionInter;
+import domain.navigator.Position;
 
 public class Main {
     public static void main(String[] args) {
-        ImmutablePosition position = new ImmutablePosition(0, 0);
+        Position position = new Position(0, 0);
         Player player = new Player("wqer", 100, 100,100, 100,0, position);
         System.out.println(player.getPosition() + "main");
 
@@ -33,6 +33,6 @@ public class Main {
 //            zombie.moveRandom(1);
 //            System.out.println(zombie.getPosition());
 //        }
-        zombie.convergence(player.getPosition(), 1);
+        zombie.convergence((Position) player.getPosition(), 1);
     }
 }

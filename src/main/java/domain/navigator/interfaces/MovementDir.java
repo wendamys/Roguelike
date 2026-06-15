@@ -10,5 +10,5 @@ public interface MovementDir {
      * @param distance  дистанция перемещения
      * @return объект с координатами (x, y)
      */
-    Position moveDir(DirectionType direction, int distance);
+    PositionInter moveDir(DirectionType direction, int distance);
 }

@@ -1,13 +1,13 @@
 package domain.navigator;
 
 import domain.navigator.interfaces.MovementDir;
-import domain.navigator.interfaces.Position;
+import domain.navigator.interfaces.PositionInter;
 
-public final class ImmutablePosition implements Position, MovementDir {
+public final class ImmutablePositionInter implements PositionInter, MovementDir {
     private final int x;
     private final int y;
 
-    public ImmutablePosition(int x, int y) {
+    public ImmutablePositionInter(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -23,19 +23,19 @@ public final class ImmutablePosition implements Position, MovementDir {
     }
 
     @Override
-    public ImmutablePosition moveDir(DirectionType direction, int distance) {
+    public ImmutablePositionInter moveDir(DirectionType direction, int distance) {
         return switch (direction) {
-            case FORWARD -> new ImmutablePosition(x, y + distance);
-            case DOWN -> new ImmutablePosition(x, y - distance);
-            case LEFT -> new ImmutablePosition(x - distance, y);
-            case RIGHT -> new ImmutablePosition(x + distance, y);
+            case FORWARD -> new ImmutablePositionInter(x, y + distance);
+            case DOWN -> new ImmutablePositionInter(x, y - distance);
+            case LEFT -> new ImmutablePositionInter(x - distance, y);
+            case RIGHT -> new ImmutablePositionInter(x + distance, y);
         };
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Position enemy)) return false;
+        if (!(o instanceof PositionInter enemy)) return false;
         return x == enemy.getX() && y == enemy.getY();
     }
 
