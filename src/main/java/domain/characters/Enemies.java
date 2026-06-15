@@ -1,24 +1,16 @@
 package domain.characters;
 
 import domain.characters.enemies.EnemiesType;
-import domain.characters.enemies.interfaces.RandomDirection;
 import domain.navigator.DirectionType;
-import domain.navigator.ImmutableDistance;
-import domain.navigator.ImmutablePositionInter;
 import domain.navigator.Position;
-import domain.navigator.interfaces.Convergence;
-import domain.navigator.interfaces.MovementRandom;
-import domain.navigator.interfaces.PositionInter;
 import domain.MathUtils.RandomNumber;
-import java.util.ArrayList;
-import java.util.List;
 
-abstract public class Enemies extends Character implements RandomDirection, MovementRandom {
+abstract public class Enemies extends Character {
 
     private final EnemiesType type;
     private final int hostility;
 
-    public Enemies(String name, EnemiesType type, int hostility, int health, int agility, int strength, PositionInter positionInter) {
+    public Enemies(String name, EnemiesType type, int hostility, int health, int agility, int strength, Position positionInter) {
         super(name, health, agility, strength, positionInter);
         this.type = type;
         this.hostility = hostility;
@@ -43,50 +35,45 @@ abstract public class Enemies extends Character implements RandomDirection, Move
         };
     }
 
-    @Override
     public void moveRandom(int distance) {
-        PositionInter currentPos = getPosition();
-        ImmutablePositionInter pos = new ImmutablePositionInter(currentPos.getX(), currentPos.getY());
-        ImmutablePositionInter newPos = pos.moveDir(randomDirection(), 1);
+        Position currentPos = getPosition();
+        Position pos = new Position(currentPos.getX(), currentPos.getY());
+        Position newPos = pos.moveDir(randomDirection(), 1);
         setPosition(newPos);
-    }
-
-    //Вычисляем дистанцию по формуле радиуса для одной переданной позиции (Это я дописал сейчас)
-    //double findRangeDistanceToPlayer(Position positionPlayer, int x, int y) {
-    //    return x..distanceTo(positionPlayer);
-    //}
-
-    private double findRangeDistanceToPlayer(Position positionPlayer, PositionInter positionEnemy) {
-        return positionPlayer.distanceTo(positionEnemy);
     }
 
     public void convergence(Position positionPlayer, int distance) {
 
         // Определяем позицию врага
-        PositionInter currentPosEnemies = getPosition();
+        Position currentPosEnemies = getPosition();
 
         //  Создали нового врага с позицией текущего врага
-        Position enemyPos = new Position(currentPosEnemies.getX(), currentPosEnemies.getY());
+        Position enemyMove = new Position(currentPosEnemies.getX(), currentPosEnemies.getY());
 
         // 0, 10
         System.out.println("Coordinate player: " + positionPlayer.getX() + positionPlayer.getY());
         // 0, 0
-        System.out.println("Coordinate enemy: " + enemyPos.getX() + enemyPos.getY());
+        System.out.println("Coordinate enemy: " + enemyMove.getX() + enemyMove.getY());
 
+        // Нужно просто указать переменные т.к. чтобы было видно и внутри фора и снаружи
         double min = Double.MAX_VALUE;
-        DirectionType testDir = DirectionType.RIGHT;
+        DirectionType dirMove = DirectionType.RIGHT;
+        // Тут пробегаемся по типам, которые лежат в DirectionType
         for (DirectionType dT: DirectionType.values()) {
-            enemyPos.moveDir(dT, 1);
-            double findRange = findRangeDistanceToPlayer(positionPlayer, getPosition());
+            // Мы ходим в одном направлении, которое лежит в типах
+            Position enemyPos = enemyMove.moveDir(dT, 1);
+            // Сразу высчитываю расстояние от противника до игрока
+            double findRange = enemyPos.distanceTo(positionPlayer);
+            // Проверка на минимальное значение и запись минимального значения
+            // для следующей сверки и запись куда нужно идти
             if (findRange <= min) {
                 min = findRange;
-                testDir = dT;
+                dirMove = dT;
             }
             System.out.println("Range to player :" + findRange);
         }
-        //Создаю объект
-        Position newEnemyPost = enemyPos.moveDir(testDir, 1);
-        System.out.println(newEnemyPost.getX() + newEnemyPost.getY());
+        setPosition(enemyMove.moveDir(dirMove, 1));
+
 
         //ImmutablePosition enemyMoveF = enemyPos.moveDir(DirectionType.FORWARD, 1);
         //ImmutablePosition enemyMoveD = enemyPos.moveDir(DirectionType.DOWN, 1);

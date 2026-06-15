@@ -1,24 +1,11 @@
 package domain.navigator;
 
-import domain.navigator.interfaces.MovementDir;
-import domain.navigator.interfaces.PositionInter;
-
-
-public class Position implements PositionInter, MovementDir {
+public class Position {
     private final int x;
     private final int y;
 
-    public Position(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    @Override
-    public int getX() {
-        return x;
-    }
-
-    @Override
+    public Position(int x, int y) { this.x = x; this.y = y; }
+    public int getX() { return x; }
     public int getY() {
         return y;
     }
@@ -32,7 +19,7 @@ public class Position implements PositionInter, MovementDir {
         };
     }
 
-    public double distanceTo(PositionInter other) {
+    public double distanceTo(Position other) {
         if (other == null) {
             throw new NullPointerException("Other position cannot be null");
         }
@@ -44,7 +31,7 @@ public class Position implements PositionInter, MovementDir {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PositionInter enemy)) return false;
+        if (!(o instanceof Position enemy)) return false;
         return x == enemy.getX() && y == enemy.getY();
     }
 
@@ -53,7 +40,9 @@ public class Position implements PositionInter, MovementDir {
         return x * 15 + y;
     }
 
-    //    @Override
+
+
+//    @Override
 //    public String toString() {
 //        return String.format("Distance(%.2f)", ;
 //    }

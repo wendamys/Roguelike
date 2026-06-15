@@ -1,6 +1,6 @@
 package domain.characters;
 
-import domain.navigator.interfaces.PositionInter;
+import domain.navigator.Position;
 
 /**
  * Абстрактный класс {@link #Character} описывает главные характеристики персонажей в игре
@@ -8,16 +8,16 @@ import domain.navigator.interfaces.PositionInter;
  * {@link #health} - очки жизни
  * {@link #agility} - ловкость
  * {@link #strength} - сила
- * {@link #positionInter} - координаты позиции (x, y)
+ * {@link #position} - координаты позиции (x, y)
  */
-public abstract class Character implements DamageDiller {
+public abstract class Character {
     private final String name;
     private int health;
     private final int agility;
     private final int strength;
-    private PositionInter positionInter;
+    private Position position;
 
-    public Character(String name, int health, int agility, int strength, PositionInter positionInter) {
+    public Character(String name, int health, int agility, int strength, Position position) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name cannot be null or blank");
         }
@@ -31,7 +31,7 @@ public abstract class Character implements DamageDiller {
         this.health = health;
         this.agility = agility;
         this.strength = strength;
-        this.positionInter = positionInter;
+        this.position = position;
     }
 
     public String getName() {
@@ -50,15 +50,14 @@ public abstract class Character implements DamageDiller {
         return strength;
     }
 
-    public PositionInter getPosition() {
-        return positionInter;
+    public Position getPosition() {
+        return position;
     }
 
-    protected void setPosition(PositionInter positionInter) {
-        this.positionInter = positionInter;
+    protected void setPosition(Position position) {
+        this.position = position;
     }
 
-    @Override
     public void acceptDamage(int damage) {
         if (damage < 0 || health <= 0) return;
         int newHealth = health - damage;
