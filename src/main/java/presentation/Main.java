@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         Position position = new Position(0, 0);
         Player player = new Player("wqer", 100, 100,100, 100,0, position);
-        System.out.println(player.getPosition() + "main");
+        System.out.println(player.getPosition().getX() + " " + position.getY() + "main");
 
         player.move(DirectionType.FORWARD, 1);
 

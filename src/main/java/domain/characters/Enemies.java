@@ -44,16 +44,11 @@ abstract public class Enemies extends Character {
 
     public void convergence(Position positionPlayer, int distance) {
 
-        // Определяем позицию врага
-        Position currentPosEnemies = getPosition();
+        //  Создаем врага с текущий позицией
+        Position enemyMove = new Position(getPosition().getX(), getPosition().getY());
 
-        //  Создали нового врага с позицией текущего врага
-        Position enemyMove = new Position(currentPosEnemies.getX(), currentPosEnemies.getY());
-
-        // 0, 10
-        System.out.println("Coordinate player: " + positionPlayer.getX() + positionPlayer.getY());
-        // 0, 0
-        System.out.println("Coordinate enemy: " + enemyMove.getX() + enemyMove.getY());
+        System.out.println("Coordinate player: " + positionPlayer.getX() + " " + positionPlayer.getY());
+        System.out.println("Coordinate enemy: " + enemyMove.getX() + " " + enemyMove.getY());
 
         // Нужно просто указать переменные т.к. чтобы было видно и внутри фора и снаружи
         double min = Double.MAX_VALUE;
@@ -73,55 +68,5 @@ abstract public class Enemies extends Character {
             System.out.println("Range to player :" + findRange);
         }
         setPosition(enemyMove.moveDir(dirMove, 1));
-
-
-        //ImmutablePosition enemyMoveF = enemyPos.moveDir(DirectionType.FORWARD, 1);
-        //ImmutablePosition enemyMoveD = enemyPos.moveDir(DirectionType.DOWN, 1);
-        //ImmutablePosition enemyMoveL = enemyPos.moveDir(DirectionType.LEFT, 1);
-        //ImmutablePosition enemyMoveR = enemyPos.moveDir(DirectionType.RIGHT, 1);
-//
-//
-//
-        ////Создаем объекты, которые сходили в разные стороны
-        //ImmutableDistance enemyDisF = new ImmutableDistance(enemyMoveF.getX(), enemyMoveF.getY());
-        //ImmutableDistance enemyDisD = new ImmutableDistance(enemyMoveD.getX(), enemyMoveD.getY());
-        //ImmutableDistance enemyDisL = new ImmutableDistance(enemyMoveL.getX(), enemyMoveL.getY());
-        //ImmutableDistance enemyDisR = new ImmutableDistance(enemyMoveR.getX(), enemyMoveR.getY());
-
-
-        //Тоже самое что и ниже, только для одного пока(дальше должен будет быть список, (это я дописал сейчас, декомпозиция)
-        //double check = findRangeDistanceToPlayer(positionPlayer, enemyDisF);
-//
-        ////Вычисляем дистанцию по формуле радиуса для всех враждебных позиций
-        //double rangeF = enemyDisF.distanceTo(positionPlayer);
-        //double rangeD = enemyDisD.distanceTo(positionPlayer);
-        //double rangeL = enemyDisL.distanceTo(positionPlayer);
-        //double rangeR = enemyDisR.distanceTo(positionPlayer);
-//
-//
-        //System.out.println("Range to player F: " + rangeF);
-        //System.out.println("Range to player D: " + rangeD);
-        //System.out.println("Range to player L: " + rangeL);
-        //System.out.println("Range to player R: " + rangeR);
-//
-        //distanceToList.add(rangeF);
-        //distanceToList.add(rangeD);
-        //distanceToList.add(rangeL);
-        //distanceToList.add(rangeR);
-//
-        //Collections.sort(distanceToList);
-
-
-        ///Свитч выбирает наименьший элемент т.к. Он отсортирован и сам выбирает направление и позиция врага изменяется в наименьшую сторону
-        //switch (distanceToList.getFirst()) {
-        //    case Object o when o.equals(rangeF) -> setPosition(enemyPos.moveDir(DirectionType.FORWARD, 1));
-        //    case Object o when o.equals(rangeD) -> setPosition(enemyPos.moveDir(DirectionType.DOWN, 1));
-        //    case Object o when o.equals(rangeL) -> setPosition(enemyPos.moveDir(DirectionType.LEFT, 1));
-        //    case Object o when o.equals(rangeR) -> setPosition(enemyPos.moveDir(DirectionType.RIGHT, 1));
-        //    default -> {}
-        //}
-
-        //System.out.println(getPosition());
-
     }
 }
