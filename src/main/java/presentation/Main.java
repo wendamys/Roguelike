@@ -14,10 +14,10 @@ public class Main {
         Player player = new Player("wqer", 100, 100,100, 100,0, position);
         System.out.println(player.getPosition().getX() + " " + position.getY() + "main");
 
-        player.move(DirectionType.FORWARD, 1);
+        player.move(DirectionType.FORWARD);
 
         for (int i = 0; i < 10; i++) {
-            player.move(DirectionType.RIGHT, 1);
+            player.move(DirectionType.RIGHT);
         }
         System.out.println(player.getPosition() + "main");
 //
