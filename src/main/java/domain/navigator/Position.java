@@ -10,6 +10,12 @@ public class Position {
         return y;
     }
 
+    /**
+    * Метод {@link #moveDir(DirectionType, int distance)} выбирает направление передвижения персонажа
+    * @param direction Направление движения
+    * @param distance  дистанция перемещения
+    * @return новый объект с координатами (x, y)
+    */
     public Position moveDir(DirectionType direction, int distance) {
         return switch (direction) {
             case FORWARD -> new Position(x, y + distance);
@@ -18,7 +24,11 @@ public class Position {
             case RIGHT -> new Position(x + distance, y);
         };
     }
-
+    /**
+    * Метод {@link #distanceTo(Position)} вычисляет дистанцию между двумя объектами
+    * @param other позиция второго объекта
+    * @return дистанция до объекта
+    */
     public double distanceTo(Position other) {
         if (other == null) {
             throw new NullPointerException("Other position cannot be null");
