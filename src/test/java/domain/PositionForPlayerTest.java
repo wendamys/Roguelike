@@ -1,6 +1,6 @@
 package domain;
 
-import domain.characters.player.Player;
+import domain.characters.Player;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
 import org.junit.jupiter.api.BeforeEach;

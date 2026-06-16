@@ -1,6 +1,5 @@
-package domain.characters.player;
+package domain.characters;
 
-import domain.characters.Character;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
 

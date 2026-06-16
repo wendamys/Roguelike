@@ -6,8 +6,8 @@
       "agility": 70,
       "coords": {
         "coordinates": [
-          19,
-          16
+          11,
+          14
         ],
         "size": [
           1,
@@ -62,19 +62,74 @@
       ],
       "size": [
         1,
-        35
+        34
       ]
     },
     "rooms": [
       {
         "coords": {
           "coordinates": [
-            10,
-            4
+            7,
+            1
           ],
           "size": [
-            9,
+            11,
             5
+          ]
+        },
+        "consumablesRoom": {
+          "roomFood": {
+            "regen": [],
+            "geometry": [],
+            "name": []
+          },
+          "roomScrolls": {
+            "scrollType": [
+              0
+            ],
+            "scrollValue": [
+              27
+            ],
+            "geometry": [
+              {
+                "coordinates": [
+                  16,
+                  2
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "name": [
+              "Parchment of Eternal Flame"
+            ]
+          },
+          "roomElixirs": {
+            "elixirType": [],
+            "elixirValue": [],
+            "elixirDuration": [],
+            "geometry": [],
+            "name": []
+          },
+          "roomWeapon": {
+            "strength": [],
+            "geometry": [],
+            "name": []
+          }
+        },
+        "monsters": []
+      },
+      {
+        "coords": {
+          "coordinates": [
+            31,
+            1
+          ],
+          "size": [
+            22,
+            8
           ]
         },
         "consumablesRoom": {
@@ -97,60 +152,12 @@
             "name": []
           },
           "roomWeapon": {
-            "strength": [
-              43,
-              31
-            ],
-            "geometry": [
-              {
-                "coordinates": [
-                  13,
-                  5
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              },
-              {
-                "coordinates": [
-                  11,
-                  6
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            ],
-            "name": [
-              "Obsidian Reaver",
-              "Ironclad Cleaver"
-            ]
+            "strength": [],
+            "geometry": [],
+            "name": []
           }
         },
         "monsters": [
-          {
-            "baseStats": {
-              "health": 153,
-              "strength": 102,
-              "agility": 25,
-              "coords": {
-                "coordinates": [
-                  11,
-                  5
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            },
-            "type": 3,
-            "hostility": 1,
-            "chasing": false,
-            "direction": 8
-          },
           {
             "baseStats": {
               "health": 76,
@@ -158,8 +165,8 @@
               "agility": 76,
               "coords": {
                 "coordinates": [
-                  16,
-                  7
+                  35,
+                  5
                 ],
                 "size": [
                   1,
@@ -177,19 +184,34 @@
       {
         "coords": {
           "coordinates": [
-            29,
-            3
+            61,
+            2
           ],
           "size": [
-            22,
-            6
+            9,
+            7
           ]
         },
         "consumablesRoom": {
           "roomFood": {
-            "regen": [],
-            "geometry": [],
-            "name": []
+            "regen": [
+              68
+            ],
+            "geometry": [
+              {
+                "coordinates": [
+                  63,
+                  4
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "name": [
+              "Ration of the Ironclad"
+            ]
           },
           "roomScrolls": {
             "scrollType": [],
@@ -199,10 +221,10 @@
           },
           "roomElixirs": {
             "elixirType": [
-              0
+              2
             ],
             "elixirValue": [
-              58
+              1
             ],
             "elixirDuration": [
               46
@@ -210,8 +232,8 @@
             "geometry": [
               {
                 "coordinates": [
-                  44,
-                  6
+                  68,
+                  5
                 ],
                 "size": [
                   1,
@@ -220,383 +242,18 @@
               }
             ],
             "name": [
-              "Potion of the Howling Wind"
-            ]
-          },
-          "roomWeapon": {
-            "strength": [],
-            "geometry": [],
-            "name": []
-          }
-        },
-        "monsters": []
-      },
-      {
-        "coords": {
-          "coordinates": [
-            58,
-            1
-          ],
-          "size": [
-            19,
-            8
-          ]
-        },
-        "consumablesRoom": {
-          "roomFood": {
-            "regen": [
-              19
-            ],
-            "geometry": [
-              {
-                "coordinates": [
-                  72,
-                  7
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            ],
-            "name": [
-              "Smoked Wyrm Jerky"
-            ]
-          },
-          "roomScrolls": {
-            "scrollType": [],
-            "scrollValue": [],
-            "geometry": [],
-            "name": []
-          },
-          "roomElixirs": {
-            "elixirType": [
-              1
-            ],
-            "elixirValue": [
-              2
-            ],
-            "elixirDuration": [
-              45
-            ],
-            "geometry": [
-              {
-                "coordinates": [
-                  74,
-                  3
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            ],
-            "name": [
-              "Vial of Crimson Vitality"
-            ]
-          },
-          "roomWeapon": {
-            "strength": [],
-            "geometry": [],
-            "name": []
-          }
-        },
-        "monsters": [
-          {
-            "baseStats": {
-              "health": 76,
-              "strength": 25,
-              "agility": 76,
-              "coords": {
-                "coordinates": [
-                  64,
-                  7
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            },
-            "type": 2,
-            "hostility": 0,
-            "chasing": false,
-            "direction": 8
-          },
-          {
-            "baseStats": {
-              "health": 76,
-              "strength": 25,
-              "agility": 76,
-              "coords": {
-                "coordinates": [
-                  75,
-                  6
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            },
-            "type": 2,
-            "hostility": 0,
-            "chasing": false,
-            "direction": 8
-          }
-        ]
-      },
-      {
-        "coords": {
-          "coordinates": [
-            18,
-            12
-          ],
-          "size": [
-            7,
-            6
-          ]
-        },
-        "consumablesRoom": {
-          "roomFood": {
-            "regen": [],
-            "geometry": [],
-            "name": []
-          },
-          "roomScrolls": {
-            "scrollType": [],
-            "scrollValue": [],
-            "geometry": [],
-            "name": []
-          },
-          "roomElixirs": {
-            "elixirType": [],
-            "elixirValue": [],
-            "elixirDuration": [],
-            "geometry": [],
-            "name": []
-          },
-          "roomWeapon": {
-            "strength": [],
-            "geometry": [],
-            "name": []
-          }
-        },
-        "monsters": []
-      },
-      {
-        "coords": {
-          "coordinates": [
-            32,
-            11
-          ],
-          "size": [
-            10,
-            5
-          ]
-        },
-        "consumablesRoom": {
-          "roomFood": {
-            "regen": [
-              96
-            ],
-            "geometry": [
-              {
-                "coordinates": [
-                  40,
-                  14
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            ],
-            "name": [
-              "Golden Apple of Vitality"
-            ]
-          },
-          "roomScrolls": {
-            "scrollType": [
-              1
-            ],
-            "scrollValue": [
-              3
-            ],
-            "geometry": [
-              {
-                "coordinates": [
-                  36,
-                  13
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            ],
-            "name": [
-              "Scroll of Shadowstep"
-            ]
-          },
-          "roomElixirs": {
-            "elixirType": [],
-            "elixirValue": [],
-            "elixirDuration": [],
-            "geometry": [],
-            "name": []
-          },
-          "roomWeapon": {
-            "strength": [
-              50
-            ],
-            "geometry": [
-              {
-                "coordinates": [
-                  35,
-                  13
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            ],
-            "name": [
-              "Ebonheart Spear"
-            ]
-          }
-        },
-        "monsters": []
-      },
-      {
-        "coords": {
-          "coordinates": [
-            56,
-            11
-          ],
-          "size": [
-            16,
-            7
-          ]
-        },
-        "consumablesRoom": {
-          "roomFood": {
-            "regen": [
-              9
-            ],
-            "geometry": [
-              {
-                "coordinates": [
-                  59,
-                  16
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            ],
-            "name": [
-              "Hardtack of the Endless March"
-            ]
-          },
-          "roomScrolls": {
-            "scrollType": [
-              1
-            ],
-            "scrollValue": [
-              5
-            ],
-            "geometry": [
-              {
-                "coordinates": [
-                  63,
-                  16
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            ],
-            "name": [
-              "Vellum of the Void"
-            ]
-          },
-          "roomElixirs": {
-            "elixirType": [],
-            "elixirValue": [],
-            "elixirDuration": [],
-            "geometry": [],
-            "name": []
-          },
-          "roomWeapon": {
-            "strength": [],
-            "geometry": [],
-            "name": []
-          }
-        },
-        "monsters": []
-      },
-      {
-        "coords": {
-          "coordinates": [
-            1,
-            22
-          ],
-          "size": [
-            16,
-            7
-          ]
-        },
-        "consumablesRoom": {
-          "roomFood": {
-            "regen": [],
-            "geometry": [],
-            "name": []
-          },
-          "roomScrolls": {
-            "scrollType": [],
-            "scrollValue": [],
-            "geometry": [],
-            "name": []
-          },
-          "roomElixirs": {
-            "elixirType": [
-              2
-            ],
-            "elixirValue": [
-              1
-            ],
-            "elixirDuration": [
-              41
-            ],
-            "geometry": [
-              {
-                "coordinates": [
-                  15,
-                  26
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            ],
-            "name": [
-              "Potion of the Phantom's Breath"
+              "Elixir of the Shattered Mind"
             ]
           },
           "roomWeapon": {
             "strength": [
-              43
+              33
             ],
             "geometry": [
               {
                 "coordinates": [
-                  12,
-                  24
+                  66,
+                  4
                 ],
                 "size": [
                   1,
@@ -612,13 +269,13 @@
         "monsters": [
           {
             "baseStats": {
-              "health": 102,
-              "strength": 30,
-              "agility": 102,
+              "health": 153,
+              "strength": 102,
+              "agility": 25,
               "coords": {
                 "coordinates": [
-                  4,
-                  23
+                  67,
+                  6
                 ],
                 "size": [
                   1,
@@ -626,8 +283,8 @@
                 ]
               }
             },
-            "type": 4,
-            "hostility": 2,
+            "type": 3,
+            "hostility": 1,
             "chasing": false,
             "direction": 8
           }
@@ -636,66 +293,11 @@
       {
         "coords": {
           "coordinates": [
-            34,
-            21
+            4,
+            11
           ],
           "size": [
-            18,
-            8
-          ]
-        },
-        "consumablesRoom": {
-          "roomFood": {
-            "regen": [],
-            "geometry": [],
-            "name": []
-          },
-          "roomScrolls": {
-            "scrollType": [
-              1
-            ],
-            "scrollValue": [
-              6
-            ],
-            "geometry": [
-              {
-                "coordinates": [
-                  46,
-                  25
-                ],
-                "size": [
-                  1,
-                  1
-                ]
-              }
-            ],
-            "name": [
-              "Parchment of Thunderous Roar"
-            ]
-          },
-          "roomElixirs": {
-            "elixirType": [],
-            "elixirValue": [],
-            "elixirDuration": [],
-            "geometry": [],
-            "name": []
-          },
-          "roomWeapon": {
-            "strength": [],
-            "geometry": [],
-            "name": []
-          }
-        },
-        "monsters": []
-      },
-      {
-        "coords": {
-          "coordinates": [
-            57,
-            21
-          ],
-          "size": [
-            18,
+            17,
             8
           ]
         },
@@ -725,172 +327,521 @@
           }
         },
         "monsters": []
+      },
+      {
+        "coords": {
+          "coordinates": [
+            29,
+            11
+          ],
+          "size": [
+            21,
+            8
+          ]
+        },
+        "consumablesRoom": {
+          "roomFood": {
+            "regen": [],
+            "geometry": [],
+            "name": []
+          },
+          "roomScrolls": {
+            "scrollType": [],
+            "scrollValue": [],
+            "geometry": [],
+            "name": []
+          },
+          "roomElixirs": {
+            "elixirType": [],
+            "elixirValue": [],
+            "elixirDuration": [],
+            "geometry": [],
+            "name": []
+          },
+          "roomWeapon": {
+            "strength": [],
+            "geometry": [],
+            "name": []
+          }
+        },
+        "monsters": [
+          {
+            "baseStats": {
+              "health": 102,
+              "strength": 30,
+              "agility": 102,
+              "coords": {
+                "coordinates": [
+                  42,
+                  13
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            },
+            "type": 4,
+            "hostility": 2,
+            "chasing": false,
+            "direction": 8
+          },
+          {
+            "baseStats": {
+              "health": 153,
+              "strength": 102,
+              "agility": 25,
+              "coords": {
+                "coordinates": [
+                  39,
+                  14
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            },
+            "type": 3,
+            "hostility": 1,
+            "chasing": false,
+            "direction": 8
+          }
+        ]
+      },
+      {
+        "coords": {
+          "coordinates": [
+            57,
+            11
+          ],
+          "size": [
+            18,
+            5
+          ]
+        },
+        "consumablesRoom": {
+          "roomFood": {
+            "regen": [],
+            "geometry": [],
+            "name": []
+          },
+          "roomScrolls": {
+            "scrollType": [
+              0
+            ],
+            "scrollValue": [
+              91
+            ],
+            "geometry": [
+              {
+                "coordinates": [
+                  73,
+                  12
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "name": [
+              "Scroll of Unseen Paths"
+            ]
+          },
+          "roomElixirs": {
+            "elixirType": [
+              0
+            ],
+            "elixirValue": [
+              27
+            ],
+            "elixirDuration": [
+              37
+            ],
+            "geometry": [
+              {
+                "coordinates": [
+                  73,
+                  13
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "name": [
+              "Potion of the Wandering Soul"
+            ]
+          },
+          "roomWeapon": {
+            "strength": [],
+            "geometry": [],
+            "name": []
+          }
+        },
+        "monsters": [
+          {
+            "baseStats": {
+              "health": 153,
+              "strength": 102,
+              "agility": 25,
+              "coords": {
+                "coordinates": [
+                  65,
+                  12
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            },
+            "type": 3,
+            "hostility": 1,
+            "chasing": false,
+            "direction": 8
+          }
+        ]
+      },
+      {
+        "coords": {
+          "coordinates": [
+            2,
+            22
+          ],
+          "size": [
+            24,
+            6
+          ]
+        },
+        "consumablesRoom": {
+          "roomFood": {
+            "regen": [],
+            "geometry": [],
+            "name": []
+          },
+          "roomScrolls": {
+            "scrollType": [
+              1
+            ],
+            "scrollValue": [
+              7
+            ],
+            "geometry": [
+              {
+                "coordinates": [
+                  6,
+                  25
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "name": [
+              "Scroll of Unseen Paths"
+            ]
+          },
+          "roomElixirs": {
+            "elixirType": [],
+            "elixirValue": [],
+            "elixirDuration": [],
+            "geometry": [],
+            "name": []
+          },
+          "roomWeapon": {
+            "strength": [],
+            "geometry": [],
+            "name": []
+          }
+        },
+        "monsters": [
+          {
+            "baseStats": {
+              "health": 153,
+              "strength": 102,
+              "agility": 25,
+              "coords": {
+                "coordinates": [
+                  10,
+                  26
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            },
+            "type": 3,
+            "hostility": 1,
+            "chasing": false,
+            "direction": 8
+          },
+          {
+            "baseStats": {
+              "health": 51,
+              "strength": 127,
+              "agility": 76,
+              "coords": {
+                "coordinates": [
+                  16,
+                  26
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            },
+            "type": 1,
+            "hostility": 2,
+            "chasing": false,
+            "direction": 8
+          }
+        ]
+      },
+      {
+        "coords": {
+          "coordinates": [
+            34,
+            21
+          ],
+          "size": [
+            16,
+            5
+          ]
+        },
+        "consumablesRoom": {
+          "roomFood": {
+            "regen": [
+              49,
+              75
+            ],
+            "geometry": [
+              {
+                "coordinates": [
+                  38,
+                  24
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "coordinates": [
+                  47,
+                  22
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "name": [
+              "Smoked Wyrm Jerky",
+              "Smoked Wyrm Jerky"
+            ]
+          },
+          "roomScrolls": {
+            "scrollType": [],
+            "scrollValue": [],
+            "geometry": [],
+            "name": []
+          },
+          "roomElixirs": {
+            "elixirType": [],
+            "elixirValue": [],
+            "elixirDuration": [],
+            "geometry": [],
+            "name": []
+          },
+          "roomWeapon": {
+            "strength": [
+              42
+            ],
+            "geometry": [
+              {
+                "coordinates": [
+                  39,
+                  23
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "name": [
+              "Ironclad Cleaver"
+            ]
+          }
+        },
+        "monsters": [
+          {
+            "baseStats": {
+              "health": 51,
+              "strength": 127,
+              "agility": 25,
+              "coords": {
+                "coordinates": [
+                  35,
+                  23
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            },
+            "type": 0,
+            "hostility": 1,
+            "chasing": false,
+            "direction": 8
+          },
+          {
+            "baseStats": {
+              "health": 153,
+              "strength": 102,
+              "agility": 25,
+              "coords": {
+                "coordinates": [
+                  38,
+                  23
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            },
+            "type": 3,
+            "hostility": 1,
+            "chasing": false,
+            "direction": 8
+          }
+        ]
+      },
+      {
+        "coords": {
+          "coordinates": [
+            55,
+            21
+          ],
+          "size": [
+            18,
+            5
+          ]
+        },
+        "consumablesRoom": {
+          "roomFood": {
+            "regen": [
+              77
+            ],
+            "geometry": [
+              {
+                "coordinates": [
+                  62,
+                  22
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "name": [
+              "Dried Mushrooms of the Deep"
+            ]
+          },
+          "roomScrolls": {
+            "scrollType": [
+              2
+            ],
+            "scrollValue": [
+              5
+            ],
+            "geometry": [
+              {
+                "coordinates": [
+                  68,
+                  23
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "name": [
+              "Manuscript of Forgotten Truths"
+            ]
+          },
+          "roomElixirs": {
+            "elixirType": [
+              2
+            ],
+            "elixirValue": [
+              5
+            ],
+            "elixirDuration": [
+              46
+            ],
+            "geometry": [
+              {
+                "coordinates": [
+                  67,
+                  23
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "name": [
+              "Elixir of the Jade Serpent"
+            ]
+          },
+          "roomWeapon": {
+            "strength": [],
+            "geometry": [],
+            "name": []
+          }
+        },
+        "monsters": [
+          {
+            "baseStats": {
+              "health": 102,
+              "strength": 30,
+              "agility": 102,
+              "coords": {
+                "coordinates": [
+                  60,
+                  22
+                ],
+                "size": [
+                  1,
+                  1
+                ]
+              }
+            },
+            "type": 4,
+            "hostility": 2,
+            "chasing": false,
+            "direction": 8
+          }
+        ]
       }
     ],
     "passages": [
       {
         "coordinates": [
-          15,
-          26
-        ],
-        "size": [
-          7,
-          3
-        ]
-      },
-      {
-        "coordinates": [
-          19,
-          24
-        ],
-        "size": [
-          3,
-          5
-        ]
-      },
-      {
-        "coordinates": [
-          19,
-          24
-        ],
-        "size": [
-          17,
-          3
-        ]
-      },
-      {
-        "coordinates": [
-          40,
-          13
-        ],
-        "size": [
-          14,
-          3
-        ]
-      },
-      {
-        "coordinates": [
-          51,
-          13
-        ],
-        "size": [
-          3,
-          5
-        ]
-      },
-      {
-        "coordinates": [
-          51,
-          15
-        ],
-        "size": [
-          7,
-          3
-        ]
-      },
-      {
-        "coordinates": [
-          23,
-          12
-        ],
-        "size": [
-          11,
-          3
-        ]
-      },
-      {
-        "coordinates": [
-          17,
-          4
-        ],
-        "size": [
-          12,
-          3
-        ]
-      },
-      {
-        "coordinates": [
-          26,
-          4
-        ],
-        "size": [
-          3,
-          4
-        ]
-      },
-      {
-        "coordinates": [
-          26,
-          5
-        ],
-        "size": [
-          5,
-          3
-        ]
-      },
-      {
-        "coordinates": [
-          43,
-          7
-        ],
-        "size": [
-          3,
-          5
-        ]
-      },
-      {
-        "coordinates": [
-          38,
-          9
-        ],
-        "size": [
-          8,
-          3
-        ]
-      },
-      {
-        "coordinates": [
-          38,
-          9
-        ],
-        "size": [
-          3,
-          4
-        ]
-      },
-      {
-        "coordinates": [
-          49,
-          4
-        ],
-        "size": [
-          7,
-          3
-        ]
-      },
-      {
-        "coordinates": [
-          53,
-          3
-        ],
-        "size": [
-          3,
-          4
-        ]
-      },
-      {
-        "coordinates": [
-          53,
-          3
-        ],
-        "size": [
-          7,
-          3
-        ]
-      },
-      {
-        "coordinates": [
-          39,
+          63,
           14
         ],
         "size": [
@@ -900,8 +851,58 @@
       },
       {
         "coordinates": [
-          36,
+          59,
           18
+        ],
+        "size": [
+          7,
+          3
+        ]
+      },
+      {
+        "coordinates": [
+          59,
+          18
+        ],
+        "size": [
+          3,
+          5
+        ]
+      },
+      {
+        "coordinates": [
+          49,
+          7
+        ],
+        "size": [
+          3,
+          4
+        ]
+      },
+      {
+        "coordinates": [
+          32,
+          8
+        ],
+        "size": [
+          20,
+          3
+        ]
+      },
+      {
+        "coordinates": [
+          32,
+          8
+        ],
+        "size": [
+          3,
+          5
+        ]
+      },
+      {
+        "coordinates": [
+          19,
+          14
         ],
         "size": [
           6,
@@ -910,7 +911,47 @@
       },
       {
         "coordinates": [
-          36,
+          22,
+          14
+        ],
+        "size": [
+          3,
+          4
+        ]
+      },
+      {
+        "coordinates": [
+          22,
+          15
+        ],
+        "size": [
+          9,
+          3
+        ]
+      },
+      {
+        "coordinates": [
+          29,
+          17
+        ],
+        "size": [
+          3,
+          4
+        ]
+      },
+      {
+        "coordinates": [
+          29,
+          18
+        ],
+        "size": [
+          18,
+          3
+        ]
+      },
+      {
+        "coordinates": [
+          44,
           18
         ],
         "size": [
@@ -920,18 +961,28 @@
       },
       {
         "coordinates": [
-          63,
-          16
+          48,
+          13
         ],
         "size": [
-          3,
-          5
+          9,
+          3
         ]
       },
       {
         "coordinates": [
-          63,
-          18
+          54,
+          12
+        ],
+        "size": [
+          3,
+          4
+        ]
+      },
+      {
+        "coordinates": [
+          54,
+          12
         ],
         "size": [
           5,
@@ -940,8 +991,88 @@
       },
       {
         "coordinates": [
-          65,
-          18
+          51,
+          6
+        ],
+        "size": [
+          4,
+          3
+        ]
+      },
+      {
+        "coordinates": [
+          52,
+          3
+        ],
+        "size": [
+          3,
+          6
+        ]
+      },
+      {
+        "coordinates": [
+          52,
+          3
+        ],
+        "size": [
+          11,
+          3
+        ]
+      },
+      {
+        "coordinates": [
+          16,
+          2
+        ],
+        "size": [
+          7,
+          3
+        ]
+      },
+      {
+        "coordinates": [
+          20,
+          2
+        ],
+        "size": [
+          3,
+          6
+        ]
+      },
+      {
+        "coordinates": [
+          20,
+          5
+        ],
+        "size": [
+          13,
+          3
+        ]
+      },
+      {
+        "coordinates": [
+          14,
+          17
+        ],
+        "size": [
+          3,
+          5
+        ]
+      },
+      {
+        "coordinates": [
+          8,
+          19
+        ],
+        "size": [
+          9,
+          3
+        ]
+      },
+      {
+        "coordinates": [
+          8,
+          19
         ],
         "size": [
           3,
@@ -952,8 +1083,8 @@
     "levelNum": 1,
     "endOfLevel": {
       "coordinates": [
-        40,
-        6
+        63,
+        13
       ],
       "size": [
         1,

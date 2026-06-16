@@ -35,3 +35,6 @@ nbdist/
 Thumbs.db
 *.log
 /.gigaide/gigaide.properties
+../../../C-code-samples/rogue_sample/datalayer/data/*.json
+
+

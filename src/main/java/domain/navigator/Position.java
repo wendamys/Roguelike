@@ -24,6 +24,7 @@ public class Position {
             case RIGHT -> new Position(x + distance, y);
         };
     }
+
     /**
     * Метод {@link #distanceTo(Position)} вычисляет дистанцию между двумя объектами
     * @param other позиция второго объекта
@@ -49,8 +50,6 @@ public class Position {
     public int hashCode() {
         return x * 15 + y;
     }
-
-
 
 //    @Override
 //    public String toString() {
