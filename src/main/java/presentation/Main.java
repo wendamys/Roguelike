@@ -5,7 +5,6 @@ import domain.characters.enemies.EnemiesType;
 import domain.characters.enemies.Zombie;
 import domain.characters.Player;
 import domain.navigator.DirectionType;
-import domain.navigator.MovementSystem;
 import domain.navigator.Position;
 
 
@@ -21,15 +20,6 @@ public class Main {
             player.move(DirectionType.RIGHT);
         }
         System.out.println(player.getPosition() + " main");
-//
-//        Player player1 = new Player("qwe", 100, 100, 100, 100, 0, position);
-//        System.out.println(player1.getPosition() + "player1");
-//        ImmutableDistance distance = new ImmutableDistance(0 , 1);
-//        double range = distance.distanceTo(player.getPosition());
-//        System.out.println(range + " range");
-//        int damage = 20;
-//        player1.acceptDamage(damage);
-//        System.out.println(player1.getHealth() + " health");
 
         Zombie zombie = new Zombie("Zombie", EnemiesType.ZOMBIE, 100, 100, 100, 100, position);
         for (int i = 0; i < 5; i++) {
@@ -37,7 +27,7 @@ public class Main {
             System.out.println(zombie.getPosition().getX() + " " + zombie.getPosition().getY());
         }
         for (int i = 0; i < 20; i++) {
-            DirectionType bestDir = zombie.convergence(player.getPosition(), 1);
+            boolean attack = zombie.convergence(player.getPosition(), 1);
             if (attack) {
                 zombie.attack(player);
                 System.out.println(player.getHealth());
