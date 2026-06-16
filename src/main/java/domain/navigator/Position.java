@@ -14,7 +14,7 @@ public class Position {
     * Метод {@link #moveDir(DirectionType, int distance)} выбирает направление передвижения персонажа
     * @param direction Направление движения
     * @param distance  дистанция перемещения
-    * @return новый объект с координатами (x, y)
+    * @return объект с координатами (x, y)
     */
     public Position moveDir(DirectionType direction, int distance) {
         return switch (direction) {
