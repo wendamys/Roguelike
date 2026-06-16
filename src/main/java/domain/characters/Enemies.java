@@ -51,7 +51,7 @@ abstract public class Enemies extends Character {
         setPosition(newPos);
     }
 
-    public DirectionType convergence(Position positionPlayer, int distance) {
+    public boolean convergence(Position positionPlayer, int distance) {
 
         //  Создаем врага с текущий позицией
         Position enemyMove = new Position(getPosition().getX(), getPosition().getY());
@@ -71,14 +71,12 @@ abstract public class Enemies extends Character {
             }
             System.out.println("Range to player :" + findRange);
         }
-        return dirMove;
-
-        // if (min != 0.0) {
-        //     setPosition(enemyMove.moveDir(dirMove, distance));
-        //     return false;
-        // } else {
-        //     System.out.println("Attack player!");
-        //     return true;
-        // }
+        if (min != 0.0) {
+            setPosition(enemyMove.moveDir(dirMove, distance));
+            return false;
+        } else {
+            System.out.println("Attack player!");
+            return true;
+        }
     }
 }
