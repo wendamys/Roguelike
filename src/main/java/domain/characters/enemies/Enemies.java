@@ -3,7 +3,7 @@ package domain.characters.enemies;
 import domain.characters.Character;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
-import domain.MathUtils.RandomNumber;
+import domain.mathutils.RandomNumber;
 
 abstract public class Enemies extends Character {
 
