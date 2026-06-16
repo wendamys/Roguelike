@@ -1,6 +1,6 @@
-package domain.characters;
+package domain.characters.enemies;
 
-import domain.characters.enemies.EnemiesType;
+import domain.characters.Character;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
 import domain.MathUtils.RandomNumber;
