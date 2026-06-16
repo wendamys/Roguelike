@@ -26,9 +26,12 @@ public class Player extends Character {
         return gold;
     }
 
-    public void move(DirectionType direction, int distance) {
-        Position currentPos = getPosition();
-        Position pos = new Position(currentPos.getX(), currentPos.getY());
+    /**
+    * Метод {@link #move(DirectionType direction)} перемещает выбранного персонажа на дистанцию по игровому полю
+    * @param direction направление движения
+    */
+    public void move(DirectionType direction) {
+        Position pos = new Position(getPosition().getX(), getPosition().getY());
         Position newPos = pos.moveDir(direction, 1);
         setPosition(newPos);
     }

@@ -21,28 +21,28 @@ class PositionForPlayerTest {
     @Test
     void moveForwardShouldIncreaseYCoordinatePlayer() {
         Position expectedPosition = new Position(10, 21);
-        player.move(DirectionType.FORWARD, 1);
+        player.move(DirectionType.FORWARD);
         assertEquals(expectedPosition.getY(), player.getPosition().getY(), "Позиция после FORWARD должна измениться только по Y");
     }
 
     @Test
     void moveDownYCoordinatePlayer() {
         Position expectedPosition = new Position(10, 19);
-        player.move(DirectionType.DOWN, 1);
+        player.move(DirectionType.DOWN);
         assertEquals(expectedPosition.getY(), player.getPosition().getY(), "Позиция после DOWN должна измениться только по Y");
     }
 
     @Test
     void moveLeftXCoordinatePlayer() {
         Position expectedPosition = new Position(9, 20);
-        player.move(DirectionType.LEFT, 1);
+        player.move(DirectionType.LEFT);
         assertEquals(expectedPosition.getX(), player.getPosition().getX(), "Позиция после LEFT должна измениться только по X");
     }
 
     @Test
     void moveRightXCoordinatePlayer() {
         Position expectedPosition = new Position(11, 20);
-        player.move(DirectionType.RIGHT, 1);
+        player.move(DirectionType.RIGHT);
         assertEquals(expectedPosition.getX(), player.getPosition().getX(), "Позиция после RIGHT должна измениться только по X");
     }
 }
