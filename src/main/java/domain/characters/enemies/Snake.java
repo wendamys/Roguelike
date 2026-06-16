@@ -1,7 +1,7 @@
 package domain.characters.enemies;
 
 import domain.characters.Enemies;
-import domain.navigator.interfaces.Position;
+import domain.navigator.Position;
 
 public class Snake extends Enemies {
 

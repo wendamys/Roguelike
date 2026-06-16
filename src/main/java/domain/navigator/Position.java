@@ -1,28 +1,24 @@
 package domain.navigator;
 
-import domain.navigator.interfaces.Distance;
-import domain.navigator.interfaces.Position;
-
-public final class ImmutableDistance implements Position, Distance {
+public class Position {
     private final int x;
     private final int y;
 
-    public ImmutableDistance(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    @Override
-    public int getX() {
-        return x;
-    }
-
-    @Override
+    public Position(int x, int y) { this.x = x; this.y = y; }
+    public int getX() { return x; }
     public int getY() {
         return y;
     }
 
-    @Override
+    public Position moveDir(DirectionType direction, int distance) {
+        return switch (direction) {
+            case FORWARD -> new Position(x, y + distance);
+            case DOWN -> new Position(x, y - distance);
+            case LEFT -> new Position(x - distance, y);
+            case RIGHT -> new Position(x + distance, y);
+        };
+    }
+
     public double distanceTo(Position other) {
         if (other == null) {
             throw new NullPointerException("Other position cannot be null");
@@ -44,8 +40,11 @@ public final class ImmutableDistance implements Position, Distance {
         return x * 15 + y;
     }
 
+
+
 //    @Override
 //    public String toString() {
 //        return String.format("Distance(%.2f)", ;
 //    }
+
 }

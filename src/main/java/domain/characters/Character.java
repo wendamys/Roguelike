@@ -1,6 +1,6 @@
 package domain.characters;
 
-import domain.navigator.interfaces.Position;
+import domain.navigator.Position;
 
 /**
  * Абстрактный класс {@link #Character} описывает главные характеристики персонажей в игре
@@ -10,7 +10,7 @@ import domain.navigator.interfaces.Position;
  * {@link #strength} - сила
  * {@link #position} - координаты позиции (x, y)
  */
-public abstract class Character implements DamageDiller {
+public abstract class Character {
     private final String name;
     private int health;
     private final int agility;
@@ -58,7 +58,6 @@ public abstract class Character implements DamageDiller {
         this.position = position;
     }
 
-    @Override
     public void acceptDamage(int damage) {
         if (damage < 0 || health <= 0) return;
         int newHealth = health - damage;

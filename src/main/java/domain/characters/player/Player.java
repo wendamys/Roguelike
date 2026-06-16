@@ -2,14 +2,12 @@ package domain.characters.player;
 
 import domain.characters.Character;
 import domain.navigator.DirectionType;
-import domain.navigator.ImmutablePosition;
-import domain.navigator.interfaces.Movement;
-import domain.navigator.interfaces.Position;
+import domain.navigator.Position;
 
 /**
  * класс {@link #Player} описывает поведение игрока
  */
-public class Player extends Character implements Movement {
+public class Player extends Character {
 
     private final int maxHealth;
     private int gold;
@@ -28,11 +26,10 @@ public class Player extends Character implements Movement {
         return gold;
     }
 
-    @Override
     public void move(DirectionType direction, int distance) {
         Position currentPos = getPosition();
-        ImmutablePosition pos = new ImmutablePosition(currentPos.getX(), currentPos.getY());
-        ImmutablePosition newPos = pos.moveDir(direction, 1);
+        Position pos = new Position(currentPos.getX(), currentPos.getY());
+        Position newPos = pos.moveDir(direction, 1);
         setPosition(newPos);
     }
 }

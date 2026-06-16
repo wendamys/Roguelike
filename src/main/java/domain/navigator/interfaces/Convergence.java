@@ -1,5 +1,5 @@
-package domain.navigator.interfaces;
-
-public interface Convergence {
-    void convergence(Position position, int distance);
-}
+// package domain.navigator.interfaces;
+//
+// public interface Convergence {
+//     void convergence(PositionInter positionInter, int distance);
+// }
