@@ -24,6 +24,12 @@ abstract public class Enemies extends Character {
         return type;
     }
 
+
+    /**
+    * Метод {@link #randomDirection()} выбирает рандомно направление движения
+    *
+    * @return Направление движения
+    */
     public DirectionType randomDirection() {
         RandomNumber randomDir = new RandomNumber();
         return switch (randomDir.randomNumber(1, 4)) {
@@ -38,7 +44,7 @@ abstract public class Enemies extends Character {
     public void moveRandom(int distance) {
         Position currentPos = getPosition();
         Position pos = new Position(currentPos.getX(), currentPos.getY());
-        Position newPos = pos.moveDir(randomDirection(), 1);
+        Position newPos = pos.moveDir(randomDirection(), distance);
         setPosition(newPos);
     }
 
@@ -50,23 +56,22 @@ abstract public class Enemies extends Character {
         System.out.println("Coordinate player: " + positionPlayer.getX() + " " + positionPlayer.getY());
         System.out.println("Coordinate enemy: " + enemyMove.getX() + " " + enemyMove.getY());
 
-        // Нужно просто указать переменные т.к. чтобы было видно и внутри фора и снаружи
+        // Нужно было просто указать переменные т.к. чтобы было видно снаружи и внутри цикла
+        // Тут пробегаемся по типам, которые лежат в DirectionType
+        // Мы ходим в одном направлении, которое лежит в типах
+        // Сразу высчитываю расстояние от противника до игрока
+        // Проверка на минимальное значение и запись минимального значения для следующей сверки и запись куда нужно идти
         double min = Double.MAX_VALUE;
         DirectionType dirMove = DirectionType.RIGHT;
-        // Тут пробегаемся по типам, которые лежат в DirectionType
         for (DirectionType dT: DirectionType.values()) {
-            // Мы ходим в одном направлении, которое лежит в типах
-            Position enemyPos = enemyMove.moveDir(dT, 1);
-            // Сразу высчитываю расстояние от противника до игрока
+            Position enemyPos = enemyMove.moveDir(dT, distance);
             double findRange = enemyPos.distanceTo(positionPlayer);
-            // Проверка на минимальное значение и запись минимального значения
-            // для следующей сверки и запись куда нужно идти
             if (findRange <= min) {
                 min = findRange;
                 dirMove = dT;
             }
             System.out.println("Range to player :" + findRange);
         }
-        setPosition(enemyMove.moveDir(dirMove, 1));
+        setPosition(enemyMove.moveDir(dirMove, distance));
     }
 }
