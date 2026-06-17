@@ -2,6 +2,9 @@ package domain.characters;
 
 import domain.navigator.Position;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Абстрактный класс {@link #Character} описывает главные характеристики персонажей в игре
  * {@link #name} - имя персонажа
@@ -58,7 +61,6 @@ public abstract class Character {
         this.position = position;
     }
 
-
     /**
     * Метод {@link #acceptDamage(int damage)} описывает получение урона персонажем.
     * Если урона больше чем здоровья то устанавливает здоровье 0
@@ -69,5 +71,9 @@ public abstract class Character {
         if (damage < 0 || health <= 0) return;
         int newHealth = health - damage;
         health = Math.max(newHealth, 0);
+    }
+
+    public void attack(Player player){
+        player.acceptDamage(10);
     }
 }

@@ -1,4 +1,4 @@
-package domain.mathutils;
+package domain.MathUtils;
 
 import java.util.Random;
 

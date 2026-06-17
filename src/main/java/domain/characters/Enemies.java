@@ -1,9 +1,9 @@
-package domain.characters.enemies;
+package domain.characters;
 
-import domain.characters.Character;
+import domain.characters.enemies.EnemiesType;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
-import domain.mathutils.RandomNumber;
+import domain.MathUtils.RandomNumber;
 
 abstract public class Enemies extends Character {
 
@@ -41,14 +41,17 @@ abstract public class Enemies extends Character {
         };
     }
 
+    /**
+     * Метод {@link #moveRandom(int distance)} выбирает рандомно направление движения
+     * и устанавливает его объекту, который его вызывал
+     */
     public void moveRandom(int distance) {
-        Position currentPos = getPosition();
-        Position pos = new Position(currentPos.getX(), currentPos.getY());
+        Position pos = new Position(getPosition().getX(), getPosition().getY());
         Position newPos = pos.moveDir(randomDirection(), distance);
         setPosition(newPos);
     }
 
-    public void convergence(Position positionPlayer, int distance) {
+    public boolean convergence(Position positionPlayer, int distance) {
 
         //  Создаем врага с текущий позицией
         Position enemyMove = new Position(getPosition().getX(), getPosition().getY());
@@ -56,14 +59,10 @@ abstract public class Enemies extends Character {
         System.out.println("Coordinate player: " + positionPlayer.getX() + " " + positionPlayer.getY());
         System.out.println("Coordinate enemy: " + enemyMove.getX() + " " + enemyMove.getY());
 
-        // Нужно было просто указать переменные т.к. чтобы было видно снаружи и внутри цикла
-        // Тут пробегаемся по типам, которые лежат в DirectionType
-        // Мы ходим в одном направлении, которое лежит в типах
-        // Сразу высчитываю расстояние от противника до игрока
-        // Проверка на минимальное значение и запись минимального значения для следующей сверки и запись куда нужно идти
+        // Перебираем пути, находим минимальный, идем туда, если игрок близко возвращаем true
         double min = Double.MAX_VALUE;
         DirectionType dirMove = DirectionType.RIGHT;
-        for (DirectionType dT: DirectionType.values()) {
+        for (DirectionType dT : DirectionType.values()) {
             Position enemyPos = enemyMove.moveDir(dT, distance);
             double findRange = enemyPos.distanceTo(positionPlayer);
             if (findRange <= min) {
@@ -72,6 +71,12 @@ abstract public class Enemies extends Character {
             }
             System.out.println("Range to player :" + findRange);
         }
-        setPosition(enemyMove.moveDir(dirMove, distance));
+        if (min != 0.0) {
+            setPosition(enemyMove.moveDir(dirMove, distance));
+            return false;
+        } else {
+            System.out.println("Attack player!");
+            return true;
+        }
     }
 }
