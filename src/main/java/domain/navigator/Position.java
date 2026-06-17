@@ -11,21 +11,6 @@ public class Position {
     }
 
     /**
-    * Метод {@link #moveDir(DirectionType, int distance)} выбирает направление передвижения персонажа
-    * @param direction Направление движения
-    * @param distance  дистанция перемещения
-    * @return объект с координатами (x, y)
-    */
-    public Position moveDir(DirectionType direction, int distance) {
-        return switch (direction) {
-            case FORWARD -> new Position(x, y + distance);
-            case DOWN -> new Position(x, y - distance);
-            case LEFT -> new Position(x - distance, y);
-            case RIGHT -> new Position(x + distance, y);
-        };
-    }
-
-    /**
     * Метод {@link #distanceTo(Position)} вычисляет дистанцию между двумя объектами
     * @param other позиция второго объекта
     * @return дистанция до объекта
