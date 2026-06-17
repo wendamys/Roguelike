@@ -2,10 +2,13 @@ package presentation;
 
 
 import domain.backpack.Backpack;
+import domain.backpack.Item;
 import domain.backpack.ItemsType;
 import domain.backpack.items.Elixir;
 import domain.characters.Player;
 import domain.navigator.Position;
+
+import java.util.ArrayList;
 
 
 public class Main {
@@ -17,6 +20,10 @@ public class Main {
         Elixir elixir2 = new Elixir("E", ItemsType.ELIXIR, 10, position);
         backpack.takeItem(elixir);
         backpack.takeItem(elixir2);
+        System.out.print("Do: ");
+        backpack.seeList(ItemsType.ELIXIR);
+        backpack.clearLists();
+        System.out.println("posle: ");
         backpack.seeList(ItemsType.ELIXIR);
     }
 }
