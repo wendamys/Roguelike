@@ -1,6 +1,7 @@
 package domain.backpack;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Backpack {
     private final int maxCapacity = 9;
@@ -34,6 +35,13 @@ public class Backpack {
             case SCROLL -> seeListType(scrollList);
             case WEAPON -> seeListType(weaponList);
         }
+    }
+
+    public void clearLists() {
+        elixirList.clear();
+        foodList.clear();
+        scrollList.clear();
+        weaponList.clear();
     }
 
     private void seeListType(ArrayList<Item> list) {
