@@ -2,9 +2,6 @@ package domain.characters;
 
 import domain.navigator.Position;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Абстрактный класс {@link #Character} описывает главные характеристики персонажей в игре
  * {@link #name} - имя персонажа
@@ -19,9 +16,9 @@ public abstract class Character {
     private final int agility;
     private final int strength;
     private Position position;
-    private int step;
+    protected int step = 1;
 
-    public Character(String name, int health, int agility, int strength, Position position, int step) {
+    public Character(String name, int health, int agility, int strength, Position position) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name cannot be null or blank");
         }
@@ -36,7 +33,6 @@ public abstract class Character {
         this.agility = agility;
         this.strength = strength;
         this.position = position;
-        this.step = 1;
     }
 
     public String getName() {
@@ -67,13 +63,13 @@ public abstract class Character {
         this.step = step;
     }
 
-    protected void setPosition(Position position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 
     /**
     * Метод {@link #acceptDamage(int damage)} описывает получение урона персонажем.
-    * Если урона больше чем здоровья то устанавливает здоровье 0
+    * Если урона больше чем здоровья, то устанавливает здоровье 0
     *
     * @param damage очки урона
     */
