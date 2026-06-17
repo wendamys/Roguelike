@@ -11,8 +11,8 @@ public class Player extends Character {
     private final int maxHealth;
     private int gold;
 
-    public Player(String name, int health, int agility, int strength, int maxHealth, int gold, Position position) {
-        super(name, health, agility, strength, position);
+    public Player(String name, int health, int agility, int strength, int maxHealth, int gold, Position position, int step) {
+        super(name, health, agility, strength, position, step);
         this.maxHealth = maxHealth;
         this.gold = 0;
     }

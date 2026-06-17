@@ -10,8 +10,8 @@ abstract public class Enemies extends Character {
     private final EnemiesType type;
     private final int hostility;
 
-    public Enemies(String name, EnemiesType type, int hostility, int health, int agility, int strength, Position positionInter) {
-        super(name, health, agility, strength, positionInter);
+    public Enemies(String name, EnemiesType type, int hostility, int health, int agility, int strength, Position position, int step) {
+        super(name, health, agility, strength, position, step);
         this.type = type;
         this.hostility = hostility;
     }

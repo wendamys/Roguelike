@@ -19,8 +19,9 @@ public abstract class Character {
     private final int agility;
     private final int strength;
     private Position position;
+    private int step;
 
-    public Character(String name, int health, int agility, int strength, Position position) {
+    public Character(String name, int health, int agility, int strength, Position position, int step) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name cannot be null or blank");
         }
@@ -35,6 +36,7 @@ public abstract class Character {
         this.agility = agility;
         this.strength = strength;
         this.position = position;
+        this.step = 1;
     }
 
     public String getName() {
@@ -57,6 +59,14 @@ public abstract class Character {
         return position;
     }
 
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
+    }
+
     protected void setPosition(Position position) {
         this.position = position;
     }
@@ -74,6 +84,8 @@ public abstract class Character {
     }
 
     public void attack(Player player){
-        player.acceptDamage(10);
+
     }
+
+
 }
