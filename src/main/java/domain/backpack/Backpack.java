@@ -1,49 +1,47 @@
 package domain.backpack;
 
-import domain.backpack.ItemsType;
-import domain.backpack.items.Elixir;
-import domain.backpack.items.Food;
-import domain.backpack.items.Scroll;
-import domain.backpack.items.Weapon;
-
 import java.util.ArrayList;
 
 public class Backpack {
     private final int maxCapacity = 9;
-    ArrayList<Item> elixirList = new ArrayList<>(maxCapacity);
-    ArrayList<Item> foodList = new ArrayList<>(maxCapacity);
-    ArrayList<Item> scrollList = new ArrayList<>(maxCapacity);
-    ArrayList<Item> weaponList = new ArrayList<>(maxCapacity);
+    private final ArrayList<Item> elixirList = new ArrayList<>(maxCapacity);
+    private final ArrayList<Item> foodList = new ArrayList<>(maxCapacity);
+    private final ArrayList<Item> scrollList = new ArrayList<>(maxCapacity);
+    private final ArrayList<Item> weaponList = new ArrayList<>(maxCapacity);
 
+    /**
+     * метод {@link #takeItem(Item)} переносит предмет в лист
+     * @param item предмет
+     */
     public void takeItem(Item item) {
-        if(item instanceof Elixir) {
-            if(elixirList.size() < 9) elixirList.add(item);
-        } else if(item instanceof Food) {
-            if(foodList.size() < 9) foodList.add(item);
-        } else if(item instanceof Scroll) {
-            if(scrollList.size() < 9) scrollList.add(item);
-        } else if(item instanceof Weapon) {
-            if(weaponList.size() < 9) weaponList.add(item);
+        switch (item.getType()) {
+            case ELIXIR -> addIfPossible(elixirList, item);
+            case FOOD -> addIfPossible(foodList, item);
+            case SCROLL -> addIfPossible(scrollList, item);
+            case WEAPON -> addIfPossible(weaponList, item);
+            default -> {}
         }
     }
 
-//    public void takeItem(Item item) {
-//        switch (item) {
-//            case ItemsType.ELIXIR -> addIfPossible(elixirList, item);
-//            case ItemsType.F -> addIfPossible(foodList, item);
-//            case "Scroll" -> addIfPossible(scrollList, item);
-//            case "Weapon" -> addIfPossible(weaponList, item);
-//            default -> { }
-//        }
-//    }
-//
-//    private void addIfPossible(ArrayList <Item> list, Item item) {
-//        if (list.size() < 9) list.add(item);
-//    }
+    /**
+     * метод {@link #seeList(ItemsType)} выводит содержимое листа по типу предмета
+     * @param type тип предмета
+     */
+    public void seeList(ItemsType type) {
+        switch (type) {
+            case ELIXIR -> seeListType(elixirList);
+            case FOOD -> seeListType(foodList);
+            case SCROLL -> seeListType(scrollList);
+            case WEAPON -> seeListType(weaponList);
+        }
+    }
 
-    public void seeList() {
-        for(var e: elixirList) {
+    private void seeListType(ArrayList<Item> list) {
+        for(var e: list) {
             System.out.println(e);
         }
+    }
+    private void addIfPossible(ArrayList<Item> list, Item item) {
+        if (list.size() < maxCapacity) list.add(item);
     }
 }
