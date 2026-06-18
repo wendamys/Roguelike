@@ -11,7 +11,13 @@ public class RandomNumber {
      * @param before конец выборки
      * @return Ожидаемое число
      */
-    public int randomNumber(int from, int before) {
+    public static int randomNumber(int from, int before) {
         return random.nextInt(from, before + 1);
     }
+
+    public static double randomValueDouble() {
+        return random.nextDouble();
+    }
 }
+
+

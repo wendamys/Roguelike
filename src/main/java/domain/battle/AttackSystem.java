@@ -1,12 +1,17 @@
 package domain.battle;
 
+import domain.backpack.Backpack;
 import domain.characters.Character;
 import domain.characters.Enemies;
 import domain.characters.Player;
+import domain.characters.enemies.EnemiesType;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
 
 import java.util.ArrayList;
+
+import static domain.MathUtils.RandomNumber.randomValueDouble;
+import static domain.battle.CharacterType.*;
 
 public class AttackSystem {
 
@@ -25,14 +30,51 @@ public class AttackSystem {
     }
 
     /**
+     * Функция, описывающая попытку атаки
+     * Эта функция объединяет в себе всю структуру атаки: проверка на попадание, расчет урона, нанесение урона.
+     * @param player Данные об игроке
+     * @param battleInfo Данные о бое
+     * @param currTurn Определяет, чья очередь выполнить атаку
+     */
+    public void attack(Player player, BattleInfoType battleInfo, CharacterType currTurn) {
+        switch (currTurn) {
+            case PLAYER -> {
+                if (checkHit(player, battleInfo.enemy, PLAYER)) {
+                    int health = battleInfo.enemy.getHealth();
+                    health -= calculateDamage(player, battleInfo, currTurn);
+                    battleInfo.enemy.setHealth(health);
+                }
+                if (battleInfo.enemy.getHealth() <= 0) {
+                    player.setGold(calculateLoot(battleInfo.enemy));
+                }
+            }
+            case ENEMIES -> {
+                if (checkHit(player, battleInfo.enemy, ENEMIES)) {
+                    int health = player.getHealth();
+                    health -= calculateDamage(player, battleInfo, ENEMIES);
+                    player.setHealth(health);
+                }
+            }
+        }
+    }
+
+    /**
      * Функция, высчитывающая, произойдёт ли попадание
      * @param currTurn Определяет, чья очередь выполнить атаку
      * @param enemy Данные о монстре
      * @param  player Данные об игроке
      * @return true, если атакующий попал по цели, иначе false
      */
-    public boolean checkHit(AttackSystem currTurn, Character enemy, Player player) {
-        return true;
+    public boolean checkHit(Player player, Enemies enemy, CharacterType currTurn) {
+        boolean wasHit = false;
+        int chance = 0;
+        switch (currTurn) {
+            case PLAYER -> chance += hitChanceFormula(player.getAgility(), enemy.getAgility());
+            case ENEMIES -> chance += hitChanceFormula(enemy.getAgility(), player.getAgility());
+        }
+        boolean isOgre = enemy.getType() == EnemiesType.OGRE;
+        if (((randomValueDouble() % 100) < chance) || isOgre) { wasHit = true; }
+        return wasHit;
     }
 
     /**
@@ -43,13 +85,17 @@ public class AttackSystem {
      * @return количество урона, наносимого противнику
      */
     public int calculateDamage(Player player, BattleInfoType battleInfo, CharacterType currTurn){
+        int damage = 0;
+        int ZOMBIE = zombieGhostDamageFormula(battleInfo);
+        boolean VAMPIRE = false;
+        int GHOST = 0;
         return 0;
     }
 
     /**
      * Функция, определяющая количество сокровищ, получаемых игроком за убийства противника
      * Количество зависит от сложности противника
-     * @param[in] enemy данные о монстре
+     * @param enemy данные о монстре
      * @return стоимость сокровища
      */
     public int calculateLoot(Enemies enemy) {
@@ -62,9 +108,9 @@ public class AttackSystem {
      * @param room Данные о комнате, к которой принадлежит монстр
      * @param enemy Данные о монстре, который должен быть удален
      */
-    public void deleteEnemyInfo(Room room, Enemies enemy) {
-
-    }
+    //public void deleteEnemyInfo(Room room, Enemies enemy) {
+    //
+    //}
 
     /**
      * Функция обновления статуса боёв
@@ -74,9 +120,9 @@ public class AttackSystem {
      * @param level Данные о начинке уровне
      * @param battlesArray battles_array Массив, содержащий инфу о всех боях
      */
-    public void updateFightStatus(Position player, Level level, BattleInfoType battlesArray) {
-
-    }
+    //public void updateFightStatus(Position player, Level level, BattleInfoType battlesArray) {
+    //
+    //}
 
     /**
      * Функция, записывающая информацию о бое в структуру
@@ -118,9 +164,9 @@ public class AttackSystem {
      * Функция проходится по комнатам уровня, проверяя хп каждого монстра, если оно неположительно, то удаляет данные о нем
      * @param level Информация об уровне
      */
-    public void removeDeadEnemy(Level level) {
-
-    }
+    //public void removeDeadEnemy(Level level) {
+    //
+    //}
 
 
     /**

@@ -26,4 +26,6 @@ abstract public class Enemies extends Character {
     }
 
 
+
+
 }

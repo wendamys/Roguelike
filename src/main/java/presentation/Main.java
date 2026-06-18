@@ -1,7 +1,10 @@
 package presentation;
 
 
+import domain.MathUtils.RandomNumber;
 import domain.battle.AttackSystem;
+import domain.battle.BattleInfoType;
+import domain.battle.CharacterType;
 import domain.navigator.MovementSystem;
 import domain.backpack.Backpack;
 import domain.backpack.ItemsType;
@@ -11,6 +14,8 @@ import domain.characters.enemies.Zombie;
 import domain.characters.Player;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
+
+import static domain.MathUtils.RandomNumber.*;
 
 
 public class Main {
@@ -58,5 +63,10 @@ public class Main {
         System.out.println(zombie.getHealth());
         atk.acceptDamage(10, zombie);
         System.out.println(zombie.getHealth());
+
+        BattleInfoType battleInfo = new BattleInfoType();
+        atk.attack(player, battleInfo, CharacterType.ENEMIES);
+        System.out.println(player.getHealth());
+
     }
 }
