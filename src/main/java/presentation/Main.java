@@ -3,6 +3,7 @@ package presentation;
 
 import domain.backpack.ItemsSubType;
 import domain.backpack.items.Food;
+import domain.backpack.items.Scroll;
 import domain.backpack.items.Weapon;
 import domain.navigator.MovementSystem;
 import domain.backpack.Backpack;
@@ -30,15 +31,15 @@ public class Main {
 //
 //        Zombie zombie = new Zombie("Zombie", EnemiesType.ZOMBIE, 100, 100, 100, 100, new Position(3, 7));
 //        for (int i = 0; i < 5; i++) {
-//            // Возвращается лучшее направление
-//            //DirectionType bestTypeDir = zombie.getPosition().convergence(player);
-//
+////             Возвращается лучшее направление
 //            DirectionType bestTypeDir = zombie.getPosition().convergence(player);
 //
-//            //Можно сразу запихнуть в перемещение, но тут должна быть скорее всего еще одна функция,
-//            // которая будет сравнивать координаты до атаки т.е. брать координаты и сравнивать и т.д.,
-//            // это уже другая история
-//            //mv.moveDir(zombie.getPosition().convergence(player), zombie);
+////            DirectionType bestTypeDir = zombie.getPosition().convergence(player);
+//
+////            Можно сразу запихнуть в перемещение, но тут должна быть скорее всего еще одна функция,
+////             которая будет сравнивать координаты до атаки т.е. брать координаты и сравнивать и т.д.,
+////             это уже другая история
+//            mv.moveDir(zombie.getPosition().convergence(player), zombie);
 //
 //            mv.moveDir(zombie.getPosition().convergence(player), zombie);
 //            System.out.println("Zombie pos x:" + zombie.getPosition().getX() + " Zombie pos y:" + zombie.getPosition().getY());
@@ -50,10 +51,28 @@ public class Main {
         Elixir elixir = new Elixir("E", ItemsType.ELIXIR, 30, position);
         Elixir elixir2 = new Elixir("E", ItemsType.ELIXIR, 10, position);
         Elixir elixir = new Elixir("E", ItemsType.ELIXIR, ItemsSubType.HEALTH, 30, position);
-        Elixir elixir2 = new Elixir("E", ItemsType.ELIXIR, ItemsSubType.AGILITY, 10, position);
+//        Elixir elixir2 = new Elixir("E", ItemsType.ELIXIR, ItemsSubType.AGILITY, 10, position);
         Food food = new Food("F", ItemsType.FOOD, ItemsSubType.HEALTH, 25, position);
         Weapon weapon = new Weapon("W", ItemsType.WEAPON, ItemsSubType.STRENGTH, 5, position);
+        Scroll scroll = new Scroll("S", ItemsType.SCROLL, ItemsSubType.STRENGTH, 15, position);
         backpack.takeItem(elixir);
+        backpack.takeItem(scroll);
+        System.out.println(scroll);
+        System.out.println(scroll);
+        System.out.println(scroll);
+        System.out.println(scroll);
+        System.out.println(scroll);
+//        backpack.takeItem(elixir2);
+//        backpack.takeItem(food);
+//        backpack.takeItem(weapon);
+//        backpack.seeList(ItemsType.ELIXIR);
+//        backpack.seeList(ItemsType.FOOD);
+//        backpack.seeList(ItemsType.WEAPON);
+//        player.setUpHealth(30);
+//        System.out.println("\n" + player);
+//        backpack.useItem(food, player);
+//        backpack.useItem(weapon, player);
+//        System.out.println("\n" + player);
         backpack.takeItem(elixir2);
         backpack.takeItem(food);
         backpack.takeItem(weapon);
