@@ -1,5 +1,7 @@
 package domain.backpack;
 
+import domain.characters.Player;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -37,11 +39,30 @@ public class Backpack {
         }
     }
 
+    /**
+     * метод {@link #clearLists()} чистит все предметы в рюкзаке
+     */
     public void clearLists() {
         elixirList.clear();
         foodList.clear();
         scrollList.clear();
         weaponList.clear();
+    }
+
+    /**
+     * метод {@link #useItem(Item, Player)} использует предмет и удаляет его из рюкзака
+     * @param item используемый предмет
+     * @param player игрок
+     */
+    public void useItem(Item item, Player player) {
+        player.setUpStrength(player.getStrength(), item.getValue());
+        switch (item.getType()) {
+            case ELIXIR -> elixirList.remove(item);
+            case FOOD -> foodList.remove(item);
+            case SCROLL -> scrollList.remove(item);
+            case WEAPON -> weaponList.remove(item);
+            default -> {}
+        }
     }
 
     private void seeListType(ArrayList<Item> list) {

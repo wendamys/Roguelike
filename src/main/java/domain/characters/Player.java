@@ -10,6 +10,7 @@ public class Player extends Character {
 
     private final int maxHealth;
     private int gold;
+    private int upStrength;
 
     public Player(String name, int health, int agility, int strength, int maxHealth, int gold, Position position) {
         super(name, health, agility, strength, position);
@@ -25,4 +26,19 @@ public class Player extends Character {
         return gold;
     }
 
+    public void setUpStrength(int upStrength, int strength) {
+        this.upStrength = upStrength + strength;
+    }
+
+    public int getUpStrength() {
+        return upStrength;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Player:\nStrength: %d\nUpStrength: %d",
+                getStrength(),
+                getUpStrength()
+                );
+    }
 }
