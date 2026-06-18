@@ -39,9 +39,9 @@ public abstract class Character {
         return name;
     }
 
-    public int getHealth() {
-        return health;
-    }
+    public int getHealth() { return health; }
+
+    public void setHealth(int health) { this.health = health; }
 
     public int getAgility() {
         return agility;
@@ -51,9 +51,7 @@ public abstract class Character {
         return strength;
     }
 
-    public Position getPosition() {
-        return position;
-    }
+    public Position getPosition() { return position; }
 
     public int getStep() {
         return step;
@@ -67,17 +65,7 @@ public abstract class Character {
         this.position = position;
     }
 
-    /**
-    * Метод {@link #acceptDamage(int damage)} описывает получение урона персонажем.
-    * Если урона больше чем здоровья, то устанавливает здоровье 0
-    *
-    * @param damage очки урона
-    */
-    public void acceptDamage(int damage) {
-        if (damage < 0 || health <= 0) return;
-        int newHealth = health - damage;
-        health = Math.max(newHealth, 0);
-    }
+
 
     public void attack(Player player){
 

@@ -47,6 +47,9 @@ public class Main {
 
         Position position = new Position(0, 0);
         Backpack backpack = new Backpack();
+        AttackSystem atk = new AttackSystem();
+        Elixir elixir = new Elixir("E", ItemsType.ELIXIR, 30, position);
+        Elixir elixir2 = new Elixir("E", ItemsType.ELIXIR, 10, position);
         Elixir elixir = new Elixir("E", ItemsType.ELIXIR, ItemsSubType.HEALTH, 30, position);
 //        Elixir elixir2 = new Elixir("E", ItemsType.ELIXIR, ItemsSubType.AGILITY, 10, position);
         Food food = new Food("F", ItemsType.FOOD, ItemsSubType.HEALTH, 25, position);
@@ -70,5 +73,20 @@ public class Main {
 //        backpack.useItem(food, player);
 //        backpack.useItem(weapon, player);
 //        System.out.println("\n" + player);
+        backpack.takeItem(elixir2);
+        backpack.takeItem(food);
+        backpack.takeItem(weapon);
+        backpack.seeList(ItemsType.ELIXIR);
+
+        System.out.println(zombie.getHealth());
+        atk.acceptDamage(10, zombie);
+        System.out.println(zombie.getHealth());
+        backpack.seeList(ItemsType.FOOD);
+        backpack.seeList(ItemsType.WEAPON);
+        player.setUpHealth(30);
+        System.out.println("\n" + player);
+        backpack.useItem(food, player);
+        backpack.useItem(weapon, player);
+        System.out.println("\n" + player);
     }
 }
