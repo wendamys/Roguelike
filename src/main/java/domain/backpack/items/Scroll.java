@@ -1,6 +1,6 @@
 package domain.backpack.items;
 
-import domain.MathUtils.RandomNumber;
+import domain.MathUtils.MathUtils;
 import domain.backpack.Item;
 import domain.backpack.ItemsSubType;
 import domain.backpack.ItemsType;
@@ -19,12 +19,8 @@ public class Scroll extends Item {
      * Задает рандомный подтип предмета
      */
     private void setSubType() {
-        RandomNumber randomNumber = new RandomNumber();
-        switch (randomNumber.randomNumber(1, 3)) {
-            case 1 -> this.subType = ItemsSubType.HEALTH;
-            case 2 -> this.subType = ItemsSubType.AGILITY;
-            case 3 -> this.subType = ItemsSubType.STRENGTH;
-        }
+        MathUtils randomNumber = new MathUtils();
+        this.subType = randomNumber.randomType();
     }
 
     @Override
