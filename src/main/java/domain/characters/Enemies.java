@@ -1,7 +1,10 @@
 package domain.characters;
 
 import domain.characters.enemies.EnemiesType;
+import domain.navigator.DirectionType;
+import domain.navigator.MovementSystem;
 import domain.navigator.Position;
+
 
 abstract public class Enemies extends Character {
 
@@ -22,33 +25,5 @@ abstract public class Enemies extends Character {
         return type;
     }
 
-    //public boolean convergence(Position positionPlayer, int distance) {
-//
-    //    //  Создаем врага с текущий позицией
-    //    Position enemyMove = new Position(getPosition().getX(), getPosition().getY());
-//
-    //    System.out.println("Coordinate player: " + positionPlayer.getX() + " " + positionPlayer.getY());
-    //    System.out.println("Coordinate enemy: " + enemyMove.getX() + " " + enemyMove.getY());
-//
-    //    // Перебираем пути, находим минимальный, идем туда, если игрок близко возвращаем true
-    //    double min = Double.MAX_VALUE;
-    //    DirectionType directionInit = DirectionType.RIGHT;
-    //    MovementSystem mvs = new MovementSystem();
-    //    for (DirectionType dT : DirectionType.values()) {
-    //        Position enemyPos = mvs.moveDir(dT, positionPlayer);
-    //        double findRange = enemyPos.distanceTo(positionPlayer);
-    //        if (findRange <= min) {
-    //            min = findRange;
-    //            directionInit = dT;
-    //        }
-    //        System.out.println("Range to player :" + findRange);
-    //    }
-    //    if (min != 0.0) {
-    //        setPosition(mvs.moveDir(directionInit, positionPlayer));
-    //        return false;
-    //    } else {
-    //        System.out.println("Attack player!");
-    //        return true;
-    //    }
-    //}
-}//
+
+}
