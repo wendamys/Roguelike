@@ -1,6 +1,7 @@
 package presentation;
 
 
+import domain.battle.AttackSystem;
 import domain.navigator.MovementSystem;
 import domain.backpack.Backpack;
 import domain.backpack.ItemsType;
@@ -43,6 +44,7 @@ public class Main {
 
         Position position = new Position(0, 0);
         Backpack backpack = new Backpack();
+        AttackSystem atk = new AttackSystem();
         Elixir elixir = new Elixir("E", ItemsType.ELIXIR, 30, position);
         Elixir elixir2 = new Elixir("E", ItemsType.ELIXIR, 10, position);
         backpack.takeItem(elixir);
@@ -52,5 +54,9 @@ public class Main {
         backpack.clearLists();
         System.out.println("posle: ");
         backpack.seeList(ItemsType.ELIXIR);
+
+        System.out.println(zombie.getHealth());
+        atk.acceptDamage(10, zombie);
+        System.out.println(zombie.getHealth());
     }
 }
