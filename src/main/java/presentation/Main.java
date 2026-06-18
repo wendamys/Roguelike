@@ -47,10 +47,14 @@ public class Main {
         Elixir elixir2 = new Elixir("E", ItemsType.ELIXIR, 10, position);
         backpack.takeItem(elixir);
         backpack.takeItem(elixir2);
-        System.out.print("Be: ");
         backpack.seeList(ItemsType.ELIXIR);
-        backpack.clearLists();
-        System.out.println("posle: ");
+        backpack.useItem(elixir2, player);
+        System.out.println(player);
+        backpack.seeList(ItemsType.ELIXIR);
+        backpack.useItem(elixir2, player);
+        System.out.println(player);
+        backpack.useItem(elixir, player);
+        System.out.println(player);
         backpack.seeList(ItemsType.ELIXIR);
     }
 }
