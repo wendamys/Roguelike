@@ -55,7 +55,15 @@ public class Backpack {
      * @param player игрок
      */
     public void useItem(Item item, Player player) {
-        player.setUpStrength(player.getStrength(), item.getValue());
+        player.useItemValue(item.getSubType(), item.getValue());
+        removeItem(item);
+    }
+
+    /**
+     * метод {@link #removeItem(Item)} удаляет предмет из рюкзака
+     * @param item предмет
+     */
+    public void removeItem(Item item) {
         switch (item.getType()) {
             case ELIXIR -> elixirList.remove(item);
             case FOOD -> foodList.remove(item);
