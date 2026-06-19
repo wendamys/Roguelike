@@ -1,5 +1,6 @@
 package domain.characters;
 
+import domain.battle.CharacterType;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
 

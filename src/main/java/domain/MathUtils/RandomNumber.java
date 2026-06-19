@@ -15,6 +15,10 @@ public class RandomNumber {
         return random.nextInt(from, before + 1);
     }
 
+    /**
+     * Метод {@link #randomValueDouble()} для генерации рандомного числа с плавающей точкой
+     * @return число с плавающей точкой
+     */
     public static double randomValueDouble() {
         return random.nextDouble();
     }

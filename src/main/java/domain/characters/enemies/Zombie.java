@@ -1,11 +1,12 @@
 package domain.characters.enemies;
 
+import domain.battle.CharacterType;
 import domain.characters.Enemies;
 import domain.navigator.Position;
 
 public class Zombie extends Enemies {
 
-    public Zombie(String name, EnemiesType type, int hostility, int health, int agility, int strength, Position position) {
-        super(name, type, hostility, health, agility, strength, position);
+    public Zombie(String name, int hostility, int health, int agility, int strength, EnemiesType subType, Position position) {
+        super(name, hostility, health, agility, strength, subType, position);
     }
 }

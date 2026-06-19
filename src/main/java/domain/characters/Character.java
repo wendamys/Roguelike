@@ -1,5 +1,7 @@
 package domain.characters;
 
+import domain.battle.CharacterType;
+import domain.characters.enemies.EnemiesType;
 import domain.navigator.Position;
 
 /**
@@ -65,11 +67,8 @@ public abstract class Character {
         this.position = position;
     }
 
-
-
     public void attack(Player player){
 
     }
-
 
 }
