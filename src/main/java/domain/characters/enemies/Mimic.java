@@ -3,14 +3,14 @@ package domain.characters.enemies;
 import domain.characters.Enemies;
 import domain.navigator.Position;
 
-public class Mimik extends Enemies {
+public class Mimic extends Enemies {
 
     private int health = 500;
     private int agility = 100;
     private int strength = 10;
     private final EnemiesType type = EnemiesType.MIMIK;
 
-    public Mimik(Position position) {
+    public Mimic(Position position) {
         super(position);
     }
 

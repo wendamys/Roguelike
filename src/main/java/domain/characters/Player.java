@@ -11,13 +11,34 @@ public class Player extends Character {
 
     private String name;
     private int maxHealth = 500;
-    private int upHealth = 500;
-    private int upAgility = 70;
-    private int upStrength = 70;
+    private int health = 500;
+
+    private int upHealth = health;
+    private int upAgility = getAgility();
+    private int upStrength = getStrength();
     private int gold = 0;
 
     public Player(Position position) {
         super(position);
+    }
+
+    public int getAgility() {
+        return 70;
+    }
+
+    @Override
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    @Override
+    public int getStrength() {
+        return 70;
     }
 
     @Override
