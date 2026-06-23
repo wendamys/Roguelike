@@ -1,7 +1,7 @@
 package domain.characters;
 
-import domain.backpack.ItemsSubType;
-import domain.navigator.DirectionType;
+import domain.backpack.*;
+import domain.backpack.items.*;
 import domain.navigator.Position;
 
 /**
@@ -9,9 +9,9 @@ import domain.navigator.Position;
  */
 public class Player extends Character {
 
-    private int gold;
+    private int gold = 0;
 
-    private final int maxHealth;
+    private int maxHealth;
     private int upHealth;
     private int upAgility;
     private int upStrength;
@@ -35,6 +35,10 @@ public class Player extends Character {
         return upAgility;
     }
 
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
     public void setUpHealth(int upHealth) {
         this.upHealth = upHealth;
     }
@@ -51,17 +55,43 @@ public class Player extends Character {
         this.upStrength = getStrength() + strength;
     }
 
-    public void useItemValue(ItemsSubType subType, int value) {
-        switch (subType) {
-            case HEALTH -> setUpHealthRegen(value);
-            case AGILITY -> setUpAgility(value);
-            case STRENGTH -> setUpStrength(value);
+    public void useItemValue(Item item) {
+        switch (item.getType()) {
+            case FOOD -> useFoodValue((Food) item);
+            case ELIXIR -> useElixirValue((Elixir) item);
+            case SCROLL -> useScrollValue((Scroll) item);
+            case WEAPON -> useWeaponValue((Weapon) item);
         }
+    }
+
+    private void useFoodValue(Food food) {
+        upHealth = Math.min(upHealth + food.getValue(), maxHealth);
+    }
+
+    private void useScrollValue(Scroll scroll) {
+        switch (scroll.getSubType()) {
+            case HEALTH -> maxHealth += scroll.getValue();
+            case AGILITY -> upAgility += scroll.getValue();
+            case STRENGTH -> upStrength += scroll.getValue();
+        }
+    }
+
+    private void useElixirValue(Elixir elixir) {
+        switch(elixir.getSubType()) {
+            case HEALTH -> upHealth = Math.min(upHealth + elixir.getValue(), maxHealth);
+            case AGILITY -> upAgility += elixir.getValue();
+            case STRENGTH -> upStrength += elixir.getValue();
+        }
+    }
+
+    private void useWeaponValue(Weapon weapon) {
+        upStrength += weapon.getValue();
     }
 
     @Override
     public String toString() {
-        return String.format("Player:\nHealth: %d\nupHealth: %d\nAgility: %d\nupAgility: %d\nStrength: %d\nUpStrength: %d",
+        return String.format("Player:\nmaxHealth: %d\nHealth: %d\nupHealth: %d\nAgility: %d\nupAgility: %d\nStrength: %d\nUpStrength: %d",
+                getMaxHealth(),
                 getHealth(),
                 getUpHealth(),
                 getAgility(),
