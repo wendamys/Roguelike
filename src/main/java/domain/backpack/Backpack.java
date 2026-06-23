@@ -3,7 +3,7 @@ package domain.backpack;
 import domain.characters.Player;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+
 
 public class Backpack {
     private final int maxCapacity = 9;
@@ -55,7 +55,7 @@ public class Backpack {
      * @param player игрок
      */
     public void useItem(Item item, Player player) {
-        player.useItemValue(item.getSubType(), item.getValue());
+        player.useItemValue(item);
         removeItem(item);
     }
 
