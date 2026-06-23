@@ -64,7 +64,6 @@ public abstract class Character {
 
 
     public void attack(Player player) {
-
     }
 
 

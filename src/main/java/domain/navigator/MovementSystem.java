@@ -1,6 +1,7 @@
 package domain.navigator;
 
 import domain.MathUtils.MathUtils;
+import domain.MathUtils.RandomNumber;
 import domain.characters.Character;
 
 public class MovementSystem {
@@ -12,8 +13,7 @@ public class MovementSystem {
      * @return Направление движения
      */
     public DirectionType randomDirection() {
-        MathUtils randomDir = new MathUtils();
-        return switch (randomDir.randomNumber(1, 4)) {
+        return switch (RandomNumber.randomNumber(1, 4)) {
             case 1 -> DirectionType.FORWARD;
             case 2 -> DirectionType.DOWN;
             case 3 -> DirectionType.RIGHT;

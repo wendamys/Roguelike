@@ -2,6 +2,7 @@ package domain;
 
 import domain.characters.Player;
 import domain.navigator.DirectionType;
+import domain.navigator.MovementSystem;
 import domain.navigator.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PositionForPlayerTest {
 
     private Player player;
+    MovementSystem mv = new MovementSystem();
+
 
     @BeforeEach
     void setUp() {
@@ -21,28 +24,28 @@ class PositionForPlayerTest {
     @Test
     void moveForwardShouldIncreaseYCoordinatePlayer() {
         Position expectedPosition = new Position(10, 21);
-        player.move(DirectionType.FORWARD);
+        mv.moveDir(DirectionType.FORWARD, player);
         assertEquals(expectedPosition.getY(), player.getPosition().getY(), "Позиция после FORWARD должна измениться только по Y");
     }
 
     @Test
     void moveDownYCoordinatePlayer() {
         Position expectedPosition = new Position(10, 19);
-        player.move(DirectionType.DOWN);
+        mv.moveDir(DirectionType.DOWN, player);
         assertEquals(expectedPosition.getY(), player.getPosition().getY(), "Позиция после DOWN должна измениться только по Y");
     }
 
     @Test
     void moveLeftXCoordinatePlayer() {
         Position expectedPosition = new Position(9, 20);
-        player.move(DirectionType.LEFT);
+        mv.moveDir(DirectionType.LEFT, player);
         assertEquals(expectedPosition.getX(), player.getPosition().getX(), "Позиция после LEFT должна измениться только по X");
     }
 
     @Test
     void moveRightXCoordinatePlayer() {
         Position expectedPosition = new Position(11, 20);
-        player.move(DirectionType.RIGHT);
+        mv.moveDir(DirectionType.RIGHT, player);
         assertEquals(expectedPosition.getX(), player.getPosition().getX(), "Позиция после RIGHT должна измениться только по X");
     }
 }
