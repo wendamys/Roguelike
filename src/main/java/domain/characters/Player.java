@@ -9,28 +9,47 @@ import domain.navigator.Position;
  */
 public class Player extends Character {
 
+    private String name;
+    private int maxHealth = 500;
+    private int upHealth = 500;
+    private int upAgility = 70;
+    private int upStrength = 70;
     private int gold = 0;
 
-    private int maxHealth;
-    private int upHealth;
-    private int upAgility;
-    private int upStrength;
+    public Player(Position position) {
+        super(position);
+    }
 
-    public Player(String name, int health, int agility, int strength, int maxHealth, int gold, Position position) {
-        super(name, health, agility, strength, position);
-        this.maxHealth = getHealth();
-        this.upHealth = getHealth();
-        this.upAgility = getAgility();
-        this.upStrength = getStrength();
-        this.gold = 0;
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
     }
 
     public int getGold() {
         return gold;
     }
-    public int getMaxHealth() { return maxHealth; }
-    public int getUpHealth() { return upHealth; }
-    public int getUpStrength() { return upStrength; }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getUpHealth() {
+        return upHealth;
+    }
+
+    public int getUpStrength() {
+        return upStrength;
+    }
+
     public int getUpAgility() {
         return upAgility;
     }
@@ -77,7 +96,7 @@ public class Player extends Character {
     }
 
     private void useElixirValue(Elixir elixir) {
-        switch(elixir.getSubType()) {
+        switch (elixir.getSubType()) {
             case HEALTH -> upHealth = Math.min(upHealth + elixir.getValue(), maxHealth);
             case AGILITY -> upAgility += elixir.getValue();
             case STRENGTH -> upStrength += elixir.getValue();
@@ -98,6 +117,8 @@ public class Player extends Character {
                 getUpAgility(),
                 getStrength(),
                 getUpStrength()
-                );
+        );
     }
+
+
 }
