@@ -1,5 +1,6 @@
 package domain.navigator;
 
+import domain.MathUtils.MathUtils;
 import domain.MathUtils.RandomNumber;
 import domain.characters.Character;
 
@@ -34,7 +35,7 @@ public class MovementSystem {
             case DOWN -> character.setPosition(new Position(x, y - 1));
             case LEFT -> character.setPosition(new Position(x - 1, y));
             case RIGHT -> character.setPosition(new Position(x + 1, y));
-        };
+        }
     }
 
     /**

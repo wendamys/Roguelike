@@ -8,23 +8,25 @@ import domain.navigator.Position;
 
 abstract public class Enemies extends Character {
 
-    private final EnemiesType subType;
-    private final int hostility;
+    private final EnemiesType type = null;
+    private int hostility = 1;
     boolean isChasing; // Флаг, устанавливающий, преследует ли монстр игрока
     DirectionType dir; // Направление в котором двигался монстр
     // (используется для змея, который должен постоянно менять направление движения)
 
-    public Enemies(String name, int hostility, int health, int agility, int strength, EnemiesType subType, Position position) {
-        super(name, health, agility, strength, position);
+    public Enemies(Position position) {
+        super(position);
+    }
+
+    public void setHostility(int hostility) {
         this.hostility = hostility;
-        this.subType = subType;
     }
 
     public int getHostility() {
         return hostility;
     }
 
-    public EnemiesType getSubType() {
-        return subType;
+    public EnemiesType getType() {
+        return type;
     }
 }

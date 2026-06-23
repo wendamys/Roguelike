@@ -1,7 +1,5 @@
 package domain.characters;
 
-import domain.battle.CharacterType;
-import domain.characters.enemies.EnemiesType;
 import domain.navigator.Position;
 
 /**
@@ -13,37 +11,32 @@ import domain.navigator.Position;
  * {@link #position} - координаты позиции (x, y)
  */
 public abstract class Character {
-    private final String name;
-    private int health;
-    private final int agility;
-    private final int strength;
+    private String name = null;
+    private int health = 100;
+    private final int agility = 30;
+    private final int strength = 30;
     private Position position;
     protected int step = 1;
 
-    public Character(String name, int health, int agility, int strength, Position position) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null or blank");
-        }
-        if (health <= 0) {
-            throw new IllegalArgumentException("Health must be positive");
-        }
-        if (agility < 0 || strength < 0) {
-            throw new IllegalArgumentException("Stats cannot be negative");
-        }
-        this.name = name;
-        this.health = health;
-        this.agility = agility;
-        this.strength = strength;
+    public Character(Position position) {
         this.position = position;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getHealth() { return health; }
+    public int getHealth() {
+        return health;
+    }
 
-    public void setHealth(int health) { this.health = health; }
+    public void setHealth(int health) {
+        this.health = health;
+    }
 
     public int getAgility() {
         return agility;
@@ -53,7 +46,9 @@ public abstract class Character {
         return strength;
     }
 
-    public Position getPosition() { return position; }
+    public Position getPosition() {
+        return position;
+    }
 
     public int getStep() {
         return step;
@@ -67,8 +62,9 @@ public abstract class Character {
         this.position = position;
     }
 
-    public void attack(Player player){
 
+    public void attack(Player player) {
     }
+
 
 }

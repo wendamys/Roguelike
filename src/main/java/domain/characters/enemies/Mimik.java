@@ -3,28 +3,25 @@ package domain.characters.enemies;
 import domain.characters.Enemies;
 import domain.navigator.Position;
 
-public class Zombie extends Enemies {
+public class Mimik extends Enemies {
 
-    private int health = 100;
-    private int agility = 30;
-    private int strength = 30;
-    private final EnemiesType type = EnemiesType.ZOMBIE;
+    private int health = 500;
+    private int agility = 100;
+    private int strength = 10;
+    private final EnemiesType type = EnemiesType.MIMIK;
 
-    public Zombie(Position position) {
+    public Mimik(Position position) {
         super(position);
     }
 
-    @Override
     public int getHealth() {
         return health;
     }
 
-    @Override
     public void setHealth(int health) {
         this.health = health;
     }
 
-    @Override
     public int getAgility() {
         return agility;
     }
@@ -33,7 +30,6 @@ public class Zombie extends Enemies {
         this.agility = agility;
     }
 
-    @Override
     public int getStrength() {
         return strength;
     }
@@ -42,20 +38,18 @@ public class Zombie extends Enemies {
         this.strength = strength;
     }
 
-    @Override
     public EnemiesType getType() {
         return type;
     }
 
-    @Override
     public String getName() {
-        return "z";
+        return "m";
     }
 
     @Override
     public String toString() {
         return String.format(
-                "Zombie: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
+                "Mimik: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
                 getName(),
                 getHealth(),
                 getAgility(),

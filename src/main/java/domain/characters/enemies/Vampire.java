@@ -3,14 +3,14 @@ package domain.characters.enemies;
 import domain.characters.Enemies;
 import domain.navigator.Position;
 
-public class Zombie extends Enemies {
+public class Vampire extends Enemies {
 
-    private int health = 100;
-    private int agility = 30;
-    private int strength = 30;
-    private final EnemiesType type = EnemiesType.ZOMBIE;
+    private int health = 250;
+    private int agility = 50;
+    private int strength = 50;
+    private final EnemiesType type = EnemiesType.VAMPIRE;
 
-    public Zombie(Position position) {
+    public Vampire(Position position) {
         super(position);
     }
 
@@ -49,13 +49,13 @@ public class Zombie extends Enemies {
 
     @Override
     public String getName() {
-        return "z";
+        return "v";
     }
 
     @Override
     public String toString() {
         return String.format(
-                "Zombie: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
+                "Vampire: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
                 getName(),
                 getHealth(),
                 getAgility(),
