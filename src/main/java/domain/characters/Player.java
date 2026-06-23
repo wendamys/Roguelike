@@ -74,6 +74,10 @@ public class Player extends Character {
         this.upStrength = getStrength() + strength;
     }
 
+    /**
+     * метод {@link #useItemValue(Item)} юзает предмет и добавляет вэлью предмета игроку
+     * @param item предмет
+     */
     public void useItemValue(Item item) {
         switch (item.getType()) {
             case FOOD -> useFoodValue((Food) item);
@@ -83,10 +87,18 @@ public class Player extends Character {
         }
     }
 
+    /**
+     * метод {@link #useFoodValue(Food)} расчитывает велью предмета еды
+     * @param food предмет еды
+     */
     private void useFoodValue(Food food) {
         upHealth = Math.min(upHealth + food.getValue(), maxHealth);
     }
 
+    /**
+     * метод {@link #useScrollValue(Scroll)} расчитывает велью свитков
+     * @param scroll предмет свитков
+     */
     private void useScrollValue(Scroll scroll) {
         switch (scroll.getSubType()) {
             case HEALTH -> maxHealth += scroll.getValue();
@@ -95,6 +107,10 @@ public class Player extends Character {
         }
     }
 
+    /**
+     * метод {@link #useElixirValue(Elixir)} расчитывает велью эликсиров
+     * @param elixir предметов эликсиров
+     */
     private void useElixirValue(Elixir elixir) {
         switch (elixir.getSubType()) {
             case HEALTH -> upHealth = Math.min(upHealth + elixir.getValue(), maxHealth);
@@ -103,6 +119,10 @@ public class Player extends Character {
         }
     }
 
+    /**
+     * метод {@link #useWeaponValue(Weapon)} расчитывает велью оружия
+     * @param weapon предмето оружия
+     */
     private void useWeaponValue(Weapon weapon) {
         upStrength += weapon.getValue();
     }
