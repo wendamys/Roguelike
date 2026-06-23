@@ -4,17 +4,10 @@ import domain.navigator.Position;
 
 /**
  * Абстрактный класс {@link #Character} описывает главные характеристики персонажей в игре
- * {@link #name} - имя персонажа
- * {@link #health} - очки жизни
- * {@link #agility} - ловкость
- * {@link #strength} - сила
- * {@link #position} - координаты позиции (x, y)
  */
 public abstract class Character {
     private String name = null;
     private int health = 100;
-    private final int agility = 30;
-    private final int strength = 30;
     private Position position;
     protected int step = 1;
 
@@ -39,11 +32,11 @@ public abstract class Character {
     }
 
     public int getAgility() {
-        return agility;
+        return 30;
     }
 
     public int getStrength() {
-        return strength;
+        return 30;
     }
 
     public Position getPosition() {

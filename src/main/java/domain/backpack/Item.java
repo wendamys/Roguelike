@@ -1,30 +1,26 @@
 package domain.backpack;
 
+import domain.MathUtils.MathUtils;
 import domain.map.Level;
 import domain.navigator.Position;
 
 public abstract class Item {
-    private final String name;
-    private final ItemsType type;
-    private final ItemsSubType subType;
-    private int value;
+    private final String name = null;
+    private final ItemsType type = null;
+    private final ItemsSubType subType = null;
     private final Position position;
 
-    public Item(String name, ItemsType type, ItemsSubType subType, int value, Position position) {
-        this.name = name;
-        this.type = type;
-        this.value = value;
+    public Item(Position position, Level level) {
         this.position = position;
-        this.subType = subType;
     }
+
+    static MathUtils random = new MathUtils();
 
     public String getName() { return name; }
     public ItemsType getType() { return type; }
-    public int getValue() { return value; }
+    public int getValue() {
+        return 30; }
     protected Position getPosition() { return position; }
     public ItemsSubType getSubType() { return subType; }
 
-    public void setValue(int value, Level level) {
-        this.value = (int)(value * level.getCoefItem());
-    }
 }

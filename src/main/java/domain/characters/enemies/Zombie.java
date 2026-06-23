@@ -1,18 +1,25 @@
 package domain.characters.enemies;
 
+import domain.MathUtils.MathUtils;
 import domain.characters.Enemies;
+import domain.map.Level;
 import domain.navigator.Position;
 
 public class Zombie extends Enemies {
 
     private int health = 100;
-    private int agility = 30;
-    private int strength = 30;
+    private int agility = 20;
+    private int strength = 20;
     private final EnemiesType type = EnemiesType.ZOMBIE;
 
-    public Zombie(Position position) {
+    public Zombie(Position position, Level level) {
         super(position);
+        this.setHealth((int)(health * level.getCoefEnemy()));
+        this.setAgility((int)(agility * level.getCoefEnemy()));
+        this.setStrength((int)(strength * level.getCoefEnemy()));
     }
+
+    static MathUtils random = new MathUtils();
 
     @Override
     public int getHealth() {
@@ -21,7 +28,7 @@ public class Zombie extends Enemies {
 
     @Override
     public void setHealth(int health) {
-        this.health = health;
+        this.health = random.randomNumber((int) (health * 0.9), (int) (health * 1.1));
     }
 
     @Override
@@ -30,7 +37,7 @@ public class Zombie extends Enemies {
     }
 
     public void setAgility(int agility) {
-        this.agility = agility;
+        this.agility = random.randomNumber((int) (agility * 0.9), (int) (agility * 1.1));
     }
 
     @Override
@@ -39,7 +46,7 @@ public class Zombie extends Enemies {
     }
 
     public void setStrength(int strength) {
-        this.strength = strength;
+        this.strength = random.randomNumber((int) (strength * 0.9), (int) (strength * 1.1));
     }
 
     @Override
