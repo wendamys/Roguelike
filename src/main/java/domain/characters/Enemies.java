@@ -8,12 +8,14 @@ import domain.navigator.Position;
 
 abstract public class Enemies extends Character {
 
-    private final EnemiesType type;
-    private final int hostility;
+    private final EnemiesType type = null;
+    private int hostility = 1;
 
-    public Enemies(String name, EnemiesType type, int hostility, int health, int agility, int strength, Position position) {
-        super(name, health, agility, strength, position);
-        this.type = type;
+    public Enemies(Position position) {
+        super(position);
+    }
+
+    public void setHostility(int hostility) {
         this.hostility = hostility;
     }
 
@@ -24,6 +26,4 @@ abstract public class Enemies extends Character {
     public EnemiesType getType() {
         return type;
     }
-
-
 }
