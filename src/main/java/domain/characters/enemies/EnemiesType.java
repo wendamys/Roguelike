@@ -6,5 +6,5 @@ public enum EnemiesType {
     VAMPIRE,
     SNAKE,
     GHOST,
-    MIMIK,
+    MIMIC,
 }
