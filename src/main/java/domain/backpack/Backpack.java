@@ -21,7 +21,13 @@ public class Backpack {
             case ELIXIR -> addIfPossible(elixirList, item);
             case FOOD -> addIfPossible(foodList, item);
             case SCROLL -> addIfPossible(scrollList, item);
-            case WEAPON -> addIfPossible(weaponList, item);
+            case WEAPON -> {
+                if(weaponList.size() < 9) addIfPossible(weaponList, item);
+                else {
+                    weaponList.remove(9);
+                    weaponList.add(item);
+                }
+            }
             default -> {}
         }
     }
@@ -49,14 +55,30 @@ public class Backpack {
         weaponList.clear();
     }
 
-    /**
-     * метод {@link #useItem(Item, Player)} использует предмет и удаляет его из рюкзака
-     * @param item используемый предмет
-     * @param player игрок
-     */
-    public void useItem(Item item, Player player) {
-        player.useItemValue(item);
-        removeItem(item);
+//    /**
+//     * метод {@link #useItem(Item, Player)} использует предмет и удаляет его из рюкзака
+//     * @param item используемый предмет
+//     * @param player игрок
+//     */
+//    public void useItem(Item item, Player player) {
+//        player.useItemValue(item);
+//        removeItem(item);
+//    }
+
+    public void useItemFood(int numItem, Player player) {
+        player.useItemValue(foodList.get(numItem));
+        foodList.remove(numItem);
+    }
+    public void useItemScroll(int numItem, Player player) {
+        player.useItemValue(scrollList.get(numItem));
+        scrollList.remove(numItem);
+    }
+    public void useItemElixir(int numItem, Player player) {
+        player.useItemValue(elixirList.get(numItem));
+        elixirList.remove(numItem);
+    }
+    public void useItemWeapon(int numItem, Player player) {
+        player.useItemValue(weaponList.get(numItem));
     }
 
     /**
