@@ -17,9 +17,7 @@ public abstract class Item {
 
     public ItemsType getType() {return type;}
 
-    public int getValue() {
-        return 30;
-    }
+    public int getValue() { return 30;}
 
     protected Position getPosition() {return position;}
 

@@ -13,9 +13,7 @@ public class Position {
 
     public int getX() {return x;}
 
-    public int getY() {
-        return y;
-    }
+    public int getY() { return y;}
 
     /**
      * Метод {@link #distanceTo(Position)} вычисляет дистанцию между двумя объектами

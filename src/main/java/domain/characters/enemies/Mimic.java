@@ -15,7 +15,7 @@ public class Mimic extends Enemies {
 
     public Mimic(Position position, Level level) {
         super(position);
-        this.setHealth((int) (health * level.getCoefEnemy()));
+        this.setHealthBegin((int) (health * level.getCoefEnemy()));
         this.setAgility((int) (agility * level.getCoefEnemy()));
         this.setStrength((int) (strength * level.getCoefEnemy()));
     }
@@ -24,7 +24,12 @@ public class Mimic extends Enemies {
         return health;
     }
 
+    @Override
     public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setHealthBegin(int health) {
         this.health = randomNumber((int) (health * 0.98), (int) (health * 1.02));
     }
 

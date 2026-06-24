@@ -1,9 +1,10 @@
 package domain.characters.enemies;
 
-import domain.MathUtils.MathUtils;
 import domain.characters.Enemies;
 import domain.map.Level;
 import domain.navigator.Position;
+
+import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Zombie extends Enemies {
 
@@ -14,7 +15,7 @@ public class Zombie extends Enemies {
 
     public Zombie(Position position, Level level) {
         super(position);
-        this.setHealth((int) (health * level.getCoefEnemy()));
+        this.setHealthBegin((int) (health * level.getCoefEnemy()));
         this.setAgility((int) (agility * level.getCoefEnemy()));
         this.setStrength((int) (strength * level.getCoefEnemy()));
     }
@@ -26,7 +27,11 @@ public class Zombie extends Enemies {
 
     @Override
     public void setHealth(int health) {
-        this.health = MathUtils.randomNumber((int) (health * 0.9), (int) (health * 1.1));
+        this.health = health;
+    }
+
+    public void setHealthBegin(int health) {
+        this.health = randomNumber((int) (health * 0.9), (int) (health * 1.1));
     }
 
     @Override
@@ -35,7 +40,7 @@ public class Zombie extends Enemies {
     }
 
     public void setAgility(int agility) {
-        this.agility = MathUtils.randomNumber((int) (agility * 0.9), (int) (agility * 1.1));
+        this.agility = randomNumber((int) (agility * 0.9), (int) (agility * 1.1));
     }
 
     @Override
@@ -44,7 +49,7 @@ public class Zombie extends Enemies {
     }
 
     public void setStrength(int strength) {
-        this.strength = MathUtils.randomNumber((int) (strength * 0.9), (int) (strength * 1.1));
+        this.strength = randomNumber((int) (strength * 0.9), (int) (strength * 1.1));
     }
 
     @Override

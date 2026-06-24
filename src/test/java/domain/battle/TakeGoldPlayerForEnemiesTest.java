@@ -3,6 +3,7 @@ package domain.battle;
 import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.characters.enemies.*;
+import domain.map.Level;
 import domain.navigator.Position;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,12 +21,12 @@ public class TakeGoldPlayerForEnemiesTest {
 
     private static List<Enemies> getEnemyList() {
         return List.of(
-            new Vampire(new Position(0, 0)),
-            new Snake(new Position(0, 0)),
-            new Zombie(new Position(0, 0)),
-            new Ogre(new Position(0, 0)),
-            new Ghost(new Position(0, 0)),
-            new Mimic(new Position(0, 0))
+            new Vampire(new Position(0, 0), new Level()),
+            new Snake(new Position(0, 0), new Level()),
+            new Zombie(new Position(0, 0), new Level()),
+            new Ogre(new Position(0, 0), new Level()),
+            new Ghost(new Position(0, 0), new Level()),
+            new Mimic(new Position(0, 0), new Level())
         );
     }
 
@@ -37,7 +38,7 @@ public class TakeGoldPlayerForEnemiesTest {
     @MethodSource("enemyProvider")
     void TakeGoldPlayerForEnemy(Enemies enemy) {
         Player player = new Player(new Position(0, 0));
-        System.out.println("Player take gold vs " + enemy.getType());
+        // System.out.println("\nPlayer take gold vs " + enemy.getType());
         for (int i = 0; 1000 > i; i++) {
             atk.attack(player, enemy, PLAYER, battleInfo);
             if (enemy.getHealth() == 0) { break; }
@@ -49,7 +50,7 @@ public class TakeGoldPlayerForEnemiesTest {
     void TakeGoldPlayerForAllEnemy() {
         Player player = new Player(new Position(0, 0));
         for (Enemies enemy: getEnemyList()) {
-            System.out.println("Player take gold vs " + enemy.getType());
+            // System.out.println("\nPlayer take gold vs " + enemy.getType());
             for (int i = 0; 1000 > i; i++) {
                 atk.attack(player, enemy, PLAYER, battleInfo);
                 if (enemy.getHealth() == 0) { break; }

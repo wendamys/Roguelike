@@ -1,7 +1,10 @@
 package domain.characters;
 
-import domain.backpack.*;
-import domain.backpack.items.*;
+import domain.backpack.Item;
+import domain.backpack.items.Elixir;
+import domain.backpack.items.Food;
+import domain.backpack.items.Scroll;
+import domain.backpack.items.Weapon;
 import domain.navigator.Position;
 
 /**
@@ -11,11 +14,11 @@ public class Player extends Character {
 
     private String name;
     private int maxHealth = 500;
-    private int health = 500;
 
-    private int upHealth = health;
-    private int upAgility = getAgility();
-    private int upStrength = getStrength();
+    // Изменяемые характеристики героя
+    private int buffHealth = maxHealth;
+    private int buffAgility = getAgility();
+    private int buffStrength = getStrength();
     private int gold = 0;
 
     public Player(Position position) {
@@ -24,16 +27,6 @@ public class Player extends Character {
 
     public int getAgility() {
         return 70;
-    }
-
-    @Override
-    public int getHealth() {
-        return health;
-    }
-
-    @Override
-    public void setHealth(int health) {
-        this.health = health;
     }
 
     @Override
@@ -51,52 +44,53 @@ public class Player extends Character {
         this.name = name;
     }
 
-    public void setGold(int gold) {
-        this.gold = gold;
-    }
-
     public int getGold() {
         return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
     }
 
     public int getMaxHealth() {
         return maxHealth;
     }
 
-    public int getUpHealth() {
-        return upHealth;
-    }
-
-    public int getUpStrength() {
-        return upStrength;
-    }
-
-    public int getUpAgility() {
-        return upAgility;
-    }
-
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
 
-    public void setUpHealth(int upHealth) {
-        this.upHealth = upHealth;
+    public int getBuffHealth() {
+        return buffHealth;
+    }
+
+    public void setBuffHealth(int buffHealth) {
+        this.buffHealth = buffHealth;
+    }
+
+    public int getBuffStrength() {
+        return buffStrength;
+    }
+
+    public void setBuffStrength(int strength) {
+        this.buffStrength = getStrength() + strength;
+    }
+
+    public int getBuffAgility() {
+        return buffAgility;
+    }
+
+    public void setBuffAgility(int agility) {
+        this.buffAgility = getAgility() + agility;
     }
 
     public void setUpHealthRegen(int regen) {
-        this.upHealth = Math.min((getUpHealth() + regen), maxHealth);
-    }
-
-    public void setUpAgility(int agility) {
-        this.upAgility = getAgility() + agility;
-    }
-
-    public void setUpStrength(int strength) {
-        this.upStrength = getStrength() + strength;
+        this.buffHealth = Math.min((getBuffHealth() + regen), maxHealth);
     }
 
     /**
      * метод {@link #useItemValue(Item)} юзает предмет и добавляет вэлью предмета игроку
+     *
      * @param item предмет
      */
     public void useItemValue(Item item) {
@@ -110,55 +104,51 @@ public class Player extends Character {
 
     /**
      * метод {@link #useFoodValue(Food)} расчитывает велью предмета еды
+     *
      * @param food предмет еды
      */
     private void useFoodValue(Food food) {
-        upHealth = Math.min(upHealth + food.getValue(), maxHealth);
+        buffHealth = Math.min(buffHealth + food.getValue(), maxHealth);
     }
 
     /**
      * метод {@link #useScrollValue(Scroll)} расчитывает велью свитков
+     *
      * @param scroll предмет свитков
      */
     private void useScrollValue(Scroll scroll) {
         switch (scroll.getSubType()) {
             case HEALTH -> maxHealth += scroll.getValue();
-            case AGILITY -> upAgility += scroll.getValue();
-            case STRENGTH -> upStrength += scroll.getValue();
+            case AGILITY -> buffAgility += scroll.getValue();
+            case STRENGTH -> buffStrength += scroll.getValue();
         }
     }
 
     /**
-     * метод {@link #useElixirValue(Elixir)} расчитывает велью эликсиров
+     * метод {@link #useElixirValue(Elixir)} рассчитывает value эликсиров
+     *
      * @param elixir предметов эликсиров
      */
     private void useElixirValue(Elixir elixir) {
         switch (elixir.getSubType()) {
-            case HEALTH -> upHealth = Math.min(upHealth + elixir.getValue(), maxHealth);
-            case AGILITY -> upAgility += elixir.getValue();
-            case STRENGTH -> upStrength += elixir.getValue();
+            case HEALTH -> buffHealth = Math.min(buffHealth + elixir.getValue(), maxHealth);
+            case AGILITY -> buffAgility += elixir.getValue();
+            case STRENGTH -> buffStrength += elixir.getValue();
         }
     }
 
     /**
-     * метод {@link #useWeaponValue(Weapon)} расчитывает велью оружия
-     * @param weapon предмето оружия
+     * метод {@link #useWeaponValue(Weapon)} рассчитывает value оружия
+     *
+     * @param weapon предмет оружия
      */
     private void useWeaponValue(Weapon weapon) {
-        upStrength += weapon.getValue();
+        buffStrength += weapon.getValue();
     }
 
     @Override
     public String toString() {
-        return String.format("Player:\nmaxHealth: %d\nHealth: %d\nupHealth: %d\nAgility: %d\nupAgility: %d\nStrength: %d\nUpStrength: %d",
-                getMaxHealth(),
-                getHealth(),
-                getUpHealth(),
-                getAgility(),
-                getUpAgility(),
-                getStrength(),
-                getUpStrength()
-        );
+        return String.format("Player:\nmaxHealth: %d\nHealth: %d\nupHealth: %d\nAgility: %d\nupAgility: %d\nStrength: %d\nUpStrength: %d", getMaxHealth(), getHealth(), getBuffHealth(), getAgility(), getBuffAgility(), getStrength(), getBuffStrength());
     }
 
 

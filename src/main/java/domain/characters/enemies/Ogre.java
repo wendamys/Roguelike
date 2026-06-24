@@ -1,9 +1,10 @@
 package domain.characters.enemies;
 
-import domain.MathUtils.MathUtils;
 import domain.characters.Enemies;
 import domain.map.Level;
 import domain.navigator.Position;
+
+import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Ogre extends Enemies {
 
@@ -14,7 +15,7 @@ public class Ogre extends Enemies {
 
     public Ogre(Position position, Level level) {
         super(position);
-        this.setHealth((int) (health * level.getCoefEnemy()));
+        this.setHealthBegin((int) (health * level.getCoefEnemy()));
         this.setAgility((int) (agility * level.getCoefEnemy()));
         this.setStrength((int) (strength * level.getCoefEnemy()));
     }
@@ -26,7 +27,11 @@ public class Ogre extends Enemies {
 
     @Override
     public void setHealth(int health) {
-        this.health = MathUtils.randomNumber((int) (health * 0.97), (int) (health * 1.03));
+        this.health = health;
+    }
+
+    public void setHealthBegin(int health) {
+        this.health = randomNumber((int) (health * 0.97), (int) (health * 1.03));
     }
 
     @Override
@@ -35,7 +40,7 @@ public class Ogre extends Enemies {
     }
 
     public void setAgility(int agility) {
-        this.agility = MathUtils.randomNumber((int) (agility * 0.97), (int) (agility * 1.03));
+        this.agility = randomNumber((int) (agility * 0.97), (int) (agility * 1.03));
     }
 
     @Override
@@ -44,7 +49,7 @@ public class Ogre extends Enemies {
     }
 
     public void setStrength(int strength) {
-        this.strength = MathUtils.randomNumber((int) (strength * 0.97), (int) (strength * 1.03));
+        this.strength = randomNumber((int) (strength * 0.97), (int) (strength * 1.03));
     }
 
     @Override

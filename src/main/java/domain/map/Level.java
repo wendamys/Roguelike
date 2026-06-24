@@ -1,11 +1,12 @@
 package domain.map;
 
 public class Level {
-    private int level = 10;
+    private int level = 1;
     private double coefItem = (double) (level - 1) / 15 + 1;
     private double coefEnemy = (double) (level - 1) / 10 + 1;
 
-    public Level() {}
+    public Level() {
+    }
 
     public double getCoefItem() {
         return coefItem;
