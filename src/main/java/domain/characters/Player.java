@@ -11,11 +11,11 @@ public class Player extends Character {
 
     private String name;
     private int maxHealth = 500;
-    private int health = 500;
 
-    private int upHealth = health;
-    private int upAgility = getAgility();
-    private int upStrength = getStrength();
+    // Изменяемые характеристики героя
+    private int buffHealth = maxHealth;
+    private int buffAgility = getAgility();
+    private int buffStrength = getStrength();
     private int gold = 0;
 
     public Player(Position position) {
@@ -24,16 +24,6 @@ public class Player extends Character {
 
     public int getAgility() {
         return 70;
-    }
-
-    @Override
-    public int getHealth() {
-        return health;
-    }
-
-    @Override
-    public void setHealth(int health) {
-        this.health = health;
     }
 
     @Override
@@ -63,36 +53,36 @@ public class Player extends Character {
         return maxHealth;
     }
 
-    public int getUpHealth() {
-        return upHealth;
+    public int getBuffHealth() {
+        return buffHealth;
     }
 
-    public int getUpStrength() {
-        return upStrength;
+    public int getBuffStrength() {
+        return buffStrength;
     }
 
-    public int getUpAgility() {
-        return upAgility;
+    public int getBuffAgility() {
+        return buffAgility;
     }
 
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
 
-    public void setUpHealth(int upHealth) {
-        this.upHealth = upHealth;
+    public void setBuffHealth(int buffHealth) {
+        this.buffHealth = buffHealth;
     }
 
     public void setUpHealthRegen(int regen) {
-        this.upHealth = Math.min((getUpHealth() + regen), maxHealth);
+        this.buffHealth = Math.min((getBuffHealth() + regen), maxHealth);
     }
 
-    public void setUpAgility(int agility) {
-        this.upAgility = getAgility() + agility;
+    public void setBuffAgility(int agility) {
+        this.buffAgility = getAgility() + agility;
     }
 
-    public void setUpStrength(int strength) {
-        this.upStrength = getStrength() + strength;
+    public void setBuffStrength(int strength) {
+        this.buffStrength = getStrength() + strength;
     }
 
     /**
@@ -113,7 +103,7 @@ public class Player extends Character {
      * @param food предмет еды
      */
     private void useFoodValue(Food food) {
-        upHealth = Math.min(upHealth + food.getValue(), maxHealth);
+        buffHealth = Math.min(buffHealth + food.getValue(), maxHealth);
     }
 
     /**
@@ -123,8 +113,8 @@ public class Player extends Character {
     private void useScrollValue(Scroll scroll) {
         switch (scroll.getSubType()) {
             case HEALTH -> maxHealth += scroll.getValue();
-            case AGILITY -> upAgility += scroll.getValue();
-            case STRENGTH -> upStrength += scroll.getValue();
+            case AGILITY -> buffAgility += scroll.getValue();
+            case STRENGTH -> buffStrength += scroll.getValue();
         }
     }
 
@@ -134,9 +124,9 @@ public class Player extends Character {
      */
     private void useElixirValue(Elixir elixir) {
         switch (elixir.getSubType()) {
-            case HEALTH -> upHealth = Math.min(upHealth + elixir.getValue(), maxHealth);
-            case AGILITY -> upAgility += elixir.getValue();
-            case STRENGTH -> upStrength += elixir.getValue();
+            case HEALTH -> buffHealth = Math.min(buffHealth + elixir.getValue(), maxHealth);
+            case AGILITY -> buffAgility += elixir.getValue();
+            case STRENGTH -> buffStrength += elixir.getValue();
         }
     }
 
@@ -145,7 +135,7 @@ public class Player extends Character {
      * @param weapon предмето оружия
      */
     private void useWeaponValue(Weapon weapon) {
-        upStrength += weapon.getValue();
+        buffStrength += weapon.getValue();
     }
 
     @Override
@@ -153,11 +143,11 @@ public class Player extends Character {
         return String.format("Player:\nmaxHealth: %d\nHealth: %d\nupHealth: %d\nAgility: %d\nupAgility: %d\nStrength: %d\nUpStrength: %d",
                 getMaxHealth(),
                 getHealth(),
-                getUpHealth(),
+                getBuffHealth(),
                 getAgility(),
-                getUpAgility(),
+                getBuffAgility(),
                 getStrength(),
-                getUpStrength()
+                getBuffStrength()
         );
     }
 
