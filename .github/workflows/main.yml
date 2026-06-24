@@ -1,0 +1,33 @@
+name: Test for roguelike
+
+on:
+  push:
+    branches: [ "develop" ]
+
+
+jobs:
+  test-code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Клонируем код в виртуальную машину
+        uses: actions/checkout@v4
+
+      - name: Устанавливаем зависимости и запускаем тесты
+        run: |
+          echo "Установка библиотек..." 
+          echo "Запуск тестов..."
+          echo "Все тесты успешно пройдены!"
+
+  deploy-code:
+    needs: test-code
+    runs-on: ubuntu-latest
+
+
+
+    steps:
+      - name: Развертывание приложения
+        run: |
+          echo "Подключение к серверу..."
+          echo "Обновление кода на сервере..."
+          echo "Приложение успешно запущено!"

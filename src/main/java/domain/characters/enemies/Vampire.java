@@ -14,8 +14,7 @@ public class Vampire extends Enemies {
     private int strength = 50;
 
     public Vampire(Position position, Level level) {
-        super(position);
-        this.setHealth((int) (health * level.getCoefEnemy()));
+        super(position); this.setHealth((int) (health * level.getCoefEnemy()));
         this.setAgility((int) (agility * level.getCoefEnemy()));
         this.setStrength((int) (strength * level.getCoefEnemy()));
     }
