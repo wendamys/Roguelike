@@ -5,6 +5,8 @@ import domain.characters.Enemies;
 import domain.map.Level;
 import domain.navigator.Position;
 
+import static domain.MathUtils.MathUtils.randomNumber;
+
 public class Snake extends Enemies {
 
     private int health = 160;
@@ -19,8 +21,6 @@ public class Snake extends Enemies {
         this.setStrength((int)(strength * level.getCoefEnemy()));
     }
 
-    static MathUtils random = new MathUtils();
-
     @Override
     public int getHealth() {
         return health;
@@ -28,7 +28,7 @@ public class Snake extends Enemies {
 
     @Override
     public void setHealth(int health) {
-        this.health = random.randomNumber((int) (health * 0.95), (int) (health * 1.05));
+        this.health = randomNumber((int) (health * 0.95), (int) (health * 1.05));
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Snake extends Enemies {
     }
 
     public void setAgility(int agility) {
-        this.agility = random.randomNumber((int) (agility * 0.95), (int) (agility * 1.05));
+        this.agility = randomNumber((int) (agility * 0.95), (int) (agility * 1.05));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class Snake extends Enemies {
     }
 
     public void setStrength(int strength) {
-        this.strength = random.randomNumber((int) (strength * 0.95), (int) (strength * 1.05));
+        this.strength = randomNumber((int) (strength * 0.95), (int) (strength * 1.05));
     }
 
     @Override

@@ -8,8 +8,6 @@ import domain.characters.enemies.Vampire;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
 
-import java.util.ArrayList;
-
 import static domain.MathUtils.MathUtils.*;
 import static domain.battle.CharacterType.*;
 
@@ -167,7 +165,7 @@ public class AttackSystem {
      */
     static int snakeDamageFormula(Enemies enemy, BattleInfoType battle_info) {
         if (randomNumber(0, 100) <= 15) {
-            System.out.println("Игрок спит!");
+            // System.out.println("Игрок спит!");
             battle_info.playerAsSleep = true;
         }
         return zombieGhostDamageFormula(enemy);
@@ -242,8 +240,8 @@ public class AttackSystem {
 
 
     /**
-     * Функция, очищающая данные о монстрах
-     * Функция проходится по комнатам уровня, проверяя хп каждого монстра, если оно неположительно, то удаляет данные о нем
+     * Функция, очищающая данные о монстрах в листе
+     * Функция проходится по комнатам уровня, проверяя хп каждого монстра, если 0, то удаляет данные о нем
      * @param level Информация об уровне
      */
     //public void removeDeadEnemy(Level level) {
@@ -253,7 +251,6 @@ public class AttackSystem {
 
     /**
      * Функция проверки на совпадение координат
-     *
      * @param firstPosition  Координаты первого объекта
      * @param secondPosition Координаты второго объекта
      * @return true, если координаты совпали, false в ином случае
@@ -264,7 +261,6 @@ public class AttackSystem {
 
     /**
      * Функция проверки на соседство координат
-     *
      * @param firstPosition  Координаты первого объекта
      * @param secondPosition Координаты второго объекта
      * @return true, если координаты примыкают друг к другу, false в ином случае
@@ -274,37 +270,13 @@ public class AttackSystem {
     }
 
     /**
-     * Функция проверки на диагональное соседство координат
-     *
-     * @param firstPosition  Координаты первого объекта
-     * @param secondPosition Координаты второго объекта
-     * @return true, если координаты соединены по диагонали, false в ином случае
-     */
-    boolean checkIfDiagonallyNeighbourTile(Position firstPosition, Position secondPosition) {
-        return true;
-    }
-
-
-    /**
      * Функция проверки на существование боя
      * Функция проверяет на совпадения данные монстра, который потенциально может создать новую запись о бое с уже существующими
      * @param enemy        Данные о монстре
      * @param battlesArray Данные о боях
      */
     boolean checkUnique(Enemies enemy, BattleInfoType battlesArray) {
+        // +-1/
         return true;
-    }
-
-
-
-    /// Функция получения координат монстра
-    ///
-    /// @param enemy Информация о монстре
-    /// @return координаты, в которых находится монстр
-    ArrayList<Integer> getEnemyPosition(Enemies enemy) {
-        ArrayList<Integer> listPositionEnemy = new ArrayList<>();
-        listPositionEnemy.add(enemy.getPosition().getX());
-        listPositionEnemy.add(enemy.getPosition().getY());
-        return listPositionEnemy;
     }
 }
