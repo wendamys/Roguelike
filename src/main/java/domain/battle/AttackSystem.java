@@ -8,6 +8,8 @@ import domain.characters.enemies.Vampire;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
 
+import java.util.ArrayList;
+
 import static domain.MathUtils.MathUtils.randomNumber;
 import static domain.MathUtils.MathUtils.randomValueDouble;
 import static domain.battle.CharacterType.ENEMIES;
