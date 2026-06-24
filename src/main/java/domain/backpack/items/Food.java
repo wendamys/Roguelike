@@ -3,8 +3,6 @@ package domain.backpack.items;
 import domain.backpack.Item;
 import domain.backpack.ItemsSubType;
 import domain.backpack.ItemsType;
-import domain.characters.Player;
-import domain.map.Level;
 import domain.navigator.Position;
 
 public class Food extends Item {
