@@ -15,9 +15,9 @@ public class Zombie extends Enemies {
 
     public Zombie(Position position, Level level) {
         super(position);
-        this.setHealth((int)(health * level.getCoefEnemy()));
-        this.setAgility((int)(agility * level.getCoefEnemy()));
-        this.setStrength((int)(strength * level.getCoefEnemy()));
+        this.setHealthBegin((int) (health * level.getCoefEnemy()));
+        this.setAgility((int) (agility * level.getCoefEnemy()));
+        this.setStrength((int) (strength * level.getCoefEnemy()));
     }
 
     @Override
@@ -27,6 +27,10 @@ public class Zombie extends Enemies {
 
     @Override
     public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setHealthBegin(int health) {
         this.health = randomNumber((int) (health * 0.9), (int) (health * 1.1));
     }
 

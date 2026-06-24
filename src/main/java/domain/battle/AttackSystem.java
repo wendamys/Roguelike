@@ -96,7 +96,7 @@ public class AttackSystem {
                 if (enemy.getType() == EnemiesType.VAMPIRE && battleInfo.vampireFirstAttack) {
                     battleInfo.vampireFirstAttack = false;
                 } else { battleInfo.playerAsSleep = false; }
-                damage = (int) (player.getUpStrength() * 0.5);
+                damage = (int) (player.getBuffStrength() * 0.5);
             }
             case ENEMIES -> {
                 if (enemy instanceof Vampire) { damage = vampireDamageFormula(player); }
@@ -133,7 +133,7 @@ public class AttackSystem {
      * @return Количество урона, наносимое монстром игроку
      */
     int vampireDamageFormula(Player player) {
-        return player.getUpHealth() / 10;
+        return player.getBuffHealth() / 10;
     }
 
     /**

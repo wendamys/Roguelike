@@ -16,11 +16,10 @@ public class Ogre extends Enemies {
 
     public Ogre(Position position, Level level) {
         super(position);
-        this.setHealth((int)(health * level.getCoefEnemy()));
-        this.setAgility((int)(agility * level.getCoefEnemy()));
-        this.setStrength((int)(strength * level.getCoefEnemy()));
+        this.setHealthBegin((int) (health * level.getCoefEnemy()));
+        this.setAgility((int) (agility * level.getCoefEnemy()));
+        this.setStrength((int) (strength * level.getCoefEnemy()));
     }
-
 
     @Override
     public int getHealth() {
@@ -29,6 +28,10 @@ public class Ogre extends Enemies {
 
     @Override
     public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setHealthBegin(int health) {
         this.health = randomNumber((int) (health * 0.97), (int) (health * 1.03));
     }
 
