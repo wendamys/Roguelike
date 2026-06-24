@@ -21,7 +21,7 @@ class PositionForPlayerTest {
 
     @Test
     void moveForwardShouldIncreaseYCoordinatePlayer() {
-        Position expectedPosition = new Position(0, 21);
+        Position expectedPosition = new Position(10, 22);
         mv.moveDir(DirectionType.FORWARD, player);
         assertEquals(expectedPosition.getY(), player.getPosition().getY(), "Позиция после FORWARD должна измениться только по Y");
     }
