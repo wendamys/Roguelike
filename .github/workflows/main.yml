@@ -20,7 +20,10 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
       - name: Run Tests with Gradle
-        run: ./gradlew test
+        run: |
+          chmod +x gradlew
+          ./gradlew test
+
 
 
   deploy-to-staging:
