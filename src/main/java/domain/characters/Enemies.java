@@ -8,7 +8,7 @@ import domain.navigator.Position;
 
 abstract public class Enemies extends Character {
 
-    public EnemiesType type;
+    protected EnemiesType type;
     private int hostility = 1;
     boolean isChasing = false; // Флаг, устанавливающий, преследует ли монстр игрока
     DirectionType dir; // Направление в котором двигался монстр

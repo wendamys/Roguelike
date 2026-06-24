@@ -15,19 +15,6 @@ import static domain.battle.CharacterType.*;
 
 public class AttackSystem {
 
-//    /**
-//     * Метод {@link #acceptDamage(int damage, Character character)} описывает получение урона персонажем.
-//     * Если урона больше чем здоровья, то устанавливает здоровье 0
-//     * @param damage очки урона
-//     */
-//    public void acceptDamage(int damage, Character character) {
-//        int health = character.getHealth();
-//        if (damage < 0 || health <= 0) return;
-//        int newHealth = health - damage;
-//        health = Math.max(newHealth, 0);
-//        character.setHealth(health);
-//    }
-
     /**
      * Функция, описывающая попытку атаки
      * Эта функция объединяет в себе всю структуру атаки: проверка на попадание, расчет урона, нанесение урона.
@@ -71,13 +58,13 @@ public class AttackSystem {
         boolean wasHit = false;
         int chance = 0;
         switch (currTurn) {
-            case PLAYER -> chance += hitChanceFormula(player.getAgility(), enemy.getAgility());
-            case ENEMIES -> chance += hitChanceFormula(enemy.getAgility(), player.getAgility());
+            case PLAYER -> chance = hitChanceFormula(player.getAgility(), enemy.getAgility());
+            case ENEMIES -> chance = hitChanceFormula(enemy.getAgility(), player.getAgility());
         }
         boolean isOgre = enemy.getType() == EnemiesType.OGRE;
         int random = (int) (randomValueDouble() * 100);
         if ((chance > random) || isOgre) { wasHit = true; }
-        // if (wasHit) { System.out.println(currTurn + " Попал по противнику"); } else { System.out.println(currTurn + " Промахнулся по противнику"); }
+        if (wasHit) { System.out.println(currTurn + " Попал по противнику"); } else { System.out.println(currTurn + " Промахнулся по противнику"); }
         return wasHit;
     }
 
@@ -89,10 +76,9 @@ public class AttackSystem {
     public static int EnemyDamageFormula(Enemies enemy, BattleInfoType battleInfo) {
         int damage = 0;
         switch (enemy.getType()) {
-            case ZOMBIE, GHOST -> damage += zombieGhostDamageFormula(enemy);
-            case OGRE -> damage += ogreDamageFormula(enemy, battleInfo);
-            case SNAKE -> damage += snakeDamageFormula(enemy, battleInfo);
-            case VAMPIRE -> damage = enemy.getStrength();
+            case ZOMBIE, GHOST, MIMIC -> damage = zombieGhostDamageFormula(enemy);
+            case OGRE -> damage = ogreDamageFormula(enemy, battleInfo);
+            case SNAKE -> damage = snakeDamageFormula(enemy, battleInfo);
         }
         return damage;
     }
@@ -100,6 +86,7 @@ public class AttackSystem {
     /**
      * Функция, высчитывающая урон
      * @param player     Данные об игроке
+     * @param enemy      Данные о монстре
      * @param battleInfo Данные о бое
      * @param currTurn   Определяет, чья очередь выполнить атаку
      * @return количество урона, наносимого противнику
@@ -108,11 +95,10 @@ public class AttackSystem {
         int damage = 0;
         switch (currTurn) {
             case PLAYER -> {
-                //if (!(enemy.getType() == EnemiesType.VAMPIRE && battleInfo.vampireFirstAttack) && !(enemy.getType() == EnemiesType.SNAKE && battleInfo.playerAsSleep)) { damage += (int) (player.getUpStrength() * 0.5); }
                 if (enemy.getType() == EnemiesType.VAMPIRE && battleInfo.vampireFirstAttack) {
                     battleInfo.vampireFirstAttack = false;
-                }
-                damage += (int) (player.getUpStrength() * 0.5);
+                } else { battleInfo.playerAsSleep = false; }
+                damage = (int) (player.getUpStrength() * 0.5);
             }
             case ENEMIES -> {
                 if (enemy instanceof Vampire) { damage = vampireDamageFormula(player); }
@@ -144,7 +130,7 @@ public class AttackSystem {
 
     /**
      * Функция вычисления урона вампира
-     * Вампир отнимает значение 10 от максимального здоровья игрока
+     * Вампир отнимает 10 процентов от максимального здоровья игрока
      * @param player Информация об игроке
      * @return Количество урона, наносимое монстром игроку
      */
@@ -176,12 +162,13 @@ public class AttackSystem {
 
     /**
      * Функция вычисления урона змеи
-     * Змея с шансом SLEEP_CHANCE процентов может усыпить игрока на один ход
+     * Змея с шансом 15 процентов может усыпить игрока на один ход
      * @return Количество урона, наносимое монстром игроку
      */
     static int snakeDamageFormula(Enemies enemy, BattleInfoType battle_info) {
-        if (randomNumber(0, 100) < 15) {
+        if (randomNumber(0, 100) <= 15) {
             System.out.println("Игрок спит!");
+            battle_info.playerAsSleep = true;
         }
         return zombieGhostDamageFormula(enemy);
     }
@@ -189,7 +176,7 @@ public class AttackSystem {
 
     /**
      * Функция, определяющая количество сокровищ, получаемых игроком за убийства противника
-     * Количество зависит от сложности противника
+     * Количество зависит от сложности противника и небольшого рандома
      * @param enemy данные о монстре
      * @return стоимость сокровища
      */

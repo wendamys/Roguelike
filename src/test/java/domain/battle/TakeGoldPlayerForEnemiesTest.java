@@ -1,43 +1,60 @@
 package domain.battle;
 
+import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.characters.enemies.*;
 import domain.navigator.Position;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 import static domain.battle.CharacterType.PLAYER;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TakeGoldPlayerForEnemiesTest {
-    private Player player;
-    private Vampire vampire;
-    private Snake snake;
-    private Zombie zombie;
-    private Ogre ogre;
-    private Ghost ghost;
-    private Mimic mimic;
     BattleInfoType battleInfo = new BattleInfoType();
     AttackSystem atk = new AttackSystem();
 
-    @BeforeEach
-    void setUp() {
-        vampire = new Vampire(new Position(0, 0));
-        snake = new Snake(new Position(0, 0));
-        zombie = new Zombie(new Position(0, 0));
-        ogre = new Ogre(new Position(0, 0));
-        ghost = new Ghost(new Position(0, 0));
-        mimic = new Mimic(new Position(0, 0));
+    private static List<Enemies> getEnemyList() {
+        return List.of(
+            new Vampire(new Position(0, 0)),
+            new Snake(new Position(0, 0)),
+            new Zombie(new Position(0, 0)),
+            new Ogre(new Position(0, 0)),
+            new Ghost(new Position(0, 0)),
+            new Mimic(new Position(0, 0))
+        );
+    }
+
+    static Stream<Enemies> enemyProvider() {
+        return getEnemyList().stream();
+    }
+
+    @ParameterizedTest
+    @MethodSource("enemyProvider")
+    void TakeGoldPlayerForEnemy(Enemies enemy) {
+        Player player = new Player(new Position(0, 0));
+        System.out.println("Player take gold vs " + enemy.getType());
+        for (int i = 0; 1000 > i; i++) {
+            atk.attack(player, enemy, PLAYER, battleInfo);
+            if (enemy.getHealth() == 0) { break; }
+        }
+        assertTrue(player.getGold() > 0);
     }
 
     @Test
-    void TakeGoldPlayerForVampire() {
+    void TakeGoldPlayerForAllEnemy() {
         Player player = new Player(new Position(0, 0));
-        System.out.println("Player");
-        for (int i = 0; 100 > i; i++) {
-            atk.attack(player, vampire, PLAYER, battleInfo);
+        for (Enemies enemy: getEnemyList()) {
+            System.out.println("Player take gold vs " + enemy.getType());
+            for (int i = 0; 1000 > i; i++) {
+                atk.attack(player, enemy, PLAYER, battleInfo);
+                if (enemy.getHealth() == 0) { break; }
+            }
         }
-        assertEquals(player.getGold() > 0, true);
+        assertTrue(player.getGold() > 100);
     }
 }
