@@ -23,7 +23,7 @@ public class MathUtils {
      */
     public static double randomValueDouble() { return random.nextDouble(); }
 
-    public static ItemsSubType randomType() {
+    public static ItemsSubType randomItemsSubType() {
         return switch (randomNumber(1, 3)) {
             case 1 -> ItemsSubType.HEALTH;
             case 2 -> ItemsSubType.AGILITY;
