@@ -1,6 +1,5 @@
 package domain.characters.enemies;
 
-import domain.MathUtils.MathUtils;
 import domain.characters.Enemies;
 import domain.map.Level;
 import domain.navigator.Position;
@@ -9,16 +8,16 @@ import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Mimic extends Enemies {
 
+    private final EnemiesType type = EnemiesType.MIMIC;
     private int health = 300;
     private int agility = 100;
     private int strength = 10;
-    private final EnemiesType type = EnemiesType.MIMIC;
 
     public Mimic(Position position, Level level) {
         super(position);
-        this.setHealth((int)(health * level.getCoefEnemy()));
-        this.setAgility((int)(agility * level.getCoefEnemy()));
-        this.setStrength((int)(strength * level.getCoefEnemy()));
+        this.setHealth((int) (health * level.getCoefEnemy()));
+        this.setAgility((int) (agility * level.getCoefEnemy()));
+        this.setStrength((int) (strength * level.getCoefEnemy()));
     }
 
     public int getHealth() {
@@ -55,13 +54,6 @@ public class Mimic extends Enemies {
 
     @Override
     public String toString() {
-        return String.format(
-                "Mimiс: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
-                getName(),
-                getHealth(),
-                getAgility(),
-                getStrength(),
-                getType()
-        );
+        return String.format("Mimiс: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s", getName(), getHealth(), getAgility(), getStrength(), getType());
     }
 }

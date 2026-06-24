@@ -10,12 +10,15 @@ public class Level {
     public double getCoefItem() {
         return coefItem;
     }
+
     public void setCoefItem(double coefItem) {
         this.coefItem = coefItem;
     }
+
     public int getLevel() {
         return level;
     }
+
     public void setLevel(int level) {
         this.level = level;
     }

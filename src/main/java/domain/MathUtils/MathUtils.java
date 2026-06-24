@@ -9,7 +9,8 @@ public class MathUtils {
 
     /**
      * Метод {@link #randomNumber(int from, int before)} рандомно выбирает число от from до before
-     * @param from начало выборки
+     *
+     * @param from   начало выборки
      * @param before конец выборки
      * @return Ожидаемое число
      */
@@ -19,9 +20,10 @@ public class MathUtils {
 
     /**
      * Метод {@link #randomValueDouble()} для генерации рандомного числа с плавающей точкой
+     *
      * @return число с плавающей точкой
      */
-    public static double randomValueDouble() { return random.nextDouble(); }
+    public static double randomValueDouble() {return random.nextDouble();}
 
     public static ItemsSubType randomItemsSubType() {
         return switch (randomNumber(1, 3)) {

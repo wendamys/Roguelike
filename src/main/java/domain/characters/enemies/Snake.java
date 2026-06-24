@@ -7,19 +7,17 @@ import domain.navigator.Position;
 
 public class Snake extends Enemies {
 
+    private final EnemiesType type = EnemiesType.SNAKE;
     private int health = 160;
     private int agility = 50;
     private int strength = 30;
-    private final EnemiesType type = EnemiesType.SNAKE;
 
     public Snake(Position position, Level level) {
         super(position);
-        this.setHealth((int)(health * level.getCoefEnemy()));
-        this.setAgility((int)(agility * level.getCoefEnemy()));
-        this.setStrength((int)(strength * level.getCoefEnemy()));
+        this.setHealth((int) (health * level.getCoefEnemy()));
+        this.setAgility((int) (agility * level.getCoefEnemy()));
+        this.setStrength((int) (strength * level.getCoefEnemy()));
     }
-
-    static MathUtils random = new MathUtils();
 
     @Override
     public int getHealth() {
@@ -28,7 +26,7 @@ public class Snake extends Enemies {
 
     @Override
     public void setHealth(int health) {
-        this.health = random.randomNumber((int) (health * 0.95), (int) (health * 1.05));
+        this.health = MathUtils.randomNumber((int) (health * 0.95), (int) (health * 1.05));
     }
 
     @Override
@@ -37,7 +35,7 @@ public class Snake extends Enemies {
     }
 
     public void setAgility(int agility) {
-        this.agility = random.randomNumber((int) (agility * 0.95), (int) (agility * 1.05));
+        this.agility = MathUtils.randomNumber((int) (agility * 0.95), (int) (agility * 1.05));
     }
 
     @Override
@@ -46,7 +44,7 @@ public class Snake extends Enemies {
     }
 
     public void setStrength(int strength) {
-        this.strength = random.randomNumber((int) (strength * 0.95), (int) (strength * 1.05));
+        this.strength = MathUtils.randomNumber((int) (strength * 0.95), (int) (strength * 1.05));
     }
 
     @Override
@@ -61,13 +59,6 @@ public class Snake extends Enemies {
 
     @Override
     public String toString() {
-        return String.format(
-                "Snake: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
-                getName(),
-                getHealth(),
-                getAgility(),
-                getStrength(),
-                getType()
-        );
+        return String.format("Snake: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s", getName(), getHealth(), getAgility(), getStrength(), getType());
     }
 }

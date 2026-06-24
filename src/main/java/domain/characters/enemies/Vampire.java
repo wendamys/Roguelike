@@ -7,19 +7,17 @@ import domain.navigator.Position;
 
 public class Vampire extends Enemies {
 
+    private final EnemiesType type = EnemiesType.VAMPIRE;
     private int health = 180;
     private int agility = 30;
     private int strength = 50;
-    private final EnemiesType type = EnemiesType.VAMPIRE;
 
     public Vampire(Position position, Level level) {
         super(position);
-        this.setHealth((int)(health * level.getCoefEnemy()));
-        this.setAgility((int)(agility * level.getCoefEnemy()));
-        this.setStrength((int)(strength * level.getCoefEnemy()));
+        this.setHealth((int) (health * level.getCoefEnemy()));
+        this.setAgility((int) (agility * level.getCoefEnemy()));
+        this.setStrength((int) (strength * level.getCoefEnemy()));
     }
-
-    static MathUtils random = new MathUtils();
 
     @Override
     public int getHealth() {
@@ -28,7 +26,7 @@ public class Vampire extends Enemies {
 
     @Override
     public void setHealth(int health) {
-        this.health = random.randomNumber((int) (health * 0.96), (int) (health * 1.04));
+        this.health = MathUtils.randomNumber((int) (health * 0.96), (int) (health * 1.04));
     }
 
     @Override
@@ -37,7 +35,7 @@ public class Vampire extends Enemies {
     }
 
     public void setAgility(int agility) {
-        this.agility = random.randomNumber((int) (agility * 0.96), (int) (agility * 1.04));
+        this.agility = MathUtils.randomNumber((int) (agility * 0.96), (int) (agility * 1.04));
     }
 
     @Override
@@ -46,7 +44,7 @@ public class Vampire extends Enemies {
     }
 
     public void setStrength(int strength) {
-        this.strength = random.randomNumber((int) (strength * 0.96), (int) (strength * 1.04));
+        this.strength = MathUtils.randomNumber((int) (strength * 0.96), (int) (strength * 1.04));
     }
 
     @Override
@@ -61,13 +59,6 @@ public class Vampire extends Enemies {
 
     @Override
     public String toString() {
-        return String.format(
-                "Vampire: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
-                getName(),
-                getHealth(),
-                getAgility(),
-                getStrength(),
-                getType()
-        );
+        return String.format("Vampire: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s", getName(), getHealth(), getAgility(), getStrength(), getType());
     }
 }
