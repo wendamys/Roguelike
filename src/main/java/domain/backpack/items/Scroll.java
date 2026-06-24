@@ -1,11 +1,12 @@
 package domain.backpack.items;
 
-import domain.MathUtils.MathUtils;
 import domain.backpack.Item;
 import domain.backpack.ItemsSubType;
 import domain.backpack.ItemsType;
 import domain.map.Level;
 import domain.navigator.Position;
+
+import static domain.MathUtils.MathUtils.randomItemsSubType;
 
 public class Scroll extends Item {
 
@@ -25,8 +26,7 @@ public class Scroll extends Item {
      * Задает рандомный подтип предмета
      */
     private void setSubType() {
-        MathUtils randomNumber = new MathUtils();
-        this.subType = randomNumber.randomType();
+        this.subType = randomItemsSubType();
     }
 
     @Override

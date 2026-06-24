@@ -54,10 +54,4 @@ public abstract class Character {
     public void setPosition(Position position) {
         this.position = position;
     }
-
-
-    public void attack(Player player) {
-    }
-
-
 }

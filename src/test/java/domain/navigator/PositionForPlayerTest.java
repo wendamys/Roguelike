@@ -1,9 +1,6 @@
-package domain;
+package domain.navigator;
 
 import domain.characters.Player;
-import domain.navigator.DirectionType;
-import domain.navigator.MovementSystem;
-import domain.navigator.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +15,7 @@ class PositionForPlayerTest {
     @BeforeEach
     void setUp() {
         Position startPosition = new Position(10, 20);
-        player = new Player("Hero", 100, 100, 100, 100, 0, startPosition);
+        player = new Player(startPosition);
     }
 
     @Test

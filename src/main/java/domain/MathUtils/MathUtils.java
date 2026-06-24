@@ -13,18 +13,22 @@ public class MathUtils {
      * @param before конец выборки
      * @return Ожидаемое число
      */
-    public int randomNumber(int from, int before) {
+    public static int randomNumber(int from, int before) {
         return random.nextInt(from, before + 1);
     }
 
-    public ItemsSubType randomType() {
-        MathUtils randomNumber = new MathUtils();
-        ItemsSubType subType = ItemsSubType.HEALTH;
-        return switch (randomNumber.randomNumber(1, 3)) {
-            case 1 -> subType = ItemsSubType.HEALTH;
-            case 2 -> subType = ItemsSubType.AGILITY;
-            case 3 -> subType = ItemsSubType.STRENGTH;
-            default -> throw new IllegalStateException("Unexpected value: " + randomNumber.randomNumber(1, 3));
+    /**
+     * Метод {@link #randomValueDouble()} для генерации рандомного числа с плавающей точкой
+     * @return число с плавающей точкой
+     */
+    public static double randomValueDouble() { return random.nextDouble(); }
+
+    public static ItemsSubType randomItemsSubType() {
+        return switch (randomNumber(1, 3)) {
+            case 1 -> ItemsSubType.HEALTH;
+            case 2 -> ItemsSubType.AGILITY;
+            case 3 -> ItemsSubType.STRENGTH;
+            default -> throw new IllegalStateException("Unexpected value: " + randomNumber(1, 3));
         };
     }
 }
