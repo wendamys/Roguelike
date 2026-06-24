@@ -8,7 +8,7 @@ public class Mimic extends Enemies {
     private int health = 500;
     private int agility = 100;
     private int strength = 10;
-    private final EnemiesType type = EnemiesType.MIMIK;
+    private final EnemiesType type = EnemiesType.MIMIC;
 
     public Mimic(Position position) {
         super(position);
@@ -49,7 +49,7 @@ public class Mimic extends Enemies {
     @Override
     public String toString() {
         return String.format(
-                "Mimik: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
+                "Mimiс: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
                 getName(),
                 getHealth(),
                 getAgility(),
