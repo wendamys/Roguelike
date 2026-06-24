@@ -8,10 +8,10 @@ import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Zombie extends Enemies {
 
+    private final EnemiesType type = EnemiesType.ZOMBIE;
     private int health = 100;
     private int agility = 20;
     private int strength = 20;
-    private final EnemiesType type = EnemiesType.ZOMBIE;
 
     public Zombie(Position position, Level level) {
         super(position);
@@ -64,13 +64,6 @@ public class Zombie extends Enemies {
 
     @Override
     public String toString() {
-        return String.format(
-                "Zombie: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
-                getName(),
-                getHealth(),
-                getAgility(),
-                getStrength(),
-                getType()
-        );
+        return String.format("Zombie: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s", getName(), getHealth(), getAgility(), getStrength(), getType());
     }
 }

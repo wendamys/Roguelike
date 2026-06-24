@@ -1,6 +1,5 @@
 package domain.backpack;
 
-import domain.MathUtils.MathUtils;
 import domain.map.Level;
 import domain.navigator.Position;
 
@@ -14,11 +13,24 @@ public abstract class Item {
         this.position = position;
     }
 
-    public String getName() { return name; }
-    public ItemsType getType() { return type; }
+    public String getName() {
+        return name;
+    }
+
+    public ItemsType getType() {
+        return type;
+    }
+
     public int getValue() {
-        return 30; }
-    protected Position getPosition() { return position; }
-    public ItemsSubType getSubType() { return subType; }
+        return 30;
+    }
+
+    protected Position getPosition() {
+        return position;
+    }
+
+    public ItemsSubType getSubType() {
+        return subType;
+    }
 
 }

@@ -8,14 +8,14 @@ import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Vampire extends Enemies {
 
+    private final EnemiesType type = EnemiesType.VAMPIRE;
     private int health = 180;
     private int agility = 30;
     private int strength = 50;
-    private final EnemiesType type = EnemiesType.VAMPIRE;
 
     public Vampire(Position position, Level level) {
         super(position);
-        this.setHealthBegin((int) (health * level.getCoefEnemy()));
+        this.setHealth((int) (health * level.getCoefEnemy()));
         this.setAgility((int) (agility * level.getCoefEnemy()));
         this.setStrength((int) (strength * level.getCoefEnemy()));
     }
@@ -27,10 +27,6 @@ public class Vampire extends Enemies {
 
     @Override
     public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public void setHealthBegin(int health) {
         this.health = randomNumber((int) (health * 0.96), (int) (health * 1.04));
     }
 
@@ -64,13 +60,6 @@ public class Vampire extends Enemies {
 
     @Override
     public String toString() {
-        return String.format(
-                "Vampire: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
-                getName(),
-                getHealth(),
-                getAgility(),
-                getStrength(),
-                getType()
-        );
+        return String.format("Vampire: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s", getName(), getHealth(), getAgility(), getStrength(), getType());
     }
 }

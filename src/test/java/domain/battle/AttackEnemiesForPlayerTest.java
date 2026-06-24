@@ -33,10 +33,12 @@ public class AttackEnemiesForPlayerTest {
     @MethodSource("enemyProvider")
     void AttackEnemyForPlayer(Enemies enemy) {
         Player player = new Player(new Position(0, 0));
-        System.out.println(enemy.getType() + " vs Player");
+        // System.out.println("\n" + enemy.getType() + " vs Player");
         for (int i = 0; 1000 > i; i++) {
             atk.attack(player, enemy, ENEMIES, battleInfo);
-            if (player.getHealth() == 0) { break; }
+            if (player.getHealth() == 0) {
+                break;
+            }
         }
         assertEquals(0, player.getHealth());
     }

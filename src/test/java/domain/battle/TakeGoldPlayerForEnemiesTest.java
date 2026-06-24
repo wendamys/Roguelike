@@ -38,7 +38,7 @@ public class TakeGoldPlayerForEnemiesTest {
     @MethodSource("enemyProvider")
     void TakeGoldPlayerForEnemy(Enemies enemy) {
         Player player = new Player(new Position(0, 0));
-        System.out.println("Player take gold vs " + enemy.getType());
+        // System.out.println("\nPlayer take gold vs " + enemy.getType());
         for (int i = 0; 1000 > i; i++) {
             atk.attack(player, enemy, PLAYER, battleInfo);
             if (enemy.getHealth() == 0) { break; }
@@ -50,7 +50,7 @@ public class TakeGoldPlayerForEnemiesTest {
     void TakeGoldPlayerForAllEnemy() {
         Player player = new Player(new Position(0, 0));
         for (Enemies enemy: getEnemyList()) {
-            System.out.println("Player take gold vs " + enemy.getType());
+            // System.out.println("\nPlayer take gold vs " + enemy.getType());
             for (int i = 0; 1000 > i; i++) {
                 atk.attack(player, enemy, PLAYER, battleInfo);
                 if (enemy.getHealth() == 0) { break; }

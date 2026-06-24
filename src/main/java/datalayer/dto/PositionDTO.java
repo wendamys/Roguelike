@@ -4,7 +4,9 @@ public class PositionDTO {
     private int x;
     private int y;
 
-    public PositionDTO() {}
+    public PositionDTO() {
+    }
+
     public PositionDTO(int x, int y) {
         this.x = x;
         this.y = y;

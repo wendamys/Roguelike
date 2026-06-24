@@ -6,21 +6,21 @@ import domain.navigator.Position;
  * Абстрактный класс {@link #Character} описывает главные характеристики персонажей в игре
  */
 public abstract class Character {
+    protected int step = 1;
     private String name = null;
     private int health = 100;
     private Position position;
-    protected int step = 1;
 
     public Character(Position position) {
         this.position = position;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getHealth() {
@@ -35,12 +35,14 @@ public abstract class Character {
         return 30;
     }
 
-    public int getStrength() {
-        return 30;
-    }
+    public int getStrength() {return 30;}
 
     public Position getPosition() {
         return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public int getStep() {
@@ -49,9 +51,5 @@ public abstract class Character {
 
     public void setStep(int step) {
         this.step = step;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
     }
 }

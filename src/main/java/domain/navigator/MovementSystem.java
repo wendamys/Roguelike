@@ -10,6 +10,7 @@ public class MovementSystem {
 
     /**
      * Метод {@link #randomDirection()} выбирает рандомно направление движения
+     *
      * @return Направление движения
      */
     public DirectionType randomDirection() {
@@ -24,6 +25,7 @@ public class MovementSystem {
 
     /**
      * Метод {@link #moveDir(DirectionType direction, Character characte)} ходит по заданному направлению
+     *
      * @param direction Направление движения
      * @param character Меняет текущую позицию переданному объекту
      */

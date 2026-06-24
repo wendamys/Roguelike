@@ -3,16 +3,15 @@ package domain.characters.enemies;
 import domain.characters.Enemies;
 import domain.map.Level;
 import domain.navigator.Position;
-import domain.MathUtils.*;
 
 import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Ghost extends Enemies {
 
+    private final EnemiesType type = EnemiesType.GHOST;
     private int health = 120;
     private int agility = 50;
     private int strength = 20;
-    private final EnemiesType type = EnemiesType.GHOST;
 
     public Ghost(Position position, Level level) {
         super(position);
@@ -65,13 +64,6 @@ public class Ghost extends Enemies {
 
     @Override
     public String toString() {
-        return String.format(
-                "Ghost: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
-                getName(),
-                getHealth(),
-                getAgility(),
-                getStrength(),
-                getType()
-        );
+        return String.format("Ghost: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s", getName(), getHealth(), getAgility(), getStrength(), getType());
     }
 }

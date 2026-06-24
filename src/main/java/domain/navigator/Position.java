@@ -6,17 +6,25 @@ public class Position {
     private final int x;
     private final int y;
 
-    public Position(int x, int y) { this.x = x; this.y = y; }
-    public int getX() { return x; }
+    public Position(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
     public int getY() {
         return y;
     }
 
     /**
-    * Метод {@link #distanceTo(Position)} вычисляет дистанцию между двумя объектами
-    * @param other позиция второго объекта
-    * @return дистанция до объекта
-    */
+     * Метод {@link #distanceTo(Position)} вычисляет дистанцию между двумя объектами
+     *
+     * @param other позиция второго объекта
+     * @return дистанция до объекта
+     */
     public double distanceTo(Position other) {
         if (other == null) {
             throw new NullPointerException("Other position cannot be null");
@@ -38,14 +46,15 @@ public class Position {
         return x * 15 + y;
     }
 
-//    @Override
-//    public String toString() {
-//        return String.format("Distance(%.2f)", ;
-//    }
+    //    @Override
+    //    public String toString() {
+    //        return String.format("Distance(%.2f)", ;
+    //    }
 
     /**
      * Метод {@link #posDir(DirectionType direction)} создает новую позицию
      * в зависимости от того направления, которое прислали
+     *
      * @param direction Направление движения
      * @return Position
      */
