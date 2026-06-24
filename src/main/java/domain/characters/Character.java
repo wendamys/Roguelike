@@ -35,9 +35,7 @@ public abstract class Character {
         return 30;
     }
 
-    public int getStrength() {
-        return 30;
-    }
+    public int getStrength() {return 30;}
 
     public Position getPosition() {
         return position;

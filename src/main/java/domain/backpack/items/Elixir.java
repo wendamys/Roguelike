@@ -54,11 +54,6 @@ public class Elixir extends Item {
 
     @Override
     public String toString() {
-        return String.format("Elixir: value %d, position(%d, %d), SubType %s",
-                getValue(),
-                getPosition().getX(),
-                getPosition().getY(),
-                getSubType()
-        );
+        return String.format("Elixir: value %d, position(%d, %d), SubType %s", getValue(), getPosition().getX(), getPosition().getY(), getSubType());
     }
 }

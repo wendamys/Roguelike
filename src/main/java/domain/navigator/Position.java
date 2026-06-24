@@ -46,10 +46,10 @@ public class Position {
         return x * 15 + y;
     }
 
-//    @Override
-//    public String toString() {
-//        return String.format("Distance(%.2f)", ;
-//    }
+    //    @Override
+    //    public String toString() {
+    //        return String.format("Distance(%.2f)", ;
+    //    }
 
     /**
      * Метод {@link #posDir(DirectionType direction)} создает новую позицию

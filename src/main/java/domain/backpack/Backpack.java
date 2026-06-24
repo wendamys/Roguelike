@@ -58,15 +58,15 @@ public class Backpack {
         weaponList.clear();
     }
 
-//    /**
-//     * метод {@link #useItem(Item, Player)} использует предмет и удаляет его из рюкзака
-//     * @param item используемый предмет
-//     * @param player игрок
-//     */
-//    public void useItem(Item item, Player player) {
-//        player.useItemValue(item);
-//        removeItem(item);
-//    }
+    //    /**
+    //     * метод {@link #useItem(Item, Player)} использует предмет и удаляет его из рюкзака
+    //     * @param item используемый предмет
+    //     * @param player игрок
+    //     */
+    //    public void useItem(Item item, Player player) {
+    //        player.useItemValue(item);
+    //        removeItem(item);
+    //    }
 
     public void useItemFood(int numItem, Player player) {
         player.useItemValue(foodList.get(numItem));

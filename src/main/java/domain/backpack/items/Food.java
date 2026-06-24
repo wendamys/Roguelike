@@ -44,10 +44,6 @@ public class Food extends Item {
 
     @Override
     public String toString() {
-        return String.format("Food: value %d, position(%d, %d)",
-                getValue(),
-                getPosition().getX(),
-                getPosition().getY()
-        );
+        return String.format("Food: value %d, position(%d, %d)", getValue(), getPosition().getX(), getPosition().getY());
     }
 }

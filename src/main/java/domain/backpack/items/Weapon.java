@@ -44,10 +44,6 @@ public class Weapon extends Item {
 
     @Override
     public String toString() {
-        return String.format("Weapon: value %d, position(%d, %d)",
-                getValue(),
-                getPosition().getX(),
-                getPosition().getY()
-        );
+        return String.format("Weapon: value %d, position(%d, %d)", getValue(), getPosition().getX(), getPosition().getY());
     }
 }
