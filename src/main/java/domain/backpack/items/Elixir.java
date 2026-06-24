@@ -7,6 +7,7 @@ import domain.map.Level;
 import domain.navigator.Position;
 
 import static domain.MathUtils.MathUtils.randomItemsSubType;
+import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Elixir extends Item {
 
@@ -19,8 +20,6 @@ public class Elixir extends Item {
         this.setSubType();
         this.setValue((int) (value * level.getCoefItem()));
     }
-
-    static MathUtils random = new MathUtils();
 
     /**
      * Задает рандомный подтип предмета
@@ -40,7 +39,7 @@ public class Elixir extends Item {
     }
 
     public void setValue(int value) {
-        this.value = random.randomNumber((int) (value * 0.95), (int) (value * 1.05));
+        this.value = randomNumber((int) (value * 0.95), (int) (value * 1.05));
     }
 
     @Override

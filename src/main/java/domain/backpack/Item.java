@@ -14,8 +14,6 @@ public abstract class Item {
         this.position = position;
     }
 
-    static MathUtils random = new MathUtils();
-
     public String getName() { return name; }
     public ItemsType getType() { return type; }
     public int getValue() {

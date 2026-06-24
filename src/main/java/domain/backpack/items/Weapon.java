@@ -7,6 +7,8 @@ import domain.backpack.ItemsType;
 import domain.map.Level;
 import domain.navigator.Position;
 
+import static domain.MathUtils.MathUtils.randomNumber;
+
 public class Weapon extends Item {
 
     private int value = 60;
@@ -18,8 +20,6 @@ public class Weapon extends Item {
         this.setValue((int) (value * level.getCoefItem()));
     }
 
-    static MathUtils random = new MathUtils();
-
     public ItemsSubType getSubType() {
         return subType;
     }
@@ -30,7 +30,7 @@ public class Weapon extends Item {
     }
 
     public void setValue(int value) {
-        this.value = random.randomNumber((int) (value * 0.95), (int) (value * 1.05));
+        this.value = randomNumber((int) (value * 0.95), (int) (value * 1.05));
     }
 
     @Override
