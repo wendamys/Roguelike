@@ -1,9 +1,5 @@
 package domain.map;
 
-import domain.navigator.Position;
-
-import java.util.HashMap;
-
 public class World {
 
 //  public void init() {

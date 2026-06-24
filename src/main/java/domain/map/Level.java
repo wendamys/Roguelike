@@ -5,17 +5,21 @@ public class Level {
     private double coefItem = (double) (level - 1) / 15 + 1;
     private double coefEnemy = (double) (level - 1) / 10 + 1;
 
-    public Level() {}
+    public Level() {
+    }
 
     public double getCoefItem() {
         return coefItem;
     }
+
     public void setCoefItem(double coefItem) {
         this.coefItem = coefItem;
     }
+
     public int getLevel() {
         return level;
     }
+
     public void setLevel(int level) {
         this.level = level;
     }

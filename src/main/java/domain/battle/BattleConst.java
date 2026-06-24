@@ -14,4 +14,5 @@ public class BattleConst {
     public static final int LOOT_HP_FACTOR = 5;
     public static final int LOOT_STRENGTH_FACTOR = 5;
     public static final int MAXIMUM_FIGHTS = 8;
+
 }

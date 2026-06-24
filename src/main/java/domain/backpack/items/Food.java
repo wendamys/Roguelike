@@ -1,6 +1,5 @@
 package domain.backpack.items;
 
-import domain.MathUtils.MathUtils;
 import domain.backpack.Item;
 import domain.backpack.ItemsSubType;
 import domain.backpack.ItemsType;
@@ -11,9 +10,9 @@ import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Food extends Item {
 
-    private int value = 50;
     private final ItemsType type = ItemsType.FOOD;
     private final ItemsSubType subType = ItemsSubType.HEALTH;
+    private int value = 50;
 
     public Food(Position position, Level level) {
         super(position, level);

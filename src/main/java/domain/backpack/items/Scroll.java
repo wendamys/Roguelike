@@ -11,8 +11,8 @@ import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Scroll extends Item {
 
-    private int value = 10;
     private final ItemsType type = ItemsType.SCROLL;
+    private int value = 10;
     private ItemsSubType subType = null;
 
     public Scroll(Position position, Level level) {

@@ -1,6 +1,5 @@
 package domain.backpack.items;
 
-import domain.MathUtils.MathUtils;
 import domain.backpack.Item;
 import domain.backpack.ItemsSubType;
 import domain.backpack.ItemsType;
@@ -11,9 +10,9 @@ import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Weapon extends Item {
 
-    private int value = 60;
     private final ItemsType type = ItemsType.WEAPON;
     private final ItemsSubType subType = ItemsSubType.STRENGTH;
+    private int value = 60;
 
     public Weapon(Position position, Level level) {
         super(position, level);

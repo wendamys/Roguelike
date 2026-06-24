@@ -8,10 +8,10 @@ import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Zombie extends Enemies {
 
+    private final EnemiesType type = EnemiesType.ZOMBIE;
     private int health = 100;
     private int agility = 20;
     private int strength = 20;
-    private final EnemiesType type = EnemiesType.ZOMBIE;
 
     public Zombie(Position position, Level level) {
         super(position);

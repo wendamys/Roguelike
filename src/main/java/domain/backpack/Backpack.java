@@ -14,6 +14,7 @@ public class Backpack {
 
     /**
      * метод {@link #takeItem(Item)} переносит предмет в лист
+     *
      * @param item предмет
      */
     public void takeItem(Item item) {
@@ -22,18 +23,20 @@ public class Backpack {
             case FOOD -> addIfPossible(foodList, item);
             case SCROLL -> addIfPossible(scrollList, item);
             case WEAPON -> {
-                if(weaponList.size() < 9) addIfPossible(weaponList, item);
+                if (weaponList.size() < 9) addIfPossible(weaponList, item);
                 else {
                     weaponList.remove(9);
                     weaponList.add(item);
                 }
             }
-            default -> {}
+            default -> {
+            }
         }
     }
 
     /**
      * метод {@link #seeList(ItemsType)} выводит содержимое листа по типу предмета
+     *
      * @param type тип предмета
      */
     public void seeList(ItemsType type) {
@@ -69,20 +72,24 @@ public class Backpack {
         player.useItemValue(foodList.get(numItem));
         foodList.remove(numItem);
     }
+
     public void useItemScroll(int numItem, Player player) {
         player.useItemValue(scrollList.get(numItem));
         scrollList.remove(numItem);
     }
+
     public void useItemElixir(int numItem, Player player) {
         player.useItemValue(elixirList.get(numItem));
         elixirList.remove(numItem);
     }
+
     public void useItemWeapon(int numItem, Player player) {
         player.useItemValue(weaponList.get(numItem));
     }
 
     /**
      * метод {@link #removeItem(Item)} удаляет предмет из рюкзака
+     *
      * @param item предмет
      */
     public void removeItem(Item item) {
@@ -91,15 +98,17 @@ public class Backpack {
             case FOOD -> foodList.remove(item);
             case SCROLL -> scrollList.remove(item);
             case WEAPON -> weaponList.remove(item);
-            default -> {}
+            default -> {
+            }
         }
     }
 
     private void seeListType(ArrayList<Item> list) {
-        for(var e: list) {
+        for (var e : list) {
             System.out.println(e);
         }
     }
+
     private void addIfPossible(ArrayList<Item> list, Item item) {
         if (list.size() < maxCapacity) list.add(item);
     }

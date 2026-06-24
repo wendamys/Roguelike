@@ -11,8 +11,8 @@ import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Elixir extends Item {
 
-    private int value = 50;
     private final ItemsType type = ItemsType.ELIXIR;
+    private int value = 50;
     private ItemsSubType subType = null;
 
     public Elixir(Position position, Level level) {

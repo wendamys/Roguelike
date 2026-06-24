@@ -1,7 +1,10 @@
 package domain.characters;
 
-import domain.backpack.*;
-import domain.backpack.items.*;
+import domain.backpack.Item;
+import domain.backpack.items.Elixir;
+import domain.backpack.items.Food;
+import domain.backpack.items.Scroll;
+import domain.backpack.items.Weapon;
 import domain.navigator.Position;
 
 /**
@@ -41,52 +44,53 @@ public class Player extends Character {
         this.name = name;
     }
 
-    public void setGold(int gold) {
-        this.gold = gold;
-    }
-
     public int getGold() {
         return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
     }
 
     public int getMaxHealth() {
         return maxHealth;
     }
 
-    public int getBuffHealth() {
-        return buffHealth;
-    }
-
-    public int getBuffStrength() {
-        return buffStrength;
-    }
-
-    public int getBuffAgility() {
-        return buffAgility;
-    }
-
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
+    }
+
+    public int getBuffHealth() {
+        return buffHealth;
     }
 
     public void setBuffHealth(int buffHealth) {
         this.buffHealth = buffHealth;
     }
 
-    public void setUpHealthRegen(int regen) {
-        this.buffHealth = Math.min((getBuffHealth() + regen), maxHealth);
-    }
-
-    public void setBuffAgility(int agility) {
-        this.buffAgility = getAgility() + agility;
+    public int getBuffStrength() {
+        return buffStrength;
     }
 
     public void setBuffStrength(int strength) {
         this.buffStrength = getStrength() + strength;
     }
 
+    public int getBuffAgility() {
+        return buffAgility;
+    }
+
+    public void setBuffAgility(int agility) {
+        this.buffAgility = getAgility() + agility;
+    }
+
+    public void setUpHealthRegen(int regen) {
+        this.buffHealth = Math.min((getBuffHealth() + regen), maxHealth);
+    }
+
     /**
      * метод {@link #useItemValue(Item)} юзает предмет и добавляет вэлью предмета игроку
+     *
      * @param item предмет
      */
     public void useItemValue(Item item) {
@@ -100,6 +104,7 @@ public class Player extends Character {
 
     /**
      * метод {@link #useFoodValue(Food)} расчитывает велью предмета еды
+     *
      * @param food предмет еды
      */
     private void useFoodValue(Food food) {
@@ -108,6 +113,7 @@ public class Player extends Character {
 
     /**
      * метод {@link #useScrollValue(Scroll)} расчитывает велью свитков
+     *
      * @param scroll предмет свитков
      */
     private void useScrollValue(Scroll scroll) {
@@ -119,7 +125,8 @@ public class Player extends Character {
     }
 
     /**
-     * метод {@link #useElixirValue(Elixir)} расчитывает велью эликсиров
+     * метод {@link #useElixirValue(Elixir)} рассчитывает value эликсиров
+     *
      * @param elixir предметов эликсиров
      */
     private void useElixirValue(Elixir elixir) {
@@ -131,8 +138,9 @@ public class Player extends Character {
     }
 
     /**
-     * метод {@link #useWeaponValue(Weapon)} расчитывает велью оружия
-     * @param weapon предмето оружия
+     * метод {@link #useWeaponValue(Weapon)} рассчитывает value оружия
+     *
+     * @param weapon предмет оружия
      */
     private void useWeaponValue(Weapon weapon) {
         buffStrength += weapon.getValue();
