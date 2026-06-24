@@ -1,18 +1,25 @@
 package domain.characters.enemies;
 
+import domain.MathUtils.MathUtils;
 import domain.characters.Enemies;
+import domain.map.Level;
 import domain.navigator.Position;
 
 public class Vampire extends Enemies {
 
-    private int health = 250;
-    private int agility = 50;
+    private int health = 180;
+    private int agility = 30;
     private int strength = 50;
     private final EnemiesType type = EnemiesType.VAMPIRE;
 
-    public Vampire(Position position) {
+    public Vampire(Position position, Level level) {
         super(position);
+        this.setHealth((int)(health * level.getCoefEnemy()));
+        this.setAgility((int)(agility * level.getCoefEnemy()));
+        this.setStrength((int)(strength * level.getCoefEnemy()));
     }
+
+    static MathUtils random = new MathUtils();
 
     @Override
     public int getHealth() {
@@ -21,7 +28,7 @@ public class Vampire extends Enemies {
 
     @Override
     public void setHealth(int health) {
-        this.health = health;
+        this.health = random.randomNumber((int) (health * 0.96), (int) (health * 1.04));
     }
 
     @Override
@@ -30,7 +37,7 @@ public class Vampire extends Enemies {
     }
 
     public void setAgility(int agility) {
-        this.agility = agility;
+        this.agility = random.randomNumber((int) (agility * 0.96), (int) (agility * 1.04));
     }
 
     @Override
@@ -39,7 +46,7 @@ public class Vampire extends Enemies {
     }
 
     public void setStrength(int strength) {
-        this.strength = strength;
+        this.strength = random.randomNumber((int) (strength * 0.96), (int) (strength * 1.04));
     }
 
     @Override

@@ -1,17 +1,24 @@
 package domain.characters.enemies;
 
 import domain.characters.Enemies;
+import domain.map.Level;
 import domain.navigator.Position;
+import domain.MathUtils.*;
 
 public class Ghost extends Enemies {
 
-    private int health = 100;
-    private int agility = 30;
-    private int strength = 30;
+    private int health = 120;
+    private int agility = 50;
+    private int strength = 20;
     private final EnemiesType type = EnemiesType.GHOST;
 
-    public Ghost(Position position) {
+    static MathUtils random = new MathUtils();
+
+    public Ghost(Position position, Level level) {
         super(position);
+        this.setHealth((int)(health * level.getCoefEnemy()));
+        this.setAgility((int)(agility * level.getCoefEnemy()));
+        this.setStrength((int)(strength * level.getCoefEnemy()));
     }
 
     @Override
@@ -21,7 +28,7 @@ public class Ghost extends Enemies {
 
     @Override
     public void setHealth(int health) {
-        this.health = health;
+        this.health = random.randomNumber((int) (health * 0.95), (int) (health * 1.05));
     }
 
     @Override
@@ -30,7 +37,7 @@ public class Ghost extends Enemies {
     }
 
     public void setAgility(int agility) {
-        this.agility = agility;
+        this.agility = random.randomNumber((int) (agility * 0.95), (int) (agility * 1.05));
     }
 
     @Override
@@ -39,7 +46,7 @@ public class Ghost extends Enemies {
     }
 
     public void setStrength(int strength) {
-        this.strength = strength;
+        this.strength = random.randomNumber((int) (strength * 0.95), (int) (strength * 1.05));
     }
 
     @Override

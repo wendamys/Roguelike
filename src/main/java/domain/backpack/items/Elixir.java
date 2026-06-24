@@ -3,18 +3,24 @@ package domain.backpack.items;
 import domain.backpack.Item;
 import domain.backpack.ItemsSubType;
 import domain.backpack.ItemsType;
+import domain.map.Level;
 import domain.navigator.Position;
 
 import static domain.MathUtils.MathUtils.randomItemsSubType;
 
 public class Elixir extends Item {
 
-    private ItemsSubType subType;
+    private int value = 50;
+    private final ItemsType type = ItemsType.ELIXIR;
+    private ItemsSubType subType = null;
 
-    public Elixir(String name, ItemsType type, ItemsSubType subType, int value, Position position) {
-        super("E", ItemsType.ELIXIR, subType, value, position);
+    public Elixir(Position position, Level level) {
+        super(position, level);
         this.setSubType();
+        this.setValue((int) (value * level.getCoefItem()));
     }
+
+    static MathUtils random = new MathUtils();
 
     /**
      * Задает рандомный подтип предмета
@@ -26,6 +32,25 @@ public class Elixir extends Item {
     @Override
     public ItemsSubType getSubType() {
         return subType;
+    }
+
+    @Override
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = random.randomNumber((int) (value * 0.95), (int) (value * 1.05));
+    }
+
+    @Override
+    public String getName() {
+        return "E";
+    }
+
+    @Override
+    public ItemsType getType() {
+        return type;
     }
 
     @Override
