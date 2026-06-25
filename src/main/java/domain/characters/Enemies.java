@@ -10,7 +10,7 @@ abstract public class Enemies extends Character {
     protected EnemiesType type;
     boolean isChasing = false; // Флаг, устанавливающий, преследует ли монстр игрока
     DirectionType dir; // Направление в котором двигался монстр
-    private int hostility = 1;
+    private int hostility;
     // (используется для змея, который должен постоянно менять направление движения)
 
     public Enemies(Position position) {
@@ -27,5 +27,9 @@ abstract public class Enemies extends Character {
 
     public EnemiesType getType() {
         return type;
+    }
+
+    public boolean isHostility(Player player) {
+        return false;
     }
 }
