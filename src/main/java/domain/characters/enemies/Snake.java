@@ -14,8 +14,9 @@ public class Snake extends Enemies {
     private int agility = 50;
     private int strength = 30;
 
-    public Snake(Position position, Level level) {
+    public Snake(Position position) {
         super(position);
+        Level level = new Level();
         this.setHealthBegin((int) (health * level.getCoefEnemy()));
         this.setAgility((int) (agility * level.getCoefEnemy()));
         this.setStrength((int) (strength * level.getCoefEnemy()));
