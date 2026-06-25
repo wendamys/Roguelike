@@ -2,15 +2,16 @@ package domain.characters;
 
 import domain.characters.enemies.EnemiesType;
 import domain.navigator.DirectionType;
+import domain.navigator.MovementSystem;
 import domain.navigator.Position;
 
 
 abstract public class Enemies extends Character {
 
     protected EnemiesType type;
-    boolean isChasing = false; // Флаг, устанавливающий, преследует ли монстр игрока
     DirectionType dir; // Направление в котором двигался монстр
     private int hostility;
+    MovementSystem mv;
     // (используется для змея, который должен постоянно менять направление движения)
 
     public Enemies(Position position) {
@@ -39,8 +40,8 @@ abstract public class Enemies extends Character {
         Position enemyPos = new Position(getPosition().getX(), getPosition().getY());
         Position playerPos = new Position(player.getPosition().getX(), player.getPosition().getY());
 
-        System.out.println("Coordinate player: " + player.getPosition().getX() + " " + player.getPosition().getY());
-        System.out.println("Coordinate enemy: " + enemyPos.getX() + " " + enemyPos.getY());
+        // System.out.println("Coordinate player: " + player.getPosition().getX() + " " + player.getPosition().getY());
+        // System.out.println("Coordinate enemy: " + enemyPos.getX() + " " + enemyPos.getY());
 
         // Перебираем пути, находим минимальный в зависимости от distanceTo
         double min = Double.MAX_VALUE;
@@ -52,8 +53,15 @@ abstract public class Enemies extends Character {
                 min = findRange;
                 dirMove = dT;
             }
-            System.out.println("Range to player :" + findRange);
+            // System.out.println("Range to player :" + findRange);
         }
         return dirMove;
     }
+
+    public DirectionType convergenceIsHostility(Player player) {
+        if (isHostility(player)) { return convergence(player); }
+        return null;
+    }
+
+
 }
