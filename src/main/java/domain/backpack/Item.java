@@ -13,24 +13,14 @@ public abstract class Item {
         this.position = position;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() {return name;}
 
-    public ItemsType getType() {
-        return type;
-    }
+    public ItemsType getType() {return type;}
 
-    public int getValue() {
-        return 30;
-    }
+    public int getValue() { return 30;}
 
-    protected Position getPosition() {
-        return position;
-    }
+    protected Position getPosition() {return position;}
 
-    public ItemsSubType getSubType() {
-        return subType;
-    }
+    public ItemsSubType getSubType() {return subType;}
 
 }

@@ -23,9 +23,7 @@ public class MathUtils {
      *
      * @return число с плавающей точкой
      */
-    public static double randomValueDouble() {
-        return random.nextDouble();
-    }
+    public static double randomValueDouble() {return random.nextDouble();}
 
     public static ItemsSubType randomItemsSubType() {
         return switch (randomNumber(1, 3)) {
