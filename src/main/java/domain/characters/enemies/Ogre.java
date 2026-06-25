@@ -14,8 +14,9 @@ public class Ogre extends Enemies {
     private int agility = 50;
     private int strength = 50;
 
-    public Ogre(Position position, Level level) {
+    public Ogre(Position position) {
         super(position);
+        Level level = new Level();
         this.setHealthBegin((int) (health * level.getCoefEnemy()));
         this.setAgility((int) (agility * level.getCoefEnemy()));
         this.setStrength((int) (strength * level.getCoefEnemy()));

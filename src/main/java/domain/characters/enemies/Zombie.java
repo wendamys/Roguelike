@@ -14,8 +14,9 @@ public class Zombie extends Enemies {
     private int agility = 20;
     private int strength = 20;
 
-    public Zombie(Position position, Level level) {
+    public Zombie(Position position) {
         super(position);
+        Level level = new Level();
         this.setHealthBegin((int) (health * level.getCoefEnemy()));
         this.setAgility((int) (agility * level.getCoefEnemy()));
         this.setStrength((int) (strength * level.getCoefEnemy()));
