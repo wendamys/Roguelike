@@ -89,12 +89,12 @@ public class AttackSystem {
                 }
                 if (checkHit(player, enemy, PLAYER)) {
                     int newHealth = Math.max(enemy.getHealth() - calculateDamage(player, enemy, PLAYER, battleInfo), 0);
-                    // System.out.println("у ENEMIES "  + "Было hp: " + enemy.getHealth() + " Стало: " + newHealth);
+                    System.out.println("у ENEMIES "  + "Было hp: " + enemy.getHealth() + " Стало: " + newHealth);
                     enemy.setHealth(newHealth);
                 }
                 if (enemy.getHealth() == 0) {
                     player.setGold(player.getGold() + calculateLoot(enemy));
-                    // System.out.println("Голда у игрока: " + player.getGold());
+                    System.out.println("Голда у игрока: " + player.getGold());
                 }
             }
             case ENEMIES -> {
@@ -103,7 +103,7 @@ public class AttackSystem {
                 }
                 if (checkHit(player, enemy, ENEMIES)) {
                     int newHealth = Math.max(player.getHealth() - calculateDamage(player, enemy, ENEMIES, battleInfo), 0);
-                    // System.out.println("у PLAYER "  + "Было hp: " + player.getHealth() + " Стало: " + newHealth);
+                    System.out.println("у PLAYER "  + "Было hp: " + player.getHealth() + " Стало: " + newHealth);
                     player.setHealth(newHealth);
                 }
             }
