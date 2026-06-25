@@ -2,6 +2,7 @@ package domain.characters.enemies;
 
 import domain.MathUtils.MathUtils;
 import domain.characters.Enemies;
+import domain.characters.Player;
 import domain.map.Level;
 import domain.navigator.Position;
 
@@ -61,6 +62,16 @@ public class Ghost extends Enemies {
     @Override
     public String getName() {
         return "g";
+    }
+
+    @Override
+    public int getHostility() {
+        return 3;
+    }
+
+    @Override
+    public boolean isHostility(Player player) {
+        return getPosition().distanceTo(player.getPosition()) <= getHostility();
     }
 
     @Override

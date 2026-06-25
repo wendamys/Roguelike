@@ -1,6 +1,7 @@
 package domain.characters.enemies;
 
 import domain.characters.Enemies;
+import domain.characters.Player;
 import domain.map.Level;
 import domain.navigator.Position;
 
@@ -55,6 +56,16 @@ public class Vampire extends Enemies {
     @Override
     public String getName() {
         return "v";
+    }
+
+    @Override
+    public int getHostility() {
+        return 4;
+    }
+
+    @Override
+    public boolean isHostility(Player player) {
+        return getPosition().distanceTo(player.getPosition()) <= getHostility();
     }
 
     @Override
