@@ -13,6 +13,8 @@ repositories {
 dependencies {
     // Подключаем Lanterna вместо старого JCurses
     implementation 'com.googlecode.lanterna:lanterna:3.1.2'
+    // Подключаем Gson
+    implementation('com.google.code.gson:gson:2.14.0')
 
     // Зависимости для автоматических тестов JUnit 5
     testImplementation platform('org.junit:junit-bom:5.10.0')
