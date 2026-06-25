@@ -32,4 +32,28 @@ abstract public class Enemies extends Character {
     public boolean isHostility(Player player) {
         return false;
     }
+
+    public DirectionType convergence(Character player) {
+
+        //  Создаем врага с текущий позицией
+        Position enemyPos = new Position(getPosition().getX(), getPosition().getY());
+        Position playerPos = new Position(player.getPosition().getX(), player.getPosition().getY());
+
+        System.out.println("Coordinate player: " + player.getPosition().getX() + " " + player.getPosition().getY());
+        System.out.println("Coordinate enemy: " + enemyPos.getX() + " " + enemyPos.getY());
+
+        // Перебираем пути, находим минимальный в зависимости от distanceTo
+        double min = Double.MAX_VALUE;
+        DirectionType dirMove = DirectionType.FORWARD;
+        for (DirectionType dT : DirectionType.values()) {
+            enemyPos = enemyPos.posDir(dT);
+            double findRange = enemyPos.distanceTo(playerPos);
+            if (findRange <= min) {
+                min = findRange;
+                dirMove = dT;
+            }
+            System.out.println("Range to player :" + findRange);
+        }
+        return dirMove;
+    }
 }

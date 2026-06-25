@@ -42,11 +42,6 @@ public class Position {
         return x * 15 + y;
     }
 
-    //    @Override
-    //    public String toString() {
-    //        return String.format("Distance(%.2f)", ;
-    //    }
-
     /**
      * Метод {@link #posDir(DirectionType direction)} создает новую позицию
      * в зависимости от того направления, которое прислали
@@ -64,29 +59,4 @@ public class Position {
             case RIGHT -> new Position(x + 1, y);
         };
     }
-
-    public DirectionType convergence(Character player) {
-
-        //  Создаем врага с текущий позицией
-        Position enemyPos = new Position(getX(), getY());
-        Position playerPos = new Position(player.getPosition().getX(), player.getPosition().getY());
-
-        System.out.println("Coordinate player: " + player.getPosition().getX() + " " + player.getPosition().getY());
-        System.out.println("Coordinate enemy: " + enemyPos.getX() + " " + enemyPos.getY());
-
-        // Перебираем пути, находим минимальный в зависимости от distanceTo
-        double min = Double.MAX_VALUE;
-        DirectionType dirMove = DirectionType.FORWARD;
-        for (DirectionType dT : DirectionType.values()) {
-            enemyPos = posDir(dT);
-            double findRange = enemyPos.distanceTo(playerPos);
-            if (findRange <= min) {
-                min = findRange;
-                dirMove = dT;
-            }
-            System.out.println("Range to player :" + findRange);
-        }
-        return dirMove;
-    }
-
 }

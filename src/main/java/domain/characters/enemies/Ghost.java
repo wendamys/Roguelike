@@ -15,8 +15,9 @@ public class Ghost extends Enemies {
     private int agility = 50;
     private int strength = 20;
 
-    public Ghost(Position position, Level level) {
+    public Ghost(Position position) {
         super(position);
+        Level level = new Level();
         this.setHealthBegin((int) (health * level.getCoefEnemy()));
         this.setAgility((int) (agility * level.getCoefEnemy()));
         this.setStrength((int) (strength * level.getCoefEnemy()));

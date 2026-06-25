@@ -20,12 +20,12 @@ public class AttackEnemiesForPlayerTest {
 
     static Stream<Enemies> enemyProvider() {
         return Stream.of(
-                new Vampire(new Position(0, 0), new Level()),
-                new Snake(new Position(0, 0), new Level()),
-                new Zombie(new Position(0, 0), new Level()),
-                new Ogre(new Position(0, 0), new Level()),
-                new Ghost(new Position(0, 0), new Level()),
-                new Mimic(new Position(0, 0), new Level())
+                new Vampire(new Position(0, 0)),
+                new Snake(new Position(0, 0)),
+                new Zombie(new Position(0, 0)),
+                new Ogre(new Position(0, 0)),
+                new Ghost(new Position(0, 0)),
+                new Mimic(new Position(0, 0))
         );
     }
 
@@ -33,7 +33,7 @@ public class AttackEnemiesForPlayerTest {
     @MethodSource("enemyProvider")
     void AttackEnemyForPlayer(Enemies enemy) {
         Player player = new Player(new Position(0, 0));
-        // System.out.println("\n" + enemy.getType() + " vs Player");
+        System.out.println("\n" + enemy.getType() + " vs Player");
         for (int i = 0; 1000 > i; i++) {
             atk.attack(player, enemy, ENEMIES, battleInfo);
             if (player.getHealth() == 0) {

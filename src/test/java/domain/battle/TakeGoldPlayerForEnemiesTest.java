@@ -3,7 +3,6 @@ package domain.battle;
 import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.characters.enemies.*;
-import domain.map.Level;
 import domain.navigator.Position;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,12 +20,12 @@ public class TakeGoldPlayerForEnemiesTest {
 
     private static List<Enemies> getEnemyList() {
         return List.of(
-            new Vampire(new Position(0, 0), new Level()),
-            new Snake(new Position(0, 0), new Level()),
-            new Zombie(new Position(0, 0), new Level()),
-            new Ogre(new Position(0, 0), new Level()),
-            new Ghost(new Position(0, 0), new Level()),
-            new Mimic(new Position(0, 0), new Level())
+            new Vampire(new Position(0, 0)),
+            new Snake(new Position(0, 0)),
+            new Zombie(new Position(0, 0)),
+            new Ogre(new Position(0, 0)),
+            new Ghost(new Position(0, 0)),
+            new Mimic(new Position(0, 0))
         );
     }
 
