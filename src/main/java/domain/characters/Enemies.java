@@ -2,7 +2,6 @@ package domain.characters;
 
 import domain.characters.enemies.EnemiesType;
 import domain.navigator.DirectionType;
-import domain.navigator.MovementSystem;
 import domain.navigator.Position;
 
 
@@ -37,11 +36,12 @@ abstract public class Enemies extends Character {
         return getPosition().distanceTo(player.getPosition()) <= getHostility();
     }
 
+    /**
+     * метод {@link #isHostility(Player)} выбирает лучшее направление движения до игрока
+     * @param player игрок
+     * @return направление движения
+     */
     public DirectionType convergence(Player player) {
-
-        // System.out.println("Coordinate player: " + player.getPosition().getX() + " " + player.getPosition().getY());
-        // System.out.println("Coordinate enemy: " + getPosition().getX() + " " + getPosition().getY());
-        // Перебираем пути, находим минимальный в зависимости от distanceTo
         double min = Double.MAX_VALUE;
         DirectionType dirMove = null;
         for (DirectionType dT : DirectionType.values()) {
@@ -50,15 +50,17 @@ abstract public class Enemies extends Character {
                 min = findRange;
                 dirMove = dT;
             }
-            // System.out.println("Range to player :" + findRange);
         }
         return dirMove;
     }
 
+    /**
+     * метод {@link #convergenceIsHostility(Player player)} проверяет в радиусе агра ли игрок
+     * @param player игрок
+     * @return Направление движения, либо null
+     */
     public DirectionType convergenceIsHostility(Player player) {
         if (isHostility(player)) return convergence(player);
         return null;
     }
-
-
 }
