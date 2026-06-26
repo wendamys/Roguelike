@@ -1,14 +1,16 @@
-package presentation;
+package domain.navigator;
 
 import domain.characters.Player;
 import domain.characters.enemies.Zombie;
-import domain.navigator.DirectionType;
-import domain.navigator.MovementSystem;
-import domain.navigator.Position;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Main {
-    public static void main(String[] args) {
+public class EnemiesConvergenceTest {
 
+
+
+    @Test
+    void convergenceTest() {
         MovementSystem mv = new MovementSystem();
 
         Zombie zombie = new Zombie(new Position(0, 0));
@@ -18,5 +20,8 @@ public class Main {
         mv.moveDir(dt, zombie);
         zombie.convergence(player);
 
+        assertEquals(1, zombie.getPosition().getY());
+
     }
+
 }
