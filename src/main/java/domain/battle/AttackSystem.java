@@ -8,8 +8,6 @@ import domain.characters.enemies.Vampire;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
 
-import java.util.ArrayList;
-
 import static domain.MathUtils.MathUtils.randomNumber;
 import static domain.MathUtils.MathUtils.randomValueDouble;
 import static domain.battle.CharacterType.ENEMIES;
@@ -50,11 +48,8 @@ public class AttackSystem {
      */
     static int ogreDamageFormula(Enemies enemy, BattleInfoType battle_info) {
         int damage = 0;
-        if (!battle_info.ogreCoolDown) {
-            damage = enemy.getStrength();
-        } else {
-            battle_info.ogreCoolDown = false;
-        }
+        if (!battle_info.ogreCoolDown) damage = enemy.getStrength();
+        else battle_info.ogreCoolDown = false;
         return damage;
     }
 
@@ -84,9 +79,7 @@ public class AttackSystem {
     public void attack(Player player, Enemies enemy, CharacterType currTurn, BattleInfoType battleInfo) {
         switch (currTurn) {
             case PLAYER -> {
-                if (enemy.getHealth() == 0) {
-                    return;
-                }
+                if (enemy.getHealth() == 0) return;
                 if (checkHit(player, enemy, PLAYER)) {
                     int newHealth = Math.max(enemy.getHealth() - calculateDamage(player, enemy, PLAYER, battleInfo), 0);
                     System.out.println("у ENEMIES "  + "Было hp: " + enemy.getHealth() + " Стало: " + newHealth);
@@ -98,9 +91,7 @@ public class AttackSystem {
                 }
             }
             case ENEMIES -> {
-                if (player.getHealth() == 0) {
-                    return;
-                }
+                if (player.getHealth() == 0) return;
                 if (checkHit(player, enemy, ENEMIES)) {
                     int newHealth = Math.max(player.getHealth() - calculateDamage(player, enemy, ENEMIES, battleInfo), 0);
                     System.out.println("у PLAYER "  + "Было hp: " + player.getHealth() + " Стало: " + newHealth);
@@ -109,12 +100,6 @@ public class AttackSystem {
             }
         }
     }
-
-    /**
-     * @defgroup monster_attack Формулы атаки монстров
-     * Модуль описывает функции, описывающие формулы, по которым вычисляется урон монстров
-     * Урон зависит от силы (за исключением вампира), также для некоторых из монстров присутствуют уникальные элементы, такие как шанс усыпить игрока у змеи
-     */
 
     /**
      * Функция, высчитывающая, произойдёт ли попадание
@@ -132,9 +117,7 @@ public class AttackSystem {
         }
         boolean isOgre = enemy.getType() == EnemiesType.OGRE;
         int random = (int) (randomValueDouble() * 100);
-        if ((chance > random) || isOgre) {
-            wasHit = true;
-        }
+        if ((chance > random) || isOgre) wasHit = true;
         // if (wasHit) { System.out.println(currTurn + " Попал по противнику"); } else { System.out.println(currTurn + " Промахнулся по противнику"); }
         return wasHit;
     }
@@ -152,19 +135,13 @@ public class AttackSystem {
         int damage = 0;
         switch (currTurn) {
             case PLAYER -> {
-                if (enemy.getType() == EnemiesType.VAMPIRE && battleInfo.vampireFirstAttack) {
-                    battleInfo.vampireFirstAttack = false;
-                } else {
-                    battleInfo.playerAsSleep = false;
-                }
+                if (enemy.getType() == EnemiesType.VAMPIRE && battleInfo.vampireFirstAttack) battleInfo.vampireFirstAttack = false;
+                else battleInfo.playerAsSleep = false;
                 damage = (int) (player.getBuffStrength() * 0.5);
             }
             case ENEMIES -> {
-                if (enemy instanceof Vampire) {
-                    damage = vampireDamageFormula(player);
-                } else {
-                    damage = EnemyDamageFormula(enemy, battleInfo);
-                }
+                if (enemy instanceof Vampire) damage = vampireDamageFormula(player);
+                else damage = EnemyDamageFormula(enemy, battleInfo);
             }
         }
         return damage;
@@ -179,9 +156,7 @@ public class AttackSystem {
      * @return Шанс попадания
      */
     int hitChanceFormula(int attackerAgility, int targetAgility) {
-        if (attackerAgility >= targetAgility) {
-            return (int) (((attackerAgility - targetAgility) * 0.3) + 70);
-        }
+        if (attackerAgility >= targetAgility) return (int) (((attackerAgility - targetAgility) * 0.3) + 70);
         return (int) (70 - (targetAgility - attackerAgility) * 0.3);
     }
 

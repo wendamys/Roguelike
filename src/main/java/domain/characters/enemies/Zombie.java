@@ -1,7 +1,6 @@
 package domain.characters.enemies;
 
 import domain.characters.Enemies;
-import domain.characters.Player;
 import domain.map.Level;
 import domain.navigator.Position;
 
@@ -59,7 +58,6 @@ public class Zombie extends Enemies {
         return type;
     }
 
-    @Override
     public String getName() {
         return "z";
     }
