@@ -11,7 +11,6 @@ abstract public class Enemies extends Character {
     protected EnemiesType type;
     DirectionType dir; // Направление в котором двигался монстр
     private int hostility;
-    MovementSystem mv;
     // (используется для змея, который должен постоянно менять направление движения)
 
     public Enemies(Position position) {
@@ -22,8 +21,7 @@ abstract public class Enemies extends Character {
         return hostility;
     }
 
-    public void setHostility(int hostility) {
-        this.hostility = hostility;
+    public void setHostility(int hostility) { this.hostility = hostility;
     }
 
     public EnemiesType getType() {
@@ -39,21 +37,15 @@ abstract public class Enemies extends Character {
         return getPosition().distanceTo(player.getPosition()) <= getHostility();
     }
 
-    public DirectionType convergence(Character player) {
-
-        //  Создаем врага с текущий позицией
-        Position enemyPos = new Position(getPosition().getX(), getPosition().getY());
-        Position playerPos = new Position(player.getPosition().getX(), player.getPosition().getY());
+    public DirectionType convergence(Player player) {
 
         // System.out.println("Coordinate player: " + player.getPosition().getX() + " " + player.getPosition().getY());
-        // System.out.println("Coordinate enemy: " + enemyPos.getX() + " " + enemyPos.getY());
-
+        // System.out.println("Coordinate enemy: " + getPosition().getX() + " " + getPosition().getY());
         // Перебираем пути, находим минимальный в зависимости от distanceTo
         double min = Double.MAX_VALUE;
-        DirectionType dirMove = DirectionType.FORWARD;
+        DirectionType dirMove = null;
         for (DirectionType dT : DirectionType.values()) {
-            enemyPos = enemyPos.posDir(dT);
-            double findRange = enemyPos.distanceTo(playerPos);
+            double findRange = getPosition().posDir(dT).distanceTo(player.getPosition());
             if (findRange <= min) {
                 min = findRange;
                 dirMove = dT;
@@ -64,7 +56,7 @@ abstract public class Enemies extends Character {
     }
 
     public DirectionType convergenceIsHostility(Player player) {
-        if (isHostility(player)) { return convergence(player); }
+        if (isHostility(player)) return convergence(player);
         return null;
     }
 
