@@ -68,10 +68,6 @@ public class Ogre extends Enemies {
     public int getHostility() {
         return 6;
     }
-    @Override
-    public boolean isHostility(Player player) {
-        return getPosition().distanceTo(player.getPosition()) <= getHostility();
-    }
 
     @Override
     public String toString() {
