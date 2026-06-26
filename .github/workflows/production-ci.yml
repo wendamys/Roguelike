@@ -1,13 +1,13 @@
-name: Production Release CI/CD
+name: Development CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "develop", "**" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "develop" ]
 
 jobs:
-  test-and-verify:
+  test-and-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -20,16 +20,16 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      - name: Run Production Tests
+      - name: Run Tests with Gradle
         run: |
           chmod +x gradlew
           ./gradlew test
 
-  deploy-to-production:
-    needs: test-and-verify
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to Production
-        run: |
-          echo "ВНИМАНИЕ: Деплой стабильной версии на боевой сервер (Production)!"
+      - name: Build JAR Game Artifact
+        run: ./gradlew build -x test
+
+      - name: Upload Game Artifact to GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: roguelike-game-build
+          path: build/libs/*.jar
