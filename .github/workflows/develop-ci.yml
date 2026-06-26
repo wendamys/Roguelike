@@ -1,13 +1,15 @@
-name: Development CI
+name: Java CI Tests
 
 on:
   push:
-    branches: [ "develop", ["main"], "**" ]
+    # Запускаем тесты при пуше во все ветки
+    branches: [ "**" ]
   pull_request:
-    branches: [ "develop", ["main"], "**" ]
+    # Обязательно запускаем тесты внутри PR, чтобы работала защита веток
+    branches: [ "main", "develop" ]
 
 jobs:
-  test-and-build:
+  test-code:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -24,12 +26,3 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew test
-
-      - name: Build JAR Game Artifact
-        run: ./gradlew build -x test
-
-      - name: Upload Game Artifact to GitHub
-        uses: actions/upload-artifact@v4
-        with:
-          name: roguelike-game-build
-          path: build/libs/*.jar

@@ -1,8 +1,6 @@
 package domain.characters.enemies;
 
-import domain.MathUtils.MathUtils;
 import domain.characters.Enemies;
-import domain.characters.Player;
 import domain.map.Level;
 import domain.navigator.Position;
 

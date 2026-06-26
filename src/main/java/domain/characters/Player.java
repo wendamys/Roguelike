@@ -16,7 +16,7 @@ public class Player extends Character {
     private int maxHealth = 500;
 
     // Изменяемые характеристики героя
-    private int buffHealth = maxHealth;
+    private int health = maxHealth;
     private int buffAgility = getAgility();
     private int buffStrength = getStrength();
     private int gold = 0;
@@ -39,7 +39,6 @@ public class Player extends Character {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -60,12 +59,12 @@ public class Player extends Character {
         this.maxHealth = maxHealth;
     }
 
-    public int getBuffHealth() {
-        return buffHealth;
+    public int getHealth() {
+        return health;
     }
 
-    public void setBuffHealth(int buffHealth) {
-        this.buffHealth = buffHealth;
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public int getBuffStrength() {
@@ -85,7 +84,7 @@ public class Player extends Character {
     }
 
     public void setUpHealthRegen(int regen) {
-        this.buffHealth = Math.min((getBuffHealth() + regen), maxHealth);
+        this.health = Math.min((getHealth() + regen), maxHealth);
     }
 
     /**
@@ -108,7 +107,7 @@ public class Player extends Character {
      * @param food предмет еды
      */
     private void useFoodValue(Food food) {
-        buffHealth = Math.min(buffHealth + food.getValue(), maxHealth);
+        health = Math.min(health + food.getValue(), maxHealth);
     }
 
     /**
@@ -131,7 +130,7 @@ public class Player extends Character {
      */
     private void useElixirValue(Elixir elixir) {
         switch (elixir.getSubType()) {
-            case HEALTH -> buffHealth = Math.min(buffHealth + elixir.getValue(), maxHealth);
+            case HEALTH -> health = Math.min(health + elixir.getValue(), maxHealth);
             case AGILITY -> buffAgility += elixir.getValue();
             case STRENGTH -> buffStrength += elixir.getValue();
         }
@@ -148,7 +147,7 @@ public class Player extends Character {
 
     @Override
     public String toString() {
-        return String.format("Player:\nmaxHealth: %d\nHealth: %d\nupHealth: %d\nAgility: %d\nupAgility: %d\nStrength: %d\nUpStrength: %d", getMaxHealth(), getHealth(), getBuffHealth(), getAgility(), getBuffAgility(), getStrength(), getBuffStrength());
+        return String.format("Player:\nmaxHealth: %d\nHealth: %d\nupHealth: %d\nAgility: %d\nupAgility: %d\nStrength: %d\nUpStrength: %d", getMaxHealth(), getHealth(), getHealth(), getAgility(), getBuffAgility(), getStrength(), getBuffStrength());
     }
 
 

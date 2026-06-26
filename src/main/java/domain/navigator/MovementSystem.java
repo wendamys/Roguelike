@@ -45,15 +45,18 @@ public class MovementSystem {
         moveDir(randomDirection(), character);
     }
 
+
+    /**
+     * Метод {@link #EnemyGameMove(Player player, Enemies enemy)} служит для того
+     * чтобы моб ходил рандомно до того момента пока не игрок не попадет в его радиус
+     *
+     * @param player игрок
+     * @param enemy противник
+     */
     public void EnemyGameMove(Player player, Enemies enemy) {
         while (enemy.getHealth() > 0) {
             if (enemy.convergenceIsHostility(player) == null) moveRandom(enemy);
             else moveDir(enemy.convergenceIsHostility(player), enemy);
         }
-
-//        public void CheckContactEnemyToPlayer () {
-//            {
-//            }
-//        }
     }
 }
