@@ -30,8 +30,13 @@ abstract public class Enemies extends Character {
         return type;
     }
 
+    /**
+     * метод {@link #isHostility(Player)} проверяет, входит ли игрок в радиус агра врага
+     * @param player игрок
+     * @return входит/не входит
+     */
     public boolean isHostility(Player player) {
-        return false;
+        return getPosition().distanceTo(player.getPosition()) <= getHostility();
     }
 
     public DirectionType convergence(Character player) {

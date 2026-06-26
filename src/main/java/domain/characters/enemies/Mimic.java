@@ -65,11 +65,6 @@ public class Mimic extends Enemies {
     }
 
     @Override
-    public boolean isHostility(Player player) {
-        return getPosition().distanceTo(player.getPosition()) <= getHostility();
-    }
-
-    @Override
     public String toString() {
         return String.format("Mimiс: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s", getName(), getHealth(), getAgility(), getStrength(), getType());
     }
