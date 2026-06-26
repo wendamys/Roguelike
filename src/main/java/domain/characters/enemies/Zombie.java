@@ -26,6 +26,7 @@ public class Zombie extends Enemies {
         return type;
     }
 
+    @Override
     public String getName() {
         return "z";
     }
