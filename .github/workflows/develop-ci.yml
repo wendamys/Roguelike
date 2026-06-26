@@ -1,13 +1,13 @@
-name: Java CI Tests
+name: Development CI
 
 on:
   push:
-    branches: [ "**" ]
+    branches: [ "develop", ["main"], "**" ]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ "develop", ["main"], "**" ]
 
 jobs:
-  test-code:
+  test-and-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
