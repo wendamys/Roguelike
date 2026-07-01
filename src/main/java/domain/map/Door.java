@@ -1,9 +1,14 @@
 package domain.map;
 
+import domain.MathUtils.MathUtils;
+import domain.navigator.DirectionType;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static domain.MathUtils.MathUtils.randomDirection;
 import static domain.MathUtils.MathUtils.randomNumber;
+import static domain.navigator.DirectionType.*;
 
 public class Door {
     private final Room room;
@@ -17,17 +22,16 @@ public class Door {
     public int getWidth() {
         return room.getWidth();
     }
-
     public int getHeight() {
         return room.getHeight();
     }
+    public boolean getIsClose() {
+        return isClose;
+    }
+
 
     public void test() {
         System.out.println("Ширина: " + room.getWidth() + " Высота: " + room.getHeight());
-    }
-
-    public boolean getIsClose() {
-        return isClose;
     }
 
     public void setClose(boolean close) {
@@ -54,6 +58,18 @@ public class Door {
         return randomNumber(1, room.getHeight() - 1);
     }
 
+    // мне нужно передать сюда лист с комнатами, чтобы в каждую комнату
+    // в зависимости от ее положения на карте вызвалась функция
+    // которая выбирает сколько будет дверей
+    // после нужно вызвать функцию от количества дверей в каких направлениях они будут
+    // также нужно учесть что двери должны быть в разных направлениях
+    // и если они есть уже в одном из, то генерация в этой стороне происходить не должна
+    public void randomCreateDoorRoom(List<Room> roomList) {
+
+        randomPositionDoorHeight();
+        randomPositionDoorWidth();
+
+    }
 
     /**
      * метод {@link #randomRoomsIsMap()} рандомно создает комнаты на карте
@@ -89,11 +105,6 @@ public class Door {
         return exitDoorList;
     }
 
-    /**
-     * метод {@link #randomCountDoorIsRoom()} рандомно выбирает кол-во дверей
-     * в зависимости от нахождения на карте
-     * @return лист с количеством дверей
-     */
     public void generationDoorIsRoom() {
         List<Integer> listInteger = randomCountDoorIsRoom();
         List<Integer> listIntegerDoor = new ArrayList<>();
@@ -107,14 +118,6 @@ public class Door {
         }
 //        return listIntegerDoor;
 
-
-    public int randomDoorIsWall() {
-        return randomNumber(1, 4);
-            // 1 System.out.println("Дверь слева");
-            // 2 System.out.println("Дверь справа");
-            // 3 System.out.println("Дверь снизу");
-            // 4 System.out.println("Дверь сверху");
-    }
 
 
     public int exitCountDoor() {

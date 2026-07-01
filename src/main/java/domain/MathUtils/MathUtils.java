@@ -1,6 +1,7 @@
 package domain.MathUtils;
 
 import domain.backpack.ItemsSubType;
+import domain.navigator.DirectionType;
 
 import java.util.Random;
 
@@ -31,6 +32,20 @@ public class MathUtils {
             case 2 -> ItemsSubType.AGILITY;
             case 3 -> ItemsSubType.STRENGTH;
             default -> throw new IllegalStateException("Unexpected value: " + randomNumber(1, 3));
+        };
+    }
+
+    /**
+     * Метод {@link #randomDirection()} выбирает рандомно направление
+     *
+     * @return Направление
+     */
+    public static DirectionType randomDirection() {
+        return switch (randomNumber(1, 4)) {
+            case 1 -> DirectionType.FORWARD;
+            case 2 -> DirectionType.DOWN;
+            case 3 -> DirectionType.RIGHT;
+            default -> DirectionType.LEFT;
         };
     }
 }
