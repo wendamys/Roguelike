@@ -22,15 +22,13 @@ public class Room {
     private int capacityEnemy;
     private int capacityItem;
 
-    private final Level level;
     private Position position;
     private RoomType roomType;
 
     private final ArrayList<Enemies> enemyList = new ArrayList<>(capacityEnemy);
     private final ArrayList<Item> itemList = new ArrayList<>(capacityItem);
 
-    public Room(Level level) {
-        this.level = level;
+    public Room() {
         this.width = randomNumber(4, 12);
         this.height = randomNumber(4, 12);
         this.area = width * height;
@@ -42,10 +40,6 @@ public class Room {
         // добавление врагов и предметов в пул комнаты
         addEnemyList();
         addItemList();
-    }
-
-    public Level getLevel() {
-        return level;
     }
 
     public int getWidth() { return width; }
@@ -153,10 +147,10 @@ public class Room {
      */
     private void addItemValue(ItemsType itemsType) {
         switch (itemsType) {
-            case ELIXIR -> itemList.add(new Elixir(randomPosition(), level));
-            case FOOD -> itemList.add(new Food(randomPosition(), level));
-            case SCROLL -> itemList.add(new Scroll(randomPosition(), level));
-            case WEAPON -> itemList.add(new Weapon(randomPosition(), level));
+            case ELIXIR -> itemList.add(new Elixir(randomPosition()));
+            case FOOD -> itemList.add(new Food(randomPosition()));
+            case SCROLL -> itemList.add(new Scroll(randomPosition()));
+            case WEAPON -> itemList.add(new Weapon(randomPosition()));
         }
     }
 

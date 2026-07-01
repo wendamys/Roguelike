@@ -15,10 +15,10 @@ public class Scroll extends Item {
     private int value = 10;
     private ItemsSubType subType = null;
 
-    public Scroll(Position position, Level level) {
-        super(position, level);
+    public Scroll(Position position) {
+        super(position);
         this.setSubType();
-        this.setValue((int) (value * level.getCoefItem()));
+        this.setValue((int) (value * Level.getCoefItem()));
     }
 
     /**

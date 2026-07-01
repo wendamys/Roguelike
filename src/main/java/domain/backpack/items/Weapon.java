@@ -14,9 +14,9 @@ public class Weapon extends Item {
     private final ItemsSubType subType = ItemsSubType.STRENGTH;
     private int value = 60;
 
-    public Weapon(Position position, Level level) {
-        super(position, level);
-        this.setValue((int) (value * level.getCoefItem()));
+    public Weapon(Position position) {
+        super(position);
+        this.setValue((int) (value * Level.getCoefItem()));
     }
 
     public ItemsSubType getSubType() {

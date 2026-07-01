@@ -15,10 +15,10 @@ public class Elixir extends Item {
     private int value = 50;
     private ItemsSubType subType = null;
 
-    public Elixir(Position position, Level level) {
-        super(position, level);
+    public Elixir(Position position) {
+        super(position);
         this.setSubType();
-        this.setValue((int) (value * level.getCoefItem()));
+        this.setValue((int) (value * Level.getCoefItem()));
     }
 
     /**

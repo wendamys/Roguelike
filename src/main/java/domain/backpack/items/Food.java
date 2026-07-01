@@ -14,9 +14,9 @@ public class Food extends Item {
     private final ItemsSubType subType = ItemsSubType.HEALTH;
     private int value = 50;
 
-    public Food(Position position, Level level) {
-        super(position, level);
-        this.setValue((int) (value * level.getCoefItem()));
+    public Food(Position position) {
+        super(position);
+        this.setValue((int) (value * Level.getCoefItem()));
     }
 
     public ItemsSubType getSubType() {

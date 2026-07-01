@@ -1,34 +1,30 @@
 package domain.map;
 
 public class Level {
-    private int level = 1;
-    private double coefItem = (level - 0.5) / 15 + 1;
-    private double coefEnemy = (level - 0.5) / 10 + 1;
+    private static int levelUp = 1;
 
     public Level() {
     }
 
-    public double getCoefItem() {
-        return coefItem;
+    public static void setLevelUp(int levelUp) {
+        Level.levelUp = levelUp;
     }
 
-    public void setCoefItem(double coefItem) {
-        this.coefItem = coefItem;
+    public static double getCoefEnemy() {
+        return (levelUp * 0.1) + 1;
+    }
+    public static  double getCoefItem() {
+        return (levelUp * 0.15) + 1;
     }
 
-    public int getLevel() {
-        return level;
+    @Override
+    public String toString() {
+        return String.format(
+                "\nLevel:\nlevelUp: %d\ncoefEnemy: %.3f\ncoefItem: %.3f",
+                levelUp,
+                getCoefEnemy(),
+                getCoefItem()
+        );
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public double getCoefEnemy() {
-        return coefEnemy;
-    }
-
-    public void setCoefEnemy(double coefEnemy) {
-        this.coefEnemy = coefEnemy;
-    }
 }
