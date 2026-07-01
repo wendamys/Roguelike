@@ -9,7 +9,7 @@ public abstract class Item {
     private final ItemsSubType subType = null;
     private final Position position;
 
-    public Item(Position position, Level level) {
+    public Item(Position position) {
         this.position = position;
     }
 
