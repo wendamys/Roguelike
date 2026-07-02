@@ -42,6 +42,8 @@ public class Room {
         addItemList();
     }
 
+    public RoomType getRoomType() { return roomType; }
+
     public int getWidth() { return width; }
 
     public int getHeight() { return height; }
@@ -59,6 +61,8 @@ public class Room {
         else if (area >= 49 && 99 >= area) this.roomType = RoomType.MIDDLE;
         else if (area >= 100 && 144 >= area) this.roomType = RoomType.BIG;
     }
+
+
 
     /**
      * метод {@link #randomCapacityValueEnemy(RoomType)} рандомит размерность пулла врагов
