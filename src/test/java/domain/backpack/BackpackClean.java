@@ -8,7 +8,7 @@ import java.io.PrintStream;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class BackpackAddSuccessTest {
+class BackpackClean  {
     private Backpack backpack;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
