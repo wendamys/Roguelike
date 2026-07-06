@@ -18,7 +18,7 @@ class BackpackTest {
 
     @Test
     void testClearListsRemovesAllItems() {
-        // 1. Создаем моки для предметов разных типов
+        // Создаем моки для предметов разных типов
         Item elixir = Mockito.mock(Item.class);
         Mockito.when(elixir.getType()).thenReturn(ItemsType.ELIXIR);
 
@@ -31,19 +31,19 @@ class BackpackTest {
         Item weapon = Mockito.mock(Item.class);
         Mockito.when(weapon.getType()).thenReturn(ItemsType.WEAPON);
 
-        // 2. Добавляем предметы в рюкзак
+        // Добавляем предметы в рюкзак
         backpack.takeItem(elixir);
         backpack.takeItem(food);
         backpack.takeItem(scroll);
         backpack.takeItem(weapon);
 
-        // 3. Вызываем тестируемый метод очистки
+        // Вызываем тестируемый метод очистки
         backpack.clearLists();
 
-
-        //  методы получения списков скрыты,
+        // 4. Проверяем, что списки пусты
+        // методы получения списков скрыты,
         // проверим пустоту через попытку использования предметов.
-        // Если список пуст, обращение по индексу 0 вызовет ошибку, перехватим её.
+        // Если список пуст, обращение по индексу 0 вызовет IndexOutOfBoundsException.
 
         boolean isFoodListEmpty = false;
         try {
@@ -77,7 +77,7 @@ class BackpackTest {
             isWeaponListEmpty = true;
         }
 
-        // Подтверждаем, что каждый список выбросил ошибку (значит, они пусты)
+        // каждый список выбросил ошибку (значит, они пусты)
         assertTrue(isFoodListEmpty, "Список еды должен быть пуст");
         assertTrue(isScrollListEmpty, "Список свитков должен быть пуст");
         assertTrue(isElixirListEmpty, "Список эликсиров должен быть пуст");
