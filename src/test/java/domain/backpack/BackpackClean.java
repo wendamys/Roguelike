@@ -1,84 +1,86 @@
 package domain.backpack;
 
-import org.junit.jupiter.api.AfterEach;
+import domain.characters.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.mockito.Mockito;
 
-class BackpackClean  {
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class BackpackTest {
+
     private Backpack backpack;
-    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
 
     @BeforeEach
     void setUp() {
         backpack = new Backpack();
-        // Перехватываем стандартный вывод консоли System.out
-        System.setOut(new PrintStream(outputStreamCaptor));
-    }
-
-    @AfterEach
-    void tearDown() {
-        // Возвращаем стандартную консоль обратно после каждого теста
-        System.setOut(originalOut);
     }
 
     @Test
-    void testTakeItem_Elixir_ShouldAddWithoutErrors() {
-        Item elixir = mock(Item.class);
-        when(elixir.getType()).thenReturn(ItemsType.ELIXIR);
-        when(elixir.toString()).thenReturn("MockElixir");
+    void testClearListsRemovesAllItems() {
+        // 1. Создаем моки для предметов разных типов
+        Item elixir = Mockito.mock(Item.class);
+        Mockito.when(elixir.getType()).thenReturn(ItemsType.ELIXIR);
 
-        // Вызываем метод добавления
-        assertDoesNotThrow(() -> backpack.takeItem(elixir));
+        Item food = Mockito.mock(Item.class);
+        Mockito.when(food.getType()).thenReturn(ItemsType.FOOD);
 
-        // Вызываем вывод списка в наш перехваченный поток
-        backpack.seeList(ItemsType.ELIXIR);
+        Item scroll = Mockito.mock(Item.class);
+        Mockito.when(scroll.getType()).thenReturn(ItemsType.SCROLL);
 
-        // Проверяем, что в консоль вывелся наш эликсир (значит он добавился в список)
-        assertTrue(outputStreamCaptor.toString().trim().contains("MockElixir"),
-                "Эликсир должен быть добавлен в рюкзак");
-    }
+        Item weapon = Mockito.mock(Item.class);
+        Mockito.when(weapon.getType()).thenReturn(ItemsType.WEAPON);
 
-    @Test
-    void testTakeItem_Food_ShouldAddWithoutErrors() {
-        Item food = mock(Item.class);
-        when(food.getType()).thenReturn(ItemsType.FOOD);
-        when(food.toString()).thenReturn("MockFood");
+        // 2. Добавляем предметы в рюкзак
+        backpack.takeItem(elixir);
+        backpack.takeItem(food);
+        backpack.takeItem(scroll);
+        backpack.takeItem(weapon);
 
-        assertDoesNotThrow(() -> backpack.takeItem(food));
+        // 3. Вызываем тестируемый метод очистки
+        backpack.clearLists();
 
-        backpack.seeList(ItemsType.FOOD);
-        assertTrue(outputStreamCaptor.toString().trim().contains("MockFood"),
-                "Еда должна быть добавлена в рюкзак");
-    }
 
-    @Test
-    void testTakeItem_Scroll_ShouldAddWithoutErrors() {
-        Item scroll = mock(Item.class);
-        when(scroll.getType()).thenReturn(ItemsType.SCROLL);
-        when(scroll.toString()).thenReturn("MockScroll");
+        //  методы получения списков скрыты,
+        // проверим пустоту через попытку использования предметов.
+        // Если список пуст, обращение по индексу 0 вызовет ошибку, перехватим её.
 
-        assertDoesNotThrow(() -> backpack.takeItem(scroll));
+        boolean isFoodListEmpty = false;
+        try {
+            Player mockPlayer = Mockito.mock(Player.class);
+            backpack.useItemFood(0, mockPlayer);
+        } catch (IndexOutOfBoundsException e) {
+            isFoodListEmpty = true;
+        }
 
-        backpack.seeList(ItemsType.SCROLL);
-        assertTrue(outputStreamCaptor.toString().trim().contains("MockScroll"),
-                "Свиток должен быть добавлен в рюкзак");
-    }
+        boolean isScrollListEmpty = false;
+        try {
+            Player mockPlayer = Mockito.mock(Player.class);
+            backpack.useItemScroll(0, mockPlayer);
+        } catch (IndexOutOfBoundsException e) {
+            isScrollListEmpty = true;
+        }
 
-    @Test
-    void testTakeItem_Weapon_ShouldAddWhenSpaceAvailable() {
-        Item weapon = mock(Item.class);
-        when(weapon.getType()).thenReturn(ItemsType.WEAPON);
-        when(weapon.toString()).thenReturn("MockWeapon");
+        boolean isElixirListEmpty = false;
+        try {
+            Player mockPlayer = Mockito.mock(Player.class);
+            backpack.useItemElixir(0, mockPlayer);
+        } catch (IndexOutOfBoundsException e) {
+            isElixirListEmpty = true;
+        }
 
-        assertDoesNotThrow(() -> backpack.takeItem(weapon));
+        boolean isWeaponListEmpty = false;
+        try {
+            Player mockPlayer = Mockito.mock(Player.class);
+            backpack.useItemWeapon(0, mockPlayer);
+        } catch (IndexOutOfBoundsException e) {
+            isWeaponListEmpty = true;
+        }
 
-        backpack.seeList(ItemsType.WEAPON);
-        assertTrue(outputStreamCaptor.toString().trim().contains("MockWeapon"),
-                "Оружие должно быть добавлено в рюкзак");
+        // Подтверждаем, что каждый список выбросил ошибку (значит, они пусты)
+        assertTrue(isFoodListEmpty, "Список еды должен быть пуст");
+        assertTrue(isScrollListEmpty, "Список свитков должен быть пуст");
+        assertTrue(isElixirListEmpty, "Список эликсиров должен быть пуст");
+        assertTrue(isWeaponListEmpty, "Список оружия должен быть пуст");
     }
 }
