@@ -1,10 +1,9 @@
 package domain.navigator;
 
-import domain.characters.Character;
-
 public class Position {
     private final int x;
     private final int y;
+    private boolean isClose;
 
     public Position(int x, int y) {
         this.x = x;
@@ -15,6 +14,13 @@ public class Position {
 
     public int getY() { return y;}
 
+    public boolean getIsClose() {
+        return isClose;
+    }
+
+    public void setIsClose(boolean close) {
+        isClose = close;
+    }
     /**
      * Метод {@link #distanceTo(Position)} вычисляет дистанцию между двумя объектами
      *
