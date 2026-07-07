@@ -28,11 +28,14 @@ public class Room {
     private final ArrayList<Enemies> enemyList = new ArrayList<>(capacityEnemy);
     private final ArrayList<Item> itemList = new ArrayList<>(capacityItem);
 
-    public Room() {
-        this.width = randomNumber(4, 12);
-        this.height = randomNumber(4, 12);
+    public Room(int x, int y) {
+        this.width = randomNumber(5, 12);
+        this.height = randomNumber(5, 12);
         this.area = width * height;
 
+
+
+        this.position = randomPositionRoom(x, y);
         this.setRoomType(area);
         this.setCapacityEnemy(capacityEnemy);
         this.setCapacityItem(capacityItem);
@@ -56,13 +59,15 @@ public class Room {
         this.capacityItem = randomCapacityValueItem(roomType);
     }
 
+    /**
+     * метод {@link #setRoomType(int)} определяет тип комнаты в зависимости от ее площади
+     * @param area площаль комнаты
+     */
     public void setRoomType(int area) {
-        if (area >= 16 && 48 >= area) this.roomType = RoomType.SMALL;
-        else if (area >= 49 && 99 >= area) this.roomType = RoomType.MIDDLE;
-        else if (area >= 100 && 144 >= area) this.roomType = RoomType.BIG;
+        if (area >= 25 && 55 >= area) this.roomType = RoomType.SMALL;
+        else if (area >= 56 && 107 >= area) this.roomType = RoomType.MIDDLE;
+        else if (area >= 108 && 144 >= area) this.roomType = RoomType.BIG;
     }
-
-
 
     /**
      * метод {@link #randomCapacityValueEnemy(RoomType)} рандомит размерность пулла врагов
@@ -95,7 +100,7 @@ public class Room {
     /**
      * метод {@link #addEnemyList()} заполняет весь лист рандомными врагами
      */
-    public void addEnemyList() {
+    private void addEnemyList() {
         for(int i = 0; i < capacityEnemy; i++) {
             addEnemyValue(randomEnemy());
         }
@@ -137,7 +142,7 @@ public class Room {
     /**
      * метод {@link #addItemList()} заполняет весь лист рандомными предметами
      */
-    public void addItemList() {
+    private void addItemList() {
         for(int i = 0; i < capacityItem; i++) {
             addItemValue(randomItem());
         }
@@ -173,26 +178,41 @@ public class Room {
     }
 
     /**
+     * метод {@link #randomPositionRoom(int, int)} создает рандомную позицию относительно сетки матрицы
+     * в которой находится комната
+     * @param x координата X
+     * @param y координата Y
+     * @return позиция комнаты
+     */
+    private Position randomPositionRoom(int x, int y) {
+        int dx = randomNumber(x * 15 + 1, (x * 15) + 15 - width - 1);
+        int dy = randomNumber(y * 15 + 1, (y * 15) + 15 - height - 1);
+        return new Position(dx, dy);
+    }
+
+    /**
      * метод {@link #randomPosition()} создает рандомную позицию для объекта в комнате
      * @return позиция объекта
      */
     private Position randomPosition() {
         return new Position(
-                randomNumber(1, width),
-                randomNumber(1, height)
+                randomNumber(position.getX() + 1, position.getX() + width - 1),
+                randomNumber(position.getY() + 1, position.getY() + height - 1)
         );
     }
 
     @Override
     public String toString() {
         return String.format(
-                "\nRoom:\nwidth: %d\nheight: %d\narea: %d\nroomType: %s\ncapacityEnemy: %d\ncapacityItem: %d",
+                "\nRoom:\nwidth: %d\nheight: %d\narea: %d\nroomType: %s\ncapacityEnemy: %d\ncapacityItem: %d\nposition(%d, %d)",
                 width,
                 height,
                 area,
                 roomType,
                 capacityEnemy,
-                capacityItem
+                capacityItem,
+                position.getX(),
+                position.getY()
         );
     }
 
