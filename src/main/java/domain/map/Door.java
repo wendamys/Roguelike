@@ -1,7 +1,5 @@
 package domain.map;
 
-import domain.MathUtils.MathUtils;
-import domain.navigator.DirectionType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +7,8 @@ import java.util.List;
 import static domain.MathUtils.MathUtils.randomDirection;
 import static domain.MathUtils.MathUtils.randomNumber;
 import static domain.navigator.DirectionType.*;
+
+import domain.navigator.DirectionType;
 
 public class Door {
     private final Room room;
@@ -27,11 +27,6 @@ public class Door {
     }
     public boolean getIsClose() {
         return isClose;
-    }
-
-
-    public void test() {
-        System.out.println("Ширина: " + room.getWidth() + " Высота: " + room.getHeight());
     }
 
     public void setClose(boolean close) {
@@ -58,18 +53,96 @@ public class Door {
         return randomNumber(1, room.getHeight() - 1);
     }
 
-    // мне нужно передать сюда лист с комнатами, чтобы в каждую комнату
-    // в зависимости от ее положения на карте вызвалась функция
-    // которая выбирает сколько будет дверей
-    // после нужно вызвать функцию от количества дверей в каких направлениях они будут
-    // также нужно учесть что двери должны быть в разных направлениях
-    // и если они есть уже в одном из, то генерация в этой стороне происходить не должна
-    public void randomCreateDoorRoom(List<Room> roomList) {
-
-        randomPositionDoorHeight();
-        randomPositionDoorWidth();
-
+    /**
+     * метод {@link #randomCreateDoorRoom(int numRoom)} нужен для создания массива с открытыми дверями
+     * @return лист направлений дверей
+     */
+    public void randomCreateDoorRoom(List<Room> arrayIsRoom, List<Integer> numberDoor) {
+        for (int i = 0; i < arrayIsRoom.size(); i++) { // мы попадаем в комнату
+            List<DirectionType> openDirList = openDir(i);
+            System.out.println("\nOPEN: " + openDirList);
+            int number = numberDoor.get(i);
+            List<DirectionType> arrayDay = selectDirIsOpenAndRandomCountDir(openDirList, number);
+            System.out.println("Сгенерированные двери для комнаты: " + i + " [" + arrayDay + "]");
+        }
+//        return mixedArray;
     }
+
+    /**
+     * метод {@link #openDir(int numRoom)} выбирает рандомное направление двери исходя
+     * из списка доступных дверей и кол-ва дверей
+     * @return лист направлений двери
+     */
+    private List<DirectionType> selectDirIsOpenAndRandomCountDir(List<DirectionType> openDirList, Integer size) {
+        List<DirectionType> arrayDir = new ArrayList<>();
+        for (int j = 0; size > j; j++) {
+            DirectionType dirType = randomDirection();
+            System.out.println(dirType);
+            if (!(arrayDir.contains(dirType)) && openDirList.contains(dirType)) {
+                arrayDir.add(dirType);
+                j++;
+            }
+            j--;
+        }
+        return arrayDir;
+    }
+
+    /**
+     * метод {@link #openDir(int numRoom)} определяет какие направления двери открыты в зависимости от положения комнаты
+     *
+     * @return лист направлений дверей
+     */
+    private List<DirectionType> openDir(int numRoom) {
+        List<DirectionType> arrayDirTrue = new ArrayList<>();
+        switch (numRoom) {
+            case 0 -> {
+                arrayDirTrue.add(DOWN);
+                arrayDirTrue.add(RIGHT);
+            }
+            case 1 -> {
+                arrayDirTrue.add(DOWN);
+                arrayDirTrue.add(LEFT);
+                arrayDirTrue.add(RIGHT);
+            }
+            case 2 -> {
+                arrayDirTrue.add(DOWN);
+                arrayDirTrue.add(LEFT);
+            }
+            case 3 -> {
+                arrayDirTrue.add(FORWARD);
+                arrayDirTrue.add(DOWN);
+                arrayDirTrue.add(RIGHT);
+
+            }
+            case 4 -> {
+                arrayDirTrue.add(FORWARD);
+                arrayDirTrue.add(DOWN);
+                arrayDirTrue.add(LEFT);
+                arrayDirTrue.add(RIGHT);
+            }
+            case 5 -> {
+                arrayDirTrue.add(FORWARD);
+                arrayDirTrue.add(DOWN);
+                arrayDirTrue.add(LEFT);
+            }
+            case 6 -> {
+                arrayDirTrue.add(FORWARD);
+                arrayDirTrue.add(RIGHT);
+            }
+            case 7 -> {
+                arrayDirTrue.add(FORWARD);
+                arrayDirTrue.add(LEFT);
+                arrayDirTrue.add(RIGHT);
+            }
+            default -> {
+                arrayDirTrue.add(FORWARD);
+                arrayDirTrue.add(LEFT);
+            }
+        }
+        return arrayDirTrue;
+    }
+
+
 
     /**
      * метод {@link #randomRoomsIsMap()} рандомно создает комнаты на карте
@@ -81,9 +154,9 @@ public class Door {
             Room room = new Room();
             roomList.add(room);
         }
-        for (var i : roomList) {
-            System.out.println(i);
-        }
+//        for (var i : roomList) {
+//            System.out.println(i);
+//        }
         return roomList;
     }
 
@@ -96,11 +169,9 @@ public class Door {
     public List<Integer> randomCountDoorIsRoom() {
         List<Integer> exitDoorList = new ArrayList<>(9);
         for (int i = 0; i < 9; i++) {
-            switch (i % 3) {
-                case 0 -> { exitDoorList.add(randomNumber(1, 2)); }
-                case 1 -> { exitDoorList.add(randomNumber(2, 4)); }
-                default -> { exitDoorList.add(randomNumber(1, 3)); }
-            }
+            if (i % 2 == 0 && i != 4) { exitDoorList.add(randomNumber(1, 2)); }
+            if (((i % 3 == 0) || (i == 1))) {exitDoorList.add(randomNumber(1, 3)); }
+            if (((i == 4))) { exitDoorList.add(randomNumber(2, 4)); }
         }
         return exitDoorList;
     }
