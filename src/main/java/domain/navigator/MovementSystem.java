@@ -3,13 +3,11 @@ package domain.navigator;
 import domain.characters.Character;
 import domain.characters.Enemies;
 import domain.characters.Player;
+import domain.characters.enemies.Ogre;
 
 import static domain.MathUtils.MathUtils.randomDirection;
 
 public class MovementSystem {
-
-    protected DirectionType direction;
-
 
     /**
      * Метод {@link #moveDir(DirectionType direction, Character characte)} ходит по заданному направлению
@@ -18,7 +16,9 @@ public class MovementSystem {
      * @param character Меняет текущую позицию переданному объекту
      */
     public void moveDir(DirectionType direction, Character character) {
-        int x = character.getPosition().getX(); int y = character.getPosition().getY(); switch (direction) {
+        int x = character.getPosition().getX();
+        int y = character.getPosition().getY();
+        switch (direction) {
             case FORWARD -> character.setPosition(new Position(x, y + 1));
             case DOWN -> character.setPosition(new Position(x, y - 1));
             case LEFT -> character.setPosition(new Position(x - 1, y));
@@ -33,7 +33,6 @@ public class MovementSystem {
     public void moveRandom(Character character) {
         moveDir(randomDirection(), character);
     }
-
 
     /**
      * Метод {@link #EnemyGameMove(Player player, Enemies enemy)} служит для того
