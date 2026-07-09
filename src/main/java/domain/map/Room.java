@@ -51,6 +51,8 @@ public class Room {
 
     public int getHeight() { return height; }
 
+    public Position getPosition() { return position; }
+
     public void setCapacityEnemy(int capacity) {
         this.capacityEnemy = randomCapacityValueEnemy(roomType);
     }
