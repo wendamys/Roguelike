@@ -55,6 +55,14 @@ public class Position {
         };
     }
 
+    /**
+     * метод {@link #copy()} копирует позицию
+     * @return позиция
+     */
+    public Position copy() {
+        return new Position(x, y);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,5 +73,14 @@ public class Position {
     @Override
     public int hashCode() {
         return x * 15 + y;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "(%d, %d)",
+                getX(),
+                getY()
+        );
     }
 }

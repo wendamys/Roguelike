@@ -1,27 +1,41 @@
 package presentation;
 
-import domain.map.Door;
+import domain.characters.Player;
+import domain.characters.enemies.Zombie;
+import domain.gameSession.Game;
+import domain.map.Corridor;
+import domain.map.DungeonGenerator;
 import domain.map.Room;
+import domain.navigator.MovementSystem;
+import domain.navigator.Position;
 
 public class Main {
     public static void main(String[] args) {
+        Player player = new Player(new Position(80, 40));
 
-        Room room = new Room();
-        Door door = new Door(room);
-        System.out.println(room);
-        System.out.println("Ширина комнаты: " + room.getWidth() + " Высота комнаты: " + room.getHeight());
-        System.out.println();
-        System.out.println(door.randomPositionDoorWidth());
-        System.out.println(door.randomPositionDoorHeight());
+//        System.out.println(room + "\n");
+//        System.out.println("room up: " + (room.getPosition().getY() + 1) + " player x: " + (player.getPosition().getY()));
+//        System.out.println("room down: " + (room.getPosition().getY() + room.getHeight() - 1));
+//        System.out.println("room left: " + (room.getPosition().getX() + 1));
+//        System.out.println("room reight: " + (room.getPosition().getX() + room.getWidth() - 1));
+//        MovementSystem mv = new MovementSystem();
+//
+//        boolean check = mv.characterOutsideBorder(player, room);
+//        System.out.println(check);
+//        Room room1 = new Room(0, 0);
+//        Room room2 = new Room(0, 1);
+//        Room room3 = new Room( 0, 2);
+//        Corridor corridor = new Corridor(room1, room2);
+//        System.out.println(room1 + "\n");
+//        System.out.println(room2 + "\n");
+//        System.out.println(corridor.getPath());
+//
+//        System.out.println(corridor.intersectsRoom(room3));
 
-        door.randomRoomsIsMap();
-        int i = 0;
-        for (Integer num: door.randomCountDoorIsRoom()) {
-            System.out.println("В комнате " + i + " Дверей " + num);
-            i++;
-        }
-//        System.out.println(door.numberDoorIsRoom());
-//        System.out.println(door.generationDoorIsRoom());
-
+//        DungeonGenerator generator = new DungeonGenerator(45, 45);
+//
+//        generator.generateDungeon();
+        Game game = new Game();
+        game.gen();
     }
 }
