@@ -11,6 +11,7 @@ import domain.characters.enemies.*;
 import domain.navigator.Position;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static domain.MathUtils.MathUtils.randomNumber;
 
@@ -32,8 +33,6 @@ public class Room {
         this.width = randomNumber(5, 12);
         this.height = randomNumber(5, 12);
         this.area = width * height;
-
-
 
         this.position = randomPositionRoom(x, y);
         this.setRoomType(area);
@@ -203,6 +202,47 @@ public class Room {
         );
     }
 
+    /**
+     * метод {@link #contains(Position)} проверяет, находится ли позиция внутри комнаты
+     * @param pos позиция
+     * @return true - внутри, false - снаружи
+     */
+    public boolean contains(Position pos) {
+        return pos.getX() >= position.getX() &&
+                pos.getX() < position.getX() + width &&
+                pos.getY() >= position.getY() &&
+                pos.getY() < position.getY() + height;
+    }
+
+    /**
+     * метод {@link #isOnBorder(Position)} проверяет, находится ли позиция на границе комнаты
+     * @param pos позиция
+     * @return true - на гранце, false - нет
+     */
+    public boolean isOnBorder(Position pos) {
+        return (pos.getX() == position.getX() ||
+                pos.getX() == position.getX() + width - 1 ||
+                pos.getY() == position.getY() ||
+                pos.getY() == position.getY() + height - 1);
+    }
+
+    /**
+     * метод {@link #getBorderPositions()} получает все позиции на границе комнаты
+     * @return лист с позициями
+     */
+    public List<Position> getBorderPositions() {
+        List<Position> borders = new ArrayList<>();
+        for (int x = position.getX(); x < position.getX() + width; x++) {
+            borders.add(new Position(x, position.getY()));
+            borders.add(new Position(x, position.getY() + height - 1));
+        }
+        for (int y = position.getY(); y < position.getY() + height; y++) {
+            borders.add(new Position(position.getX(), y));
+            borders.add(new Position(position.getX() + width - 1, y));
+        }
+        return borders;
+    }
+
     @Override
     public String toString() {
         return String.format(
@@ -217,6 +257,4 @@ public class Room {
                 position.getY()
         );
     }
-
-
 }
