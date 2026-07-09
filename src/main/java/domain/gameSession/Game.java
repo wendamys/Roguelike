@@ -1,17 +1,30 @@
 package domain.gameSession;
 
 import domain.characters.Player;
+import domain.map.Corridor;
+import domain.map.DungeonGenerator;
+import domain.map.Room;
+
+import java.util.List;
 
 public class Game {
-    private Player player;
+    // Создаем генератор подземелья
 
-    public Player getPlayer() {
-        return player;
+    public void gen() {
+        DungeonGenerator generator = new DungeonGenerator(80, 40);
+
+        // Генерируем подземелье
+        generator.generateDungeon();
+
+        // Выводим карту
+        generator.printMap();
+
+        // Получаем комнаты и коридоры
+        List<Room> rooms = generator.getRooms();
+        List<Corridor> corridors = generator.getCorridors();
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
 
-    Game() {}
+
+
 }

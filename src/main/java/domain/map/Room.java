@@ -34,7 +34,8 @@ public class Room {
         this.height = randomNumber(5, 12);
         this.area = width * height;
 
-        this.position = randomPositionRoom(x, y);
+//        this.position = randomPositionRoom(x, y);
+        this.position = new Position(x, y);
         this.setRoomType(area);
         this.setCapacityEnemy(capacityEnemy);
         this.setCapacityItem(capacityItem);
@@ -106,7 +107,7 @@ public class Room {
             addEnemyValue(randomEnemy());
         }
         // clean later
-        for(var i: enemyList) System.out.println("\n" + i);
+//        for(var i: enemyList) System.out.println("\n" + i);
     }
 
     /**
@@ -148,7 +149,7 @@ public class Room {
             addItemValue(randomItem());
         }
         // clean later
-        for(var i: itemList) System.out.println("\n" + i);
+//        for(var i: itemList) System.out.println("\n" + i);
     }
 
     /**
