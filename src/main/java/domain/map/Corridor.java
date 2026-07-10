@@ -28,7 +28,6 @@ public class Corridor {
         Position center1 = room1.getPosition().copy();
         Position center2 = room2.getPosition().copy();
 
-        // Получаем центры комнат с учетом их размеров
         Position realCenter1 = new Position(
                 center1.getX() + room1.getWidth() / 2,
                 center1.getY() + room1.getHeight() / 2
