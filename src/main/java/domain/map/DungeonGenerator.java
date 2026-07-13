@@ -262,6 +262,10 @@ public class DungeonGenerator {
     }
 }
 
+
+
+
+
 // clean latter
 enum TileType {
     WALL('#'), FLOOR('.'), LEVEL('*'), PLAYER('@'),
