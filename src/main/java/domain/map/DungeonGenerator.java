@@ -234,10 +234,19 @@ public class DungeonGenerator {
                 case ZOMBIE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.ZOMBIE; break;
                 case OGRE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.OGRE; break;
                 case VAMPIRE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.VAMPIRE; break;
-                case GHOST: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.GHOST; break;
-                default: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.SNAKE; // [s]
+                case SNAKE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.SNAKE; break;
+                default: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.GHOST;
             }
         }
+    }
+
+    /**
+     * метод {@link #createLevel(Room)} создает уровень на карте
+     * @param room комната
+     */
+    public void createLevel(Room room) {
+        Position posLevel = room.getCentreRoom();
+        map[posLevel.getX()][posLevel.getY()] = TileType.LEVEL;
     }
 
     /**
@@ -255,7 +264,7 @@ public class DungeonGenerator {
 
 // clean latter
 enum TileType {
-    WALL('#'), FLOOR('.'), PLAYER('@'),
+    WALL('#'), FLOOR('.'), LEVEL('*'), PLAYER('@'),
     ELIXIR('E'), SCROLL('S'), WEAPON('W'), FOOD('F'),
     ZOMBIE('z'), OGRE('o'), VAMPIRE('v'), GHOST('g'), SNAKE('s');
 

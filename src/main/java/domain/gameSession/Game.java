@@ -21,6 +21,9 @@ public class Game {
                 generator.createItem(room);
                 generator.createEnemies(room);
             }
+            if(room == rooms.getLast())  {
+                generator.createLevel(room);
+            }
         }
         generator.printMap();
     }
