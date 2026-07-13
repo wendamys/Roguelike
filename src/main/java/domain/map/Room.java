@@ -45,6 +45,14 @@ public class Room {
         addItemList();
     }
 
+    public ArrayList<Item> getItemList() {
+        return itemList;
+    }
+
+    public ArrayList<Enemies> getEnemyList() {
+        return enemyList;
+    }
+
     public RoomType getRoomType() { return roomType; }
 
     public int getWidth() { return width; }
@@ -59,6 +67,13 @@ public class Room {
 
     public void setCapacityItem(int capacity) {
         this.capacityItem = randomCapacityValueItem(roomType);
+    }
+
+    public Position getCentreRoom() {
+        return new Position(
+                position.getX() + width / 2,
+                position.getY() + height / 2
+        );
     }
 
     /**

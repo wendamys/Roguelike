@@ -19,7 +19,7 @@ public abstract class Item {
 
     public int getValue() { return 30;}
 
-    protected Position getPosition() {return position;}
+    public Position getPosition() {return position;}
 
     public ItemsSubType getSubType() {return subType;}
 

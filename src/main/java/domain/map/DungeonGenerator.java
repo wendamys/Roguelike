@@ -1,5 +1,8 @@
 package domain.map;
 
+import domain.backpack.Item;
+import domain.characters.Enemies;
+import domain.characters.Player;
 import domain.navigator.Position;
 
 import java.util.ArrayList;
@@ -7,9 +10,9 @@ import java.util.List;
 
 public class DungeonGenerator {
     private static final int MAP_SIZE = 45;
-    private static final int ROOM_PADDING = 2; // Отступ между комнатами
+    private static final int ROOM_PADDING = 5; // Отступ между комнатами
 
-    private final TileType[][] map;
+    private TileType[][] map;
     private final List<Room> rooms;
     private final List<Corridor> corridors;
     private final int mapWidth;
@@ -175,6 +178,10 @@ public class DungeonGenerator {
         return map;
     }
 
+    public void setMap(TileType[][] map) {
+        this.map = map;
+    }
+
     public List<Room> getRooms() {
         return rooms;
     }
@@ -192,6 +199,48 @@ public class DungeonGenerator {
     }
 
     /**
+     * метод {@link #createPlayer(Player)} создает игрока на карте
+     * @param player игрок
+     */
+    public void createPlayer(Player player) {
+        Position posPlayer = player.getPosition();
+        map[posPlayer.getX()][posPlayer.getY()] = TileType.PLAYER;
+    }
+
+    /**
+     * метод {@link #createItem(Room)} создает предметы на карте
+     * @param room комната
+     */
+    public void createItem(Room room) {
+        ArrayList <Item> itemList = room.getItemList();
+        for (Item item : itemList) {
+            switch (item.getType()) {
+                case ELIXIR: map[item.getPosition().getX()][item.getPosition().getY()] = TileType.ELIXIR; break;
+                case SCROLL: map[item.getPosition().getX()][item.getPosition().getY()] = TileType.SCROLL; break;
+                case FOOD: map[item.getPosition().getX()][item.getPosition().getY()] = TileType.FOOD; break;
+                default: map[item.getPosition().getX()][item.getPosition().getY()] = TileType.WEAPON; // [E]
+            }
+        }
+    }
+
+    /**
+     * метод {@link #createEnemies(Room)} создает врагов на карте
+     * @param room комната
+     */
+    public void createEnemies(Room room) {
+        ArrayList <Enemies> enemyList = room.getEnemyList();
+        for (Enemies enemy : enemyList) {
+            switch (enemy.getType()) {
+                case ZOMBIE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.ZOMBIE; break;
+                case OGRE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.OGRE; break;
+                case VAMPIRE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.VAMPIRE; break;
+                case GHOST: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.GHOST; break;
+                default: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.SNAKE; // [s]
+            }
+        }
+    }
+
+    /**
      * Выводит карту в консоль для отладки
      */
     public void printMap() {
@@ -206,7 +255,9 @@ public class DungeonGenerator {
 
 // clean latter
 enum TileType {
-    WALL('#'), FLOOR('.');
+    WALL('#'), FLOOR('.'), PLAYER('@'),
+    ELIXIR('E'), SCROLL('S'), WEAPON('W'), FOOD('F'),
+    ZOMBIE('z'), OGRE('o'), VAMPIRE('v'), GHOST('g'), SNAKE('s');
 
     private char symbol;
 
@@ -218,4 +269,3 @@ enum TileType {
         return symbol;
     }
 }
-
