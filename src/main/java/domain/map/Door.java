@@ -4,10 +4,10 @@ package domain.map;
 import java.util.ArrayList;
 import java.util.List;
 
-import static domain.MathUtils.MathUtils.randomDirection;
 import static domain.MathUtils.MathUtils.randomNumber;
 import static domain.navigator.DirectionType.*;
 
+import domain.navigator.DirectionType;
 import domain.navigator.DirectionType;
 
 public class Door {
@@ -35,8 +35,7 @@ public class Door {
     }
 
     /**
-     * метод {@link #randomCreateDoorRoom(int numRoom)} нужен для создания массива с открытыми дверями
-     * @return лист направлений дверей
+     * метод нужен для создания массива с открытыми дверями
      */
     public void randomCreateDoorRoom(List<Room> arrayIsRoom, List<Integer> numberDoor) {
         for (int i = 0; i < arrayIsRoom.size(); i++) { // мы попадаем в комнату
@@ -46,20 +45,12 @@ public class Door {
             List<DirectionType> arrayDay = selectDirIsOpenAndRandomCountDir(openDirList, number);
             System.out.println("Сгенерированные двери для комнаты: " + i + " [" + arrayDay + "]");
         }
-//        return mixedArray;
     }
 
-    /**
-     * метод {@link #openDir(int numRoom)} выбирает рандомное направление двери исходя
-     * из списка доступных дверей и кол-ва дверей
-     * @param openDirList
-     * @param size
-     * @return
-     */
     private List<DirectionType> selectDirIsOpenAndRandomCountDir(List<DirectionType> openDirList, Integer size) {
         List<DirectionType> arrayDir = new ArrayList<>();
         for (int j = 0; size > j; j++) {
-            DirectionType dirType = randomDirection();
+            DirectionType dirType = DirectionType.random();
             System.out.println(dirType);
             if (!(arrayDir.contains(dirType)) && openDirList.contains(dirType)) {
                 arrayDir.add(dirType);
@@ -80,7 +71,6 @@ public class Door {
     /**
      * метод {@link #openDir(int numRoom)} определяет какие направления двери открыты
      * в зависимости от положения комнаты
-     *
      * @return лист направлений дверей
      */
     private List<DirectionType> openDir(int numRoom) {
@@ -134,7 +124,7 @@ public class Door {
     }
 
     /**
-     * метод {@link #randomPositionDoorWidth()} рандомно выбирает
+     * метод рандомно выбирает
      * нахождение двери в зависимости от ширины комнаты
      *
      * @return позицию с дверью по ширине
@@ -144,7 +134,7 @@ public class Door {
     }
 
     /**
-     * метод {@link #randomPositionDoorWidth()} рандомно выбирает
+     * метод рандомно выбирает
      * нахождение двери в зависимости от высоты комнаты
      *
      * @return позицию с дверью по высоте
@@ -154,7 +144,7 @@ public class Door {
     }
 
     /**
-     * метод {@link #randomCountDoorIsRoom()} рандомно выбирает кол-во дверей
+     * метод рандомно выбирает кол-во дверей
      * в зависимости от нахождения на карте
      * @return лист с количеством дверей
      */
@@ -169,7 +159,7 @@ public class Door {
     }
 
     /**
-     * метод {@link #randomRoomsIsMap()} рандомно создает комнаты на карте
+     * метод  рандомно создает комнаты на карте
      * @return лист комнат
      */
 //    public List<Room> randomRoomsIsMap() {

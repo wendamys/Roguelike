@@ -1,5 +1,6 @@
 package domain.characters;
 
+import domain.ai.*;
 import domain.characters.enemies.EnemiesType;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
@@ -11,15 +12,28 @@ abstract public class Enemies extends Character {
 
 
     private int health;
+    private int maxHealth;
     private int agility;
     private int strength;
     private int hostility;
 
     protected EnemiesType type;
-    DirectionType dir;
+    protected DirectionType dir;
+    
+    // AI поле
+    protected EnemyAI ai;
+    
+    // Состояние врага
+    protected boolean isInvisible = false;
+    protected boolean isStunned = false;
+    protected boolean isMimicking = false;
 
     @Override
     public int getHealth() {return health;}
+
+    public int getMaxHealth() {return maxHealth;}
+
+    public void setMaxHealth(int maxHealth) {this.maxHealth = maxHealth;}
 
     @Override
     public int getAgility() {return this.agility;}
@@ -44,44 +58,83 @@ abstract public class Enemies extends Character {
         this.strength = randomNumber((int) (strength * 0.9), (int) (strength * 1.1));
     }
 
+    // Получение состояний
+    public boolean getIsInvisible() { return isInvisible; }
+    public boolean getIsStunned() { return isStunned; }
+    public boolean getIsMimicking() { return isMimicking; }
+    
+    // Установка состояний
+    public void setIsInvisible(boolean invisible) { isInvisible = invisible; }
+    public void setIsStunned(boolean stunned) { isStunned = stunned; }
+    public void setIsMimicking(boolean mimicking) { isMimicking = mimicking; }
 
 
     public Enemies(Position position) {
         super(position);
+        this.ai = createAI();
     }
 
     /**
-     * метод {@link #isHostility(Player)} проверяет, входит ли игрок в радиус агра врага
-     *
+     * Метод создает AI для конкретного типа врага
+     * @return экземпляр AI
+     */
+    protected EnemyAI createAI() {
+        return new AggressiveAI();
+    }
+
+    /**
+     * метод проверяет, входит ли игрок в радиус агра врага
+     * Враги атакуют только если находятся на соседней клетке (чебышевское расстояние <= 1)
      * @param player игрок
      * @return входит/не входит
      */
     public boolean isHostility(Player player) {
-        return getPosition().distanceTo(player.getPosition()) <= getHostility();
+        Position enemyPos = getPosition();
+        Position playerPos = player.getPosition();
+        int dx = Math.abs(enemyPos.getX() - playerPos.getX());
+        int dy = Math.abs(enemyPos.getY() - playerPos.getY());
+        return dx <= getHostility() && dy <= getHostility();
     }
 
     /**
-     * метод {@link #isHostility(Player)} выбирает лучшее направление движения до игрока
-     *
+     * метод выбирает лучшее направление движения до игрока
      * @param player игрок
      * @return направление движения
      */
     public DirectionType convergence(Player player) {
-        double min = Double.MAX_VALUE; DirectionType dirMove = null; for (DirectionType dT : DirectionType.values()) {
-            double findRange = getPosition().posDir(dT).distanceTo(player.getPosition()); if (findRange <= min) {
-                min = findRange; dirMove = dT;
+        double min = Double.MAX_VALUE; 
+        DirectionType dirMove = null; 
+        for (DirectionType dT : DirectionType.values()) {
+            double findRange = getPosition().posDir(dT).distanceTo(player.getPosition()); 
+            if (findRange <= min) {
+                min = findRange; 
+                dirMove = dT;
             }
-        } return dirMove;
+        } 
+        return dirMove;
     }
 
     /**
-     * метод {@link #convergenceIsHostility(Player player)} проверяет в радиусе агра ли игрок
-     *
+     * метод проверяет в радиусе агра ли игрок
      * @param player игрок
      * @return Направление движения, либо null
      */
     public DirectionType convergenceIsHostility(Player player) {
-        if (isHostility(player)) return convergence(player); return null;
+        if (isHostility(player)) return convergence(player); 
+        return null;
+    }
+    
+    /**
+     * метод выбирает направление движения на основе AI
+     * @param player игрок
+     * @return направление движения или null
+     */
+    public DirectionType decideMove(Player player) {
+        if (isStunned) {
+            isStunned = false;
+            return null;
+        }
+        return ai.decideMove(this, player);
     }
 
 

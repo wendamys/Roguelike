@@ -19,7 +19,7 @@ public class Key {
     }
 
     /**
-     * метод {@link #choiceColorList} выбирает цвет ключа с учетом уже созданных ключей
+     * метод выбирает цвет ключа с учетом уже созданных ключей
      * @return цвет ключа
      */
     private ColorKey choiceColorKey() {
@@ -47,7 +47,7 @@ public class Key {
     }
 
     /**
-     * метод {@link #seeColorKeyList()} выводит список еще не найденных ключей
+     * метод выводит список еще не найденных ключей
      */
     public void seeColorKeyList() {
         for(var i: colorKeyList) {
@@ -56,7 +56,7 @@ public class Key {
     }
 
     /**
-     * метод {@link #fillColorKeyList()} заполняет список цветов ключей, которые требуется найти
+     * метод заполняет список цветов ключей, которые требуется найти
      */
     private void fillColorKeyList() {
         colorKeyList.add(ColorKey.GREEN);
@@ -66,7 +66,7 @@ public class Key {
     }
 
     /**
-     * метод {@link #removeColorKeyList(ColorKey)} удаляет цвет ключа из списка
+     * метод удаляет цвет ключа из списка
      * @param colorKey цвет ключа
      */
     public void removeColorKeyList(ColorKey colorKey) {

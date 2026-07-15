@@ -1,5 +1,6 @@
 package domain.characters.enemies;
 
+import domain.ai.*;
 import domain.characters.Enemies;
 import domain.map.Level;
 import domain.navigator.Position;
@@ -9,15 +10,25 @@ import static domain.MathUtils.MathUtils.randomNumber;
 public class Ogre extends Enemies {
 
     private final EnemiesType type = EnemiesType.OGRE;
-    private int health = 200;
-    private int agility = 50;
-    private int strength = 50;
+    private int health = 80;
+    private int agility = 30;
+    private int strength = 30;
 
     public Ogre(Position position) {
         super(position);
         super.setHealthBegin((int) (health * Level.getCoefEnemy()));
+        super.setMaxHealth(super.getHealth());
         super.setAgility((int) (agility * Level.getCoefEnemy()));
         super.setStrength((int) (strength * Level.getCoefEnemy()));
+    }
+
+    @Override
+    protected EnemyAI createAI() {
+        return new StunAI();
+    }
+    
+    public StunAI getStunAI() {
+        return (StunAI) ai;
     }
 
     @Override

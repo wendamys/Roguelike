@@ -22,7 +22,7 @@ public class Corridor {
     public Room getRoom2() { return room2; }
 
     /**
-     * метод {@link #generateCorridor()} генерирует корридор между 2 комнатами
+     * метод  генерирует корридор между 2 комнатами
      */
     private void generateCorridor() {
         Position center1 = room1.getPosition().copy();
@@ -42,8 +42,7 @@ public class Corridor {
     }
 
     /**
-     * метод {@link #createHorizontalPath(Position, Position)}
-     * создает позицию пути корридора по горизонтали
+     * метод создает позицию пути корридора по горизонтали
      * @param center1 центр 1 комнаты
      * @param center2 центр 2 комнаты
      */
@@ -58,8 +57,7 @@ public class Corridor {
     }
 
     /**
-     * метод {@link #createVerticalPath(Position, Position)}
-     * создает позицию пути корридора по вертикали
+     * метод создает позицию пути корридора по вертикали
      * @param center1 центр 1 комнаты
      * @param center2 центр 2 комнаты
      */
@@ -74,7 +72,7 @@ public class Corridor {
     }
 
     /**
-     * метод {@link #intersectsRoom(Room)} проверяет преесечение корридора и комнаты
+     * метод проверяет преесечение корридора и комнаты
      * @param room комната
      * @return true - пересекает, false - нет
      */

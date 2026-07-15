@@ -23,8 +23,7 @@ public class Position {
     }
 
     /**
-     * Метод {@link #distanceTo(Position)} вычисляет дистанцию между двумя объектами
-     *
+     * Метод вычисляет дистанцию между двумя объектами
      * @param other позиция второго объекта
      * @return дистанция до объекта
      */
@@ -38,9 +37,7 @@ public class Position {
     }
 
     /**
-     * Метод {@link #posDir(DirectionType direction)} создает новую позицию
-     * в зависимости от того направления, которое прислали
-     *
+     * Метод создает новую позицию в зависимости от того направления, которое прислали
      * @param direction Направление движения
      * @return Position
      */
@@ -48,15 +45,26 @@ public class Position {
         int x = getX();
         int y = getY();
         return switch (direction) {
-            case FORWARD -> new Position(x, y + 1);
-            case DOWN -> new Position(x, y - 1);
+            case FORWARD -> new Position(x, y - 1);
+            case DOWN -> new Position(x, y + 1);
             case LEFT -> new Position(x - 1, y);
             case RIGHT -> new Position(x + 1, y);
         };
     }
 
     /**
-     * метод {@link #copy()} копирует позицию
+     * Метод создает новую позицию, сдвинутую на одно клетку в заданном направлении
+     * @param direction Направление движения
+     * @return новая позиция
+     * @deprecated используйте {@link DirectionType#applyTo(Position)}
+     */
+    @Deprecated
+    public Position move(DirectionType direction) {
+        return posDir(direction);
+    }
+
+    /**
+     * метод копирует позицию
      * @return позиция
      */
     public Position copy() {

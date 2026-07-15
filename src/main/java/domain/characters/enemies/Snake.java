@@ -1,5 +1,6 @@
 package domain.characters.enemies;
 
+import domain.ai.*;
 import domain.characters.Enemies;
 import domain.map.Level;
 import domain.navigator.Position;
@@ -9,15 +10,25 @@ import static domain.MathUtils.MathUtils.randomNumber;
 public class Snake extends Enemies {
 
     private final EnemiesType type = EnemiesType.SNAKE;
-    private int health = 160;
-    private int agility = 50;
-    private int strength = 30;
+    private int health = 50;
+    private int agility = 30;
+    private int strength = 20;
 
     public Snake(Position position) {
         super(position);
         super.setHealthBegin((int) (health * Level.getCoefEnemy()));
+        super.setMaxHealth(super.getHealth());
         super.setAgility((int) (agility * Level.getCoefEnemy()));
         super.setStrength((int) (strength * Level.getCoefEnemy()));
+    }
+
+    @Override
+    protected EnemyAI createAI() {
+        return new DebuffAI();
+    }
+    
+    public DebuffAI getDebuffAI() {
+        return (DebuffAI) ai;
     }
 
     @Override

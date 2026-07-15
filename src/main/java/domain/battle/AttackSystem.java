@@ -1,12 +1,13 @@
 package domain.battle;
 
+import domain.ai.StunAI;
+import domain.ai.DebuffAI;
+import domain.ai.RegenAI;
+import domain.backpack.Backpack;
 import domain.characters.Character;
 import domain.characters.Enemies;
 import domain.characters.Player;
-import domain.characters.enemies.EnemiesType;
-import domain.characters.enemies.Vampire;
-import domain.navigator.DirectionType;
-import domain.navigator.Position;
+import domain.characters.enemies.*;
 
 import static domain.MathUtils.MathUtils.randomNumber;
 import static domain.MathUtils.MathUtils.randomValueDouble;
@@ -27,6 +28,7 @@ public class AttackSystem {
             case ZOMBIE, GHOST, MIMIC -> damage = zombieGhostDamageFormula(enemy);
             case OGRE -> damage = ogreDamageFormula(enemy, battleInfo);
             case SNAKE -> damage = snakeDamageFormula(enemy, battleInfo);
+            case VAMPIRE -> damage = vampireDamageFormula(enemy);
         }
         return damage;
     }
@@ -61,10 +63,19 @@ public class AttackSystem {
      */
     static int snakeDamageFormula(Enemies enemy, BattleInfoType battle_info) {
         if (randomNumber(0, 100) <= 15) {
-            // System.out.println("Игрок спит!");
             battle_info.playerAsSleep = true;
         }
         return zombieGhostDamageFormula(enemy);
+    }
+
+    /**
+     * Функция вычисления урона вампира
+     * Вычисляет базовый урон вампира
+     *
+     * @return Количество урона, наносимое монстром игроку
+     */
+    static int vampireDamageFormula(Enemies enemy) {
+        return (int)( enemy.getStrength() * 0.5);
     }
 
     /**
@@ -75,16 +86,21 @@ public class AttackSystem {
      * @param enemy      Данные об монстре
      * @param battleInfo Данные о бое
      * @param currTurn   Определяет, чья очередь выполнить атаку
+     * @param backpack   Рюкзак игрока
      */
-    public void attack(Player player, Enemies enemy, CharacterType currTurn, BattleInfoType battleInfo) {
+    public void attack(Player player, Enemies enemy, CharacterType currTurn, BattleInfoType battleInfo, Backpack backpack) {
         switch (currTurn) {
             case PLAYER -> {
                 if (enemy.getHealth() == 0) return;
-                if (checkHit(player, enemy, PLAYER)) {
-                    int newHealth = Math.max(enemy.getHealth() - calculateDamage(player, enemy, PLAYER, battleInfo), 0);
+                
+                // Проверка на попадание
+                if (checkHit(player, enemy, PLAYER, battleInfo)) {
+                    int damage = calculateDamage(player, enemy, PLAYER, battleInfo, backpack);
+                    int newHealth = Math.max(enemy.getHealth() - damage, 0);
                     System.out.println("у ENEMIES "  + "Было hp: " + enemy.getHealth() + " Стало: " + newHealth);
                     enemy.setHealth(newHealth);
                 }
+                
                 if (enemy.getHealth() == 0) {
                     player.setGold(player.getGold() + calculateLoot(enemy));
                     System.out.println("Голда у игрока: " + player.getGold());
@@ -92,12 +108,54 @@ public class AttackSystem {
             }
             case ENEMIES -> {
                 if (player.getHealth() == 0) return;
-                if (checkHit(player, enemy, ENEMIES)) {
-                    int newHealth = Math.max(player.getHealth() - calculateDamage(player, enemy, ENEMIES, battleInfo), 0);
+                
+                // Проверка на попадание
+                if (checkHit(player, enemy, ENEMIES, battleInfo)) {
+                    int damage = calculateDamage(player, enemy, ENEMIES, battleInfo, backpack);
+                    int newHealth = Math.max(player.getHealth() - damage, 0);
                     System.out.println("у PLAYER "  + "Было hp: " + player.getHealth() + " Стало: " + newHealth);
                     player.setHealth(newHealth);
+                    
+                    // Стан от огра
+                    if (enemy.getType() == EnemiesType.OGRE) {
+                        StunAI stunAI = ((Ogre) enemy).getStunAI();
+                        if (stunAI.tryStun()) {
+                            battleInfo.isStunned = true;
+                            player.setStunned(true);
+                            System.out.println("Игрок в стане!");
+                        }
+                    }
+                    
+                    // Дебаф от змеи
+                    if (enemy.getType() == EnemiesType.SNAKE) {
+                        DebuffAI debuffAI = ((Snake) enemy).getDebuffAI();
+                        if (debuffAI.tryApplyDebuff()) {
+                            battleInfo.isMissNextAttack = true;
+                            System.out.println("Игрок получил дебаф промаха!");
+                        }
+                    }
+                    
+                    // Восстановление здоровья вампира
+                    if (enemy.getType() == EnemiesType.VAMPIRE && damage > 0) {
+                        regenVampire(enemy, damage);
+                    }
                 }
             }
+        }
+    }
+    
+    /**
+     * Восстановление здоровья вампира после атаки
+     * @param enemy вампир
+     * @param damage урон, нанесенный игроку
+     */
+    private void regenVampire(Enemies enemy, int damage) {
+        if (enemy instanceof Vampire) {
+            RegenAI regenAI = ((Vampire) enemy).getRegenAI();
+            int regenAmount = regenAI.calculateRegen(damage);
+            int newHealth = Math.min(enemy.getHealth() + regenAmount, enemy.getMaxHealth());
+            enemy.setHealth(newHealth);
+            System.out.println("Vampire восстановил " + regenAmount + " здоровья");
         }
     }
 
@@ -107,182 +165,103 @@ public class AttackSystem {
      * @param currTurn Определяет, чья очередь выполнить атаку
      * @param enemy    Данные о монстре
      * @param player   Данные об игроке
+     * @param battleInfo Данные о бое
      */
-    public boolean checkHit(Character player, Enemies enemy, CharacterType currTurn) {
+    public boolean checkHit(Character player, Enemies enemy, CharacterType currTurn, BattleInfoType battleInfo) {
         boolean wasHit = false;
         int chance = 0;
         switch (currTurn) {
-            case PLAYER -> chance = hitChanceFormula(player.getAgility(), enemy.getAgility());
-            case ENEMIES -> chance = hitChanceFormula(enemy.getAgility(), player.getAgility());
+            case PLAYER -> {
+                // Если игрок получил дебаф промаха
+                if (battleInfo.isMissNextAttack) {
+                    battleInfo.isMissNextAttack = false;
+                    System.out.println("Игрок промахнулся (дебаф)!");
+                    return false;
+                }
+                chance = hitChanceFormula(player.getAgility(), enemy.getAgility());
+            }
+            case ENEMIES -> {
+                // Если Ghost в инвизе, промах
+                if (enemy.getType() == EnemiesType.GHOST) {
+                    if (enemy.getIsInvisible()) {
+                        System.out.println("Ghost невидим, промах!");
+                        return false;
+                    }
+                }
+                chance = hitChanceFormula(enemy.getAgility(), player.getAgility());
+            }
         }
-        boolean isOgre = enemy.getType() == EnemiesType.OGRE;
-        int random = (int) (randomValueDouble() * 100);
-        if ((chance > random) || isOgre) wasHit = true;
-        // if (wasHit) { System.out.println(currTurn + " Попал по противнику"); } else { System.out.println(currTurn + " Промахнулся по противнику"); }
+        wasHit = randomValueDouble() * 100 < chance;
         return wasHit;
     }
 
     /**
-     * Функция, высчитывающая урон
+     * Функция, высчитывающая шанс попадания
+     *
+     * @param agilityAttacker Agile атакующего
+     * @param agilityEnemy    Agile врага
+     * @return Шанс попадания в процентах
+     */
+    static int hitChanceFormula(int agilityAttacker, int agilityEnemy) {
+        int hitChance;
+        if (agilityAttacker >= agilityEnemy) {
+            hitChance = 85 + (int) ((agilityAttacker - agilityEnemy) * 0.2);
+            if (hitChance > 95) hitChance = 95;
+        } else {
+            hitChance = 85 - (int) ((agilityEnemy - agilityAttacker) * 0.25);
+            if (hitChance < 5) hitChance = 5;
+        }
+        return hitChance;
+    }
+
+    /**
+     * Функция, высчитывающая урон, наносимый игроком
      *
      * @param player     Данные об игроке
      * @param enemy      Данные о монстре
-     * @param battleInfo Данные о бое
      * @param currTurn   Определяет, чья очередь выполнить атаку
-     * @return количество урона, наносимого противнику
+     * @param battleInfo Данные о бое
+     * @param backpack   Рюкзак игрока
+     * @return Количество урона, наносимое игроком монстру
      */
-    public int calculateDamage(Player player, Enemies enemy, CharacterType currTurn, BattleInfoType battleInfo) {
+    static int calculateDamage(Player player, Enemies enemy, CharacterType currTurn, BattleInfoType battleInfo, Backpack backpack) {
         int damage = 0;
-        switch (currTurn) {
-            case PLAYER -> {
-                if (enemy.getType() == EnemiesType.VAMPIRE && battleInfo.vampireFirstAttack) battleInfo.vampireFirstAttack = false;
-                else battleInfo.playerAsSleep = false;
-                damage = (int) (player.getBuffStrength() * 0.5);
+        if (currTurn == PLAYER) {
+            int weaponPower = backpack.getWeaponPower();
+            damage = (int) ((player.getStrength() + randomNumber(0, 5)) * (1 + (double) weaponPower / 100));
+            // Критический удар
+            if (randomValueDouble() < 0.1) {
+                damage = (int) (damage * 1.5);
+                System.out.println("КРИТИЧЕСКИЙ УДАР!");
             }
-            case ENEMIES -> {
-                if (enemy instanceof Vampire) damage = vampireDamageFormula(player);
-                else damage = EnemyDamageFormula(enemy, battleInfo);
+        } else if (currTurn == ENEMIES) {
+            damage = EnemyDamageFormula(enemy, battleInfo);
+            // ВАМПИР: атакует дважды при первой атаке
+            if (enemy.getType() == EnemiesType.VAMPIRE && battleInfo.vampireFirstAttack) {
+                battleInfo.vampireFirstAttack = false;
+                damage = damage * 2;
+                System.out.println("Vampire двойная атака!");
             }
         }
         return damage;
     }
 
     /**
-     * Функция вычисления шанса попадания
-     * Зависит от ловкости и скорости атакующего и цели
+     * Функция, высчитывающая количество золота, выпадающее из монстра
      *
-     * @param attackerAgility ловкость атакующего
-     * @param targetAgility   ловкость цели
-     * @return Шанс попадания
+     * @param enemy Монстр
+     * @return Количество золота
      */
-    int hitChanceFormula(int attackerAgility, int targetAgility) {
-        if (attackerAgility >= targetAgility) return (int) (((attackerAgility - targetAgility) * 0.3) + 70);
-        return (int) (70 - (targetAgility - attackerAgility) * 0.3);
-    }
-
-    /**
-     * Функция вычисления урона вампира
-     * Вампир отнимает 10 процентов от максимального здоровья игрока
-     *
-     * @param player Информация об игроке
-     * @return Количество урона, наносимое монстром игроку
-     */
-    int vampireDamageFormula(Player player) {
-        return player.getMaxHealth() / 10;
-    }
-
-    /**
-     * Функция, определяющая количество сокровищ, получаемых игроком за убийства противника
-     * Количество зависит от сложности противника и небольшого рандома
-     *
-     * @param enemy данные о монстре
-     * @return стоимость сокровища
-     */
-    public int calculateLoot(Enemies enemy) {
-        return (int) ((enemy.getAgility() * 0.4) + (enemy.getStrength() * 0.4) + randomNumber(1, 10));
-    }
-
-    /**
-     * Функция, удаляющая информацию о монстре из игры
-     * Удаление происходит путем стирания информации из массива с сохранением изначального порядка
-     * @param room Данные о комнате, к которой принадлежит монстр
-     * @param enemy Данные о монстре, который должен быть удален
-     */
-    //public void deleteEnemyInfo(Room room, Enemies enemy) {
-    //
-    //}
-
-    /**
-     * Функция обновления статуса боёв
-     * Сначала функция проверяет монстров на контакт с игроком (check_contact()) и создает структуру боя при помощи init_battle(), если контакт произошел.
-     * После функция проверяет уже идущие бои на их завершение(игрок убежал (функция check_contact()), монстр умер) и деинициализирует эти записи
-     * @param player Текущее положение игрока в пространстве
-     * @param level Данные о начинке уровне
-     * @param battlesArray battles_array Массив, содержащий инфу о всех боях
-     */
-    //public void updateFightStatus(Position player, Level level, BattleInfoType battlesArray) {
-    //
-    //}
-
-    /**
-     * Функция, записывающая информацию о бое в структуру
-     * Выбирается первая доступная структура (доступной считается структура с флажком is_fight = false)
-     *
-     * @param enemy        Информация о противнике игрока
-     * @param battlesArray Массив, содержащий инфу о всех боях
-     */
-    public void initBattle(Enemies enemy, BattleInfoType battlesArray) {
-
-    }
-
-    /**
-     * Функция проверки контакта игрока с противником
-     * Функция смотрит, чтобы игрок был на расстоянии одной клетки от противника
-     *
-     * @param player Координаты игрока
-     * @param enemy  Данные о противнике
-     * @return true, если контакт есть, false в ином случае
-     */
-    boolean checkContact(Position player, Enemies enemy) {
-        return true;
-    }
-
-
-    /**
-     * Функция проверки, атаковал ли игрок противника
-     * Функция проверяет, походил ли игрок на моба, и если да, то вызывает функцию attack() для игрока
-     *
-     * @param player         Данные об игроке
-     * @param battle         Данные о битве
-     * @param playerChoseDir Выбранное игроком направление хода
-     * @return true, если игрок попытался совершить атаку, false в ином случае
-     */
-    boolean checkPlayerAttack(Player player, BattleInfoType battle, DirectionType playerChoseDir) {
-        return true;
-    }
-
-
-    /**
-     * Функция, очищающая данные о монстрах в листе
-     * Функция проходится по комнатам уровня, проверяя хп каждого монстра, если 0, то удаляет данные о нем
-     * @param level Информация об уровне
-     */
-    //public void removeDeadEnemy(Level level) {
-    //
-    //}
-
-
-    /**
-     * Функция проверки на совпадение координат
-     *
-     * @param firstPosition  Координаты первого объекта
-     * @param secondPosition Координаты второго объекта
-     * @return true, если координаты совпали, false в ином случае
-     */
-    boolean checkEqualCoordinats(Position firstPosition, Position secondPosition) {
-        return true;
-    }
-
-    /**
-     * Функция проверки на соседство координат
-     *
-     * @param firstPosition  Координаты первого объекта
-     * @param secondPosition Координаты второго объекта
-     * @return true, если координаты примыкают друг к другу, false в ином случае
-     */
-    boolean checkIfNeighborTile(Position firstPosition, Position secondPosition) {
-        return true;
-    }
-
-    /**
-     * Функция проверки на существование боя
-     * Функция проверяет на совпадения данные монстра, который потенциально может создать новую запись о бое с уже существующими
-     *
-     * @param enemy        Данные о монстре
-     * @param battlesArray Данные о боях
-     */
-    boolean checkUnique(Enemies enemy, BattleInfoType battlesArray) {
-        // +-1/
-        return true;
+    static int calculateLoot(Enemies enemy) {
+        int gold = 0;
+        switch (enemy.getType()) {
+            case ZOMBIE -> gold = randomNumber(1, 5);
+            case OGRE -> gold = randomNumber(5, 10);
+            case SNAKE -> gold = randomNumber(3, 8);
+            case VAMPIRE -> gold = randomNumber(8, 15);
+            case GHOST -> gold = randomNumber(5, 12);
+            case MIMIC -> gold = randomNumber(15, 30);
+        }
+        return gold;
     }
 }

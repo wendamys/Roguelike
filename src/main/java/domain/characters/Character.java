@@ -3,7 +3,7 @@ package domain.characters;
 import domain.navigator.Position;
 
 /**
- * Абстрактный класс {@link #Character} описывает главные характеристики персонажей в игре
+ * Абстрактный класс описывает главные характеристики персонажей в игре
  */
 public abstract class Character {
     protected int step = 1;

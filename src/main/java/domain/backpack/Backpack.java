@@ -13,8 +13,7 @@ public class Backpack {
     private final ArrayList<Item> weaponList = new ArrayList<>(maxCapacity);
 
     /**
-     * метод {@link #takeItem(Item)} переносит предмет в лист
-     *
+     * метод переносит предмет в лист
      * @param item предмет
      */
     public void takeItem(Item item) {
@@ -22,51 +21,78 @@ public class Backpack {
             case ELIXIR -> addIfPossible(elixirList, item);
             case FOOD -> addIfPossible(foodList, item);
             case SCROLL -> addIfPossible(scrollList, item);
-            case WEAPON -> {
-                if (weaponList.size() < 9) addIfPossible(weaponList, item);
-                else {
-                    weaponList.remove(9);
-                    weaponList.add(item);
-                }
-            }
-            default -> {
-            }
+            case WEAPON -> addIfPossible(weaponList, item);
         }
     }
 
     /**
-     * метод {@link #seeList(ItemsType)} выводит содержимое листа по типу предмета
-     *
+     * метод выводит содержимое листа по типу предмета
      * @param type тип предмета
      */
     public void seeList(ItemsType type) {
         switch (type) {
-            case ELIXIR -> seeListType(elixirList);
-            case FOOD -> seeListType(foodList);
-            case SCROLL -> seeListType(scrollList);
-            case WEAPON -> seeListType(weaponList);
+            case ELIXIR -> seeListType(elixirList, "Эликсиры");
+            case FOOD -> seeListType(foodList, "Еда");
+            case SCROLL -> seeListType(scrollList, "Свитки");
+            case WEAPON -> seeListType(weaponList, "Оружие");
         }
     }
 
     /**
-     * метод {@link #clearLists()} чистит все предметы в рюкзаке
+     * метод выводит содержимое листа с индексами
+     * @param list список предметов
+     * @param title заголовок списка
      */
-    public void clearLists() {
-        elixirList.clear();
-        foodList.clear();
-        scrollList.clear();
-        weaponList.clear();
+    private void seeListType(ArrayList<Item> list, String title) {
+        System.out.println("\n" + title);
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println("[" + (i + 1) + "] " + list.get(i));
+        }
     }
 
-    //    /**
-    //     * метод {@link #useItem(Item, Player)} использует предмет и удаляет его из рюкзака
-    //     * @param item используемый предмет
-    //     * @param player игрок
-    //     */
-    //    public void useItem(Item item, Player player) {
-    //        player.useItemValue(item);
-    //        removeItem(item);
-    //    }
+    /**
+     * Получает предмет по индексу
+     * @param index индекс предмета
+     * @param type тип предмета
+     * @return предмет или null
+     */
+    public Item getItem(int index, ItemsType type) {
+        switch (type) {
+            case ELIXIR -> {
+                if (index >= 0 && index < elixirList.size()) return elixirList.get(index);
+            }
+            case FOOD -> {
+                if (index >= 0 && index < foodList.size()) return foodList.get(index);
+            }
+            case SCROLL -> {
+                if (index >= 0 && index < scrollList.size()) return scrollList.get(index);
+            }
+            case WEAPON -> {
+                if (index >= 0 && index < weaponList.size()) return weaponList.get(index);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Использует предмет по индексу
+     * @param index индекс предмета
+     * @param type тип предмета
+     * @param player игрок
+     * @return true если предмет успешно использован, false иначе
+     */
+    public boolean useItemByIndex(int index, ItemsType type, Player player) {
+        Item item = getItem(index, type);
+        if (item == null) return false;
+        
+        switch (type) {
+            case ELIXIR -> useItemElixir(index, player);
+            case FOOD -> useItemFood(index, player);
+            case SCROLL -> useItemScroll(index, player);
+            case WEAPON -> useItemWeapon(index, player);
+        }
+        return true;
+    }
 
     public void useItemFood(int numItem, Player player) {
         player.useItemValue(foodList.get(numItem));
@@ -85,31 +111,21 @@ public class Backpack {
 
     public void useItemWeapon(int numItem, Player player) {
         player.useItemValue(weaponList.get(numItem));
+        weaponList.remove(numItem);
+    }
+    private void addIfPossible(ArrayList<Item> list, Item item) {
+        if (list.size() < maxCapacity) list.add(item);
     }
 
     /**
-     * метод {@link #removeItem(Item)} удаляет предмет из рюкзака
-     *
-     * @param item предмет
+     * Получает силу оружия из рюкзака
+     * @return сила оружия (сумма значений всех оружий)
      */
-    public void removeItem(Item item) {
-        switch (item.getType()) {
-            case ELIXIR -> elixirList.remove(item);
-            case FOOD -> foodList.remove(item);
-            case SCROLL -> scrollList.remove(item);
-            case WEAPON -> weaponList.remove(item);
-            default -> {
-            }
+    public int getWeaponPower() {
+        int power = 0;
+        for (Item item : weaponList) {
+            power += item.getValue();
         }
-    }
-
-    private void seeListType(ArrayList<Item> list) {
-        for (var e : list) {
-            System.out.println(e);
-        }
-    }
-
-    private void addIfPossible(ArrayList<Item> list, Item item) {
-        if (list.size() < maxCapacity) list.add(item);
+        return power;
     }
 }

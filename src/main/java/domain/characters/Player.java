@@ -20,6 +20,7 @@ public class Player extends Character {
     private int buffAgility = getAgility();
     private int buffStrength = getStrength();
     private int gold = 0;
+    private boolean isStunned = false;
 
     public Player(Position position) {
         super(position);
@@ -86,10 +87,17 @@ public class Player extends Character {
     public void setUpHealthRegen(int regen) {
         this.health = Math.min((getHealth() + regen), maxHealth);
     }
+    
+    public boolean isStunned() {
+        return isStunned;
+    }
+    
+    public void setStunned(boolean stunned) {
+        isStunned = stunned;
+    }
 
     /**
-     * метод {@link #useItemValue(Item)} юзает предмет и добавляет вэлью предмета игроку
-     *
+     * метод юзает предмет и добавляет вэлью предмета игроку
      * @param item предмет
      */
     public void useItemValue(Item item) {
@@ -102,8 +110,7 @@ public class Player extends Character {
     }
 
     /**
-     * метод {@link #useFoodValue(Food)} расчитывает велью предмета еды
-     *
+     * метод расчитывает велью предмета еды
      * @param food предмет еды
      */
     private void useFoodValue(Food food) {
@@ -111,8 +118,7 @@ public class Player extends Character {
     }
 
     /**
-     * метод {@link #useScrollValue(Scroll)} расчитывает велью свитков
-     *
+     * метод расчитывает велью свитков
      * @param scroll предмет свитков
      */
     private void useScrollValue(Scroll scroll) {
@@ -124,8 +130,7 @@ public class Player extends Character {
     }
 
     /**
-     * метод {@link #useElixirValue(Elixir)} рассчитывает value эликсиров
-     *
+     * метод рассчитывает value эликсиров
      * @param elixir предметов эликсиров
      */
     private void useElixirValue(Elixir elixir) {
@@ -137,8 +142,7 @@ public class Player extends Character {
     }
 
     /**
-     * метод {@link #useWeaponValue(Weapon)} рассчитывает value оружия
-     *
+     * метод рассчитывает value оружия
      * @param weapon предмет оружия
      */
     private void useWeaponValue(Weapon weapon) {
@@ -147,7 +151,7 @@ public class Player extends Character {
 
     @Override
     public String toString() {
-        return String.format("Player:\nmaxHealth: %d\nHealth: %d\nupHealth: %d\nAgility: %d\nupAgility: %d\nStrength: %d\nUpStrength: %d", getMaxHealth(), getHealth(), getHealth(), getAgility(), getBuffAgility(), getStrength(), getBuffStrength());
+        return String.format("Health: %d/%d Agility: %d Strength: %d Gold: %d", getHealth(), getMaxHealth(), getBuffAgility(), getBuffStrength(), getGold());
     }
 
 

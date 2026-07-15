@@ -1,24 +1,30 @@
 package domain.characters.enemies;
 
+import domain.ai.AggressiveAI;
+import domain.ai.EnemyAI;
 import domain.characters.Enemies;
 import domain.map.Level;
 import domain.navigator.Position;
 
-import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Zombie extends Enemies {
 
     private final EnemiesType type = EnemiesType.ZOMBIE;
-    private int health = 100;
-    private int agility = 20;
-    private int strength = 20;
+    private int health = 30;
+    private int agility = 15;
+    private int strength = 15;
 
     public Zombie(Position position) {
         super(position);
         super.setHealthBegin((int) (health * Level.getCoefEnemy()));
+        super.setMaxHealth(super.getHealth());
         super.setAgility((int) (agility * Level.getCoefEnemy()));
         super.setStrength((int) (strength * Level.getCoefEnemy()));
+    }
 
+    @Override
+    protected EnemyAI createAI() {
+        return new AggressiveAI();
     }
 
     @Override
