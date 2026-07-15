@@ -4,7 +4,7 @@ import domain.backpack.Item;
 import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.navigator.Position;
-
+import domain.map.TileType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class DungeonGenerator {
     }
 
     /**
-     * метод {@link #initializeMap()} инициализирует карту стенами
+     * метод инициализирует карту стенами
      */
     private void initializeMap() {
         for (int x = 0; x < mapWidth; x++) {
@@ -39,7 +39,7 @@ public class DungeonGenerator {
     }
 
     /**
-     * метод {@link #generateDungeon()} генерирует полное подземелье
+     * метод генерирует полное подземелье
      */
     public void generateDungeon() {
         generateRooms();
@@ -47,7 +47,7 @@ public class DungeonGenerator {
     }
 
     /**
-     * метод {@link #generateRooms()} генерирует комнаты на карте
+     * метод генерирует комнаты на карте
      */
     private void generateRooms() {
         int roomCount = 10;
@@ -67,7 +67,7 @@ public class DungeonGenerator {
     }
 
     /**
-     * метод {@link #roomIntersectsAny(Room)} проверяет, пересекается ли комната с другими комнатами
+     * метод проверяет, пересекается ли комната с другими комнатами
      * @param room комната
      */
     private boolean roomIntersectsAny(Room room) {
@@ -87,7 +87,7 @@ public class DungeonGenerator {
     }
 
     /**
-     * метод {@link #carveRoom(Room)} вырезает комнату на карте
+     * метод вырезает комнату на карте
      * @param room комната
      */
     private void carveRoom(Room room) {
@@ -114,7 +114,7 @@ public class DungeonGenerator {
     }
 
     /**
-     * метод {@link #buildCorridors()} строит коридоры между комнатами
+     * метод строит коридоры между комнатами
      */
     private void buildCorridors() {
         for (int i = 0; i < rooms.size() - 1; i++) {
@@ -125,7 +125,7 @@ public class DungeonGenerator {
     }
 
     /**
-     * метод {@link #createCorridor(Room, Room)} создает коридор между двумя комнатами
+     * метод создает коридор между двумя комнатами
      */
     private void createCorridor(Room room1, Room room2) {
         Corridor corridor = new Corridor(room1, room2);
@@ -152,7 +152,7 @@ public class DungeonGenerator {
     }
 
     /**
-     * метод {@link #getConnectedRooms(Room)} возвращает соседей комнаты (комнаты, соединенные коридором)
+     * метод возвращает соседей комнаты (комнаты, соединенные коридором)
      */
     public List<Room> getConnectedRooms(Room room) {
         List<Room> connected = new ArrayList<>();
@@ -199,16 +199,50 @@ public class DungeonGenerator {
     }
 
     /**
-     * метод {@link #createPlayer(Player)} создает игрока на карте
+     * метод проверяет, является ли позиция проходимой
+     * @param pos позиция для проверки
+     * @return true если можно ходить, false если стена
+     */
+    public boolean isPositionWalkable(Position pos) {
+        if (!isInBounds(pos.getX(), pos.getY())) {
+            return false;
+        }
+        return map[pos.getX()][pos.getY()] != TileType.WALL;
+    }
+
+    /**
+     * метод создает игрока на карте
      * @param player игрок
      */
     public void createPlayer(Player player) {
         Position posPlayer = player.getPosition();
-        map[posPlayer.getX()][posPlayer.getY()] = TileType.PLAYER;
+        if (player.isStunned()) {
+            map[posPlayer.getX()][posPlayer.getY()] = TileType.PLAYER_STUNNED;
+        } else {
+            map[posPlayer.getX()][posPlayer.getY()] = TileType.PLAYER;
+        }
     }
 
     /**
-     * метод {@link #createItem(Room)} создает предметы на карте
+     * метод удаляет игрока с карты
+     * @param player игрок
+     */
+    public void deletePosPlayer(Player player) {
+        Position posPlayer = player.getPosition();
+        map[posPlayer.getX()][posPlayer.getY()] = TileType.FLOOR;
+    }
+
+    /**
+     * метод создает игрока в стане на карте
+     * @param player игрок
+     */
+    public void createPlayerStunned(Player player) {
+        Position posPlayer = player.getPosition();
+        map[posPlayer.getX()][posPlayer.getY()] = TileType.PLAYER_STUNNED;
+    }
+
+    /**
+     * метод создает предметы на карте
      * @param room комната
      */
     public void createItem(Room room) {
@@ -224,7 +258,7 @@ public class DungeonGenerator {
     }
 
     /**
-     * метод {@link #createEnemies(Room)} создает врагов на карте
+     * метод создает врагов на карте
      * @param room комната
      */
     public void createEnemies(Room room) {
@@ -241,12 +275,13 @@ public class DungeonGenerator {
     }
 
     /**
-     * метод {@link #createLevel(Room)} создает уровень на карте
+     * метод создает переход на следующий уровень на карте
      * @param room комната
      */
-    public void createLevel(Room room) {
+    public Position createLevel(Room room) {
         Position posLevel = room.getCentreRoom();
         map[posLevel.getX()][posLevel.getY()] = TileType.LEVEL;
+        return posLevel;
     }
 
     /**
@@ -260,28 +295,30 @@ public class DungeonGenerator {
             System.out.println();
         }
     }
-}
 
 
-
-
-
-
-
-
-// clean latter
-enum TileType {
-    WALL('#'), FLOOR('.'), LEVEL('*'), PLAYER('@'),
-    ELIXIR('E'), SCROLL('S'), WEAPON('W'), FOOD('F'),
-    ZOMBIE('z'), OGRE('o'), VAMPIRE('v'), GHOST('g'), SNAKE('s');
-
-    private char symbol;
-
-    TileType(char symbol) {
-        this.symbol = symbol;
+    /**
+     * метод удаляет врага с карты
+     * @param enemy враг
+     */
+    public void deleteEnemy(Enemies enemy) {
+        Position pos = enemy.getPosition();
+        map[pos.getX()][pos.getY()] = TileType.FLOOR;
     }
 
-    public char getSymbol() {
-        return symbol;
+    /**
+     * метод создает врага на карте
+     * @param enemy враг
+     */
+    public void createEnemy(Enemies enemy) {
+        Position pos = enemy.getPosition();
+        switch (enemy.getType()) {
+            case OGRE: map[pos.getX()][pos.getY()] = TileType.OGRE; break;
+            case GHOST: map[pos.getX()][pos.getY()] = TileType.GHOST; break;
+            case SNAKE: map[pos.getX()][pos.getY()] = TileType.SNAKE; break;
+            case VAMPIRE: map[pos.getX()][pos.getY()] = TileType.VAMPIRE; break;
+            case MIMIC: map[pos.getX()][pos.getY()] = TileType.MIMIC; break;
+            default: map[pos.getX()][pos.getY()] = TileType.ZOMBIE;
+        }
     }
 }
