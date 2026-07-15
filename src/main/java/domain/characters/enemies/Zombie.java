@@ -6,7 +6,6 @@ import domain.characters.Enemies;
 import domain.map.Level;
 import domain.navigator.Position;
 
-import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Zombie extends Enemies {
 
