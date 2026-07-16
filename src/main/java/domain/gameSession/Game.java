@@ -90,7 +90,7 @@ public class Game {
     public void start() {
         while (player.getHealth() > 0 && !isGameEnded) {
             generator.printMap();
-            System.out.println(player);
+            System.out.println(player + " lvl: " + Level.getLevelUp());
 
             String input = scanner.nextLine().toLowerCase().trim();
             handleInput(input);
@@ -375,5 +375,13 @@ public class Game {
 
     public Position getPosLevel() {
         return posLevel;
+    }
+
+    public boolean isGameEnded() {
+        return isGameEnded;
+    }
+
+    public void setGameEnded(boolean gameEnded) {
+        isGameEnded = gameEnded;
     }
 }

@@ -113,6 +113,7 @@ public class Backpack {
         player.useItemValue(weaponList.get(numItem));
         weaponList.remove(numItem);
     }
+    
     private void addIfPossible(ArrayList<Item> list, Item item) {
         if (list.size() < maxCapacity) list.add(item);
     }
@@ -128,4 +129,20 @@ public class Backpack {
         }
         return power;
     }
+
+    /**
+     * Очищает все списки предметов
+     */
+    public void clearLists() {
+        elixirList.clear();
+        foodList.clear();
+        scrollList.clear();
+        weaponList.clear();
+    }
+
+    // DTO getters
+    public ArrayList<Item> getElixirList() { return elixirList; }
+    public ArrayList<Item> getFoodList() { return foodList; }
+    public ArrayList<Item> getScrollList() { return scrollList; }
+    public ArrayList<Item> getWeaponList() { return weaponList; }
 }

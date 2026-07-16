@@ -59,6 +59,11 @@ public class Room {
 
     public int getHeight() { return height; }
 
+    public int getArea() { return area; }
+
+    public int getCapacityEnemy() { return capacityEnemy; }
+
+    public int getCapacityItem() { return capacityItem; }
     public Position getPosition() { return position; }
 
     public void setCapacityEnemy(int capacity) {

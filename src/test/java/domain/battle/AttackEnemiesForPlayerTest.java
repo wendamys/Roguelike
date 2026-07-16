@@ -5,6 +5,7 @@ import domain.characters.Player;
 import domain.characters.enemies.*;
 import domain.map.Level;
 import domain.navigator.Position;
+import domain.backpack.Backpack;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -17,6 +18,7 @@ public class AttackEnemiesForPlayerTest {
 
     BattleInfoType battleInfo = new BattleInfoType();
     AttackSystem atk = new AttackSystem();
+    Backpack backpack = new Backpack();
 
     static Stream<Enemies> enemyProvider() {
         return Stream.of(
@@ -35,7 +37,7 @@ public class AttackEnemiesForPlayerTest {
         Player player = new Player(new Position(0, 0));
         System.out.println("\n" + enemy.getType() + " vs Player");
         for (int i = 0; 1000 > i; i++) {
-            atk.attack(player, enemy, ENEMIES, battleInfo);
+            atk.attack(player, enemy, ENEMIES, battleInfo, backpack);
             if (player.getHealth() == 0) {
                 break;
             }

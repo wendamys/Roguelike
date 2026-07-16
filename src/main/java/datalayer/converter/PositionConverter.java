@@ -9,13 +9,14 @@ public class PositionConverter {
         PositionDTO dto = new PositionDTO();
         dto.setX(position.getX());
         dto.setY(position.getY());
-
+        dto.setIsClose(position.getIsClose());
         return dto;
     }
 
     public static Position fromDTO(PositionDTO dto) {
         if (dto == null) return null;
-
-        return new Position(dto.getX(), dto.getY());
+        Position position = new Position(dto.getX(), dto.getY());
+        position.setIsClose(dto.getIsClose());
+        return position;
     }
 }
