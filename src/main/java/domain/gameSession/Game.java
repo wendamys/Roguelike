@@ -384,4 +384,12 @@ public class Game {
     public void setGameEnded(boolean gameEnded) {
         isGameEnded = gameEnded;
     }
+
+    public List<Enemies> getAllEnemiesList() {
+        return allEnemiesList;
+    }
+
+    public List<Item> getAllItemList() {
+        return allItemList;
+    }
 }
