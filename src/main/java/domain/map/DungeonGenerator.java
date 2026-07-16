@@ -4,7 +4,7 @@ import domain.backpack.Item;
 import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.navigator.Position;
-import domain.map.TileType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -216,7 +216,7 @@ public class DungeonGenerator {
      */
     public void createPlayer(Player player) {
         Position posPlayer = player.getPosition();
-        if (player.isStunned()) {
+        if (player.getIsStunned()) {
             map[posPlayer.getX()][posPlayer.getY()] = TileType.PLAYER_STUNNED;
         } else {
             map[posPlayer.getX()][posPlayer.getY()] = TileType.PLAYER;

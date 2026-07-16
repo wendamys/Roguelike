@@ -26,7 +26,7 @@ public class Game {
     private DungeonGenerator generator;
     private List<Room> rooms;
     private List<Corridor> corridors;
-    private final Player player;
+    private Player player;
     private final Backpack backpack;
     private final List<Item> allItemList = new ArrayList<>();
     private final List<Enemies> allEnemiesList = new ArrayList<>();
@@ -141,8 +141,8 @@ public class Game {
 
     private void movePlayer(DirectionType direction) {
         // Если игрок в стане, пропускаем ход
-        if (player.isStunned()) {
-            player.setStunned(false);
+        if (player.getIsStunned()) {
+            player.setIsStunned(false);
             return;
         }
 
@@ -368,6 +368,7 @@ public class Game {
     public Player getPlayer() {
         return player;
     }
+    public void setPlayer(Player player) { this.player = player; }
 
     public Backpack getBackpack() {
         return backpack;

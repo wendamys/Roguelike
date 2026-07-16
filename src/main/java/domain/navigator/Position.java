@@ -3,7 +3,6 @@ package domain.navigator;
 public class Position {
     private final int x;
     private final int y;
-    private boolean isClose = false;
 
     public Position(int x, int y) {
         this.x = x;
@@ -14,13 +13,6 @@ public class Position {
 
     public int getY() { return y;}
 
-    public boolean getIsClose() {
-        return isClose;
-    }
-
-    public void setIsClose(boolean close) {
-        isClose = close;
-    }
 
     /**
      * Метод вычисляет дистанцию между двумя объектами

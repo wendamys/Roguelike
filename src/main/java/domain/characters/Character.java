@@ -11,7 +11,6 @@ public abstract class Character {
 
     public Character(Position position) {
         this.position = position;
-        position.setIsClose(true);
     }
 
     public abstract String getName();

@@ -88,11 +88,11 @@ public class Player extends Character {
         this.health = Math.min((getHealth() + regen), maxHealth);
     }
     
-    public boolean isStunned() {
+    public boolean getIsStunned() {
         return isStunned;
     }
     
-    public void setStunned(boolean stunned) {
+    public void setIsStunned(boolean stunned) {
         isStunned = stunned;
     }
 

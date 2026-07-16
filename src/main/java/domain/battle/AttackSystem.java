@@ -121,7 +121,7 @@ public class AttackSystem {
                         StunAI stunAI = ((Ogre) enemy).getStunAI();
                         if (stunAI.tryStun()) {
                             battleInfo.isStunned = true;
-                            player.setStunned(true);
+                            player.setIsStunned(true);
                             System.out.println("Игрок в стане!");
                         }
                     }
