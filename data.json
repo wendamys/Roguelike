@@ -1,0 +1,29 @@
+{
+  "playerDTO": {
+    "maxHealth": 500,
+    "health": 500,
+    "buffAgility": 70,
+    "buffStrength": 70,
+    "gold": 0,
+    "isStunned": false,
+    "position": {
+      "x": 16,
+      "y": 19,
+      "isClose": true
+    }
+  },
+  "backpackDTO": {
+    "elixirList": [],
+    "foodList": [],
+    "scrollList": [],
+    "weaponList": []
+  },
+  "posLevel": {
+    "x": 18,
+    "y": 34,
+    "isClose": false
+  },
+  "isGameEnded": false,
+  "enemiesList": [],
+  "itemsList": []
+}

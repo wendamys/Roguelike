@@ -6,6 +6,9 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import datalayer.DataLayer;
+import datalayer.dto.EnemyDTO;
+import datalayer.dto.GameDTO;
 import domain.characters.Enemies;
 import domain.characters.enemies.Zombie;
 import domain.gameSession.Game;
@@ -17,7 +20,10 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws IOException {
         Game game = new Game();
-//        game.start();
+        //        game.start();
+
+        DataLayer.save(game);
+        GameDTO gameDTO = DataLayer.loadDTO();
 
         Terminal terminal = new DefaultTerminalFactory()
                 .setInitialTerminalSize(new TerminalSize(180, 70))
@@ -26,14 +32,15 @@ public class Main {
         Screen screen = new TerminalScreen(terminal);
         TextGraphics tg = screen.newTextGraphics();
         screen.startScreen();
-        tg.putString(game.getPlayer().getPosition().getX(), game.getPlayer().getPosition().getY(), "@");
-        List<Enemies> enemiesList = game.getAllEnemiesList();
-        for (Enemies enemies : enemiesList) {
-            switch (enemies.getType()) {
-                case OGRE -> tg.putString(enemies.getPosition().getX(), enemies.getPosition().getY(), "o");
-            }
+        tg.putString(gameDTO.getPlayerDTO().getPosition().getX(), gameDTO.getPlayerDTO().getPosition().getY(), "@");
+        List<EnemyDTO> enemiesDTO = gameDTO.getEnemiesList();
+        for (EnemyDTO enemyDTO : enemiesDTO) {
+            tg.putString(enemyDTO.getPosition().getX(), enemyDTO.getPosition().getY(), "!");
         }
+
+
         screen.refresh();
+
 
     }
 }
