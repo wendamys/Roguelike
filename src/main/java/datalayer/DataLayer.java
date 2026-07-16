@@ -44,7 +44,6 @@ public class DataLayer {
     public static Game load() {
         GameDTO dto = loadDTO();
         if (dto == null) return null;
-        
         return GameConverter.fromDTO(dto);
     }
 }
