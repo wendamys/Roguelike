@@ -26,36 +26,17 @@ public class Player extends Character {
         super(position);
     }
 
-    public int getAgility() {
-        return 70;
-    }
-
-    @Override
-    public int getStrength() {
-        return 70;
-    }
-
     @Override
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getGold() {
-        return gold;
-    }
-
-    public void setGold(int gold) {
-        this.gold = gold;
     }
 
     public int getMaxHealth() {
         return maxHealth;
     }
-
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
@@ -63,37 +44,49 @@ public class Player extends Character {
     public int getHealth() {
         return health;
     }
-
     public void setHealth(int health) {
         this.health = health;
-    }
-
-    public int getBuffStrength() {
-        return buffStrength;
-    }
-
-    public void setBuffStrength(int strength) {
-        this.buffStrength = getStrength() + strength;
     }
 
     public int getBuffAgility() {
         return buffAgility;
     }
-
     public void setBuffAgility(int agility) {
         this.buffAgility = getAgility() + agility;
     }
 
-    public void setUpHealthRegen(int regen) {
-        this.health = Math.min((getHealth() + regen), maxHealth);
+    public int getBuffStrength() {
+        return buffStrength;
     }
-    
+    public void setBuffStrength(int strength) {
+        this.buffStrength = getStrength() + strength;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public int getAgility() {
+        return 70;
+    }
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
     public boolean getIsStunned() {
         return isStunned;
     }
-    
     public void setIsStunned(boolean stunned) {
         isStunned = stunned;
+    }
+
+    @Override
+    public int getStrength() {
+        return 70;
+    }
+
+    public void setUpHealthRegen(int regen) {
+        this.health = Math.min((getHealth() + regen), maxHealth);
     }
 
     /**

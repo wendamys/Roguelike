@@ -10,7 +10,6 @@ import static domain.MathUtils.MathUtils.randomNumber;
 
 abstract public class Enemies extends Character {
 
-
     private int health;
     private int maxHealth;
     private int agility;
@@ -19,10 +18,8 @@ abstract public class Enemies extends Character {
 
     protected EnemiesType type;
     protected DirectionType dir;
-    
     // AI поле
     protected EnemyAI ai;
-    
     // Состояние врага
     protected boolean isInvisible = false;
     protected boolean isStunned = false;
