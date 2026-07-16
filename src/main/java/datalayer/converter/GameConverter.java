@@ -19,7 +19,6 @@ public class GameConverter {
 
     public static Game fromDTO(GameDTO dto) {
         if (dto == null) return null;
-        
         Game game = new Game();
         
         if (dto.getPlayerDTO() != null) {
