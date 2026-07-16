@@ -41,6 +41,7 @@ abstract public class Enemies extends Character {
     @Override
     public int getStrength() {return strength;}
     public int getHostility() {return hostility;}
+    public void setHostility(int hostility) { this.hostility = hostility; }
     public EnemiesType getType() {return type;}
 
     @Override

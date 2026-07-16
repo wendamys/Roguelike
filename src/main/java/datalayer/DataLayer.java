@@ -2,10 +2,9 @@ package datalayer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.internal.bind.util.ISO8601Utils;
 import datalayer.dto.GameDTO;
-import datalayer.dto.PositionDTO;
-import domain.navigator.Position;
+import datalayer.converter.GameConverter;
+import domain.gameSession.Game;
 
 import java.io.File;
 import java.io.FileReader;
@@ -19,24 +18,32 @@ public class DataLayer {
     private static final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .create();
+    
     public DataLayer() {}
 
-    public static void save(GameDTO gameDTO) {
+    public static void save(Game game) {
+        GameDTO gameDTO = GameConverter.toDTO(game);
         try(FileWriter writer = new FileWriter(FILE_PATH, false)) {
             gson.toJson(gameDTO, writer);
-            logger.info("Position data saved " + FILE_PATH);
+            logger.info("Game data saved to " + FILE_PATH);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error saving game: " + e.getMessage());
         }
     }
 
-    public static GameDTO load() {
+    public static GameDTO loadDTO() {
         try (FileReader reader = new FileReader(FILE_PATH)) {
-            logger.info("Position data loaded successfully from " + FILE_PATH);
+            logger.info("Game data loaded successfully from " + FILE_PATH);
             return gson.fromJson(reader, GameDTO.class);
         } catch (IOException e) {
             System.err.println("Error loading game data: " + e.getMessage());
             return null;
         }
+    }
+
+    public static Game load() {
+        GameDTO dto = loadDTO();
+        if (dto == null) return null;
+        return GameConverter.fromDTO(dto);
     }
 }

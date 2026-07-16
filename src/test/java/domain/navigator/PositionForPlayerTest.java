@@ -20,17 +20,17 @@ class PositionForPlayerTest {
     }
 
     @Test
-    void moveForwardShouldIncreaseYCoordinatePlayer() {
-        Position expectedPosition = new Position(10, 21);
+    void moveForwardShouldDecreaseYCoordinatePlayer() {
+        Position expectedPosition = new Position(10, 19);
         mv.moveDir(DirectionType.FORWARD, player);
-        assertEquals(expectedPosition.getY(), player.getPosition().getY(), "Позиция после FORWARD должна измениться только по Y");
+        assertEquals(expectedPosition.getY(), player.getPosition().getY(), "Позиция после FORWARD должна измениться только по Y (уменьшиться)");
     }
 
     @Test
-    void moveDownYCoordinatePlayer() {
-        Position expectedPosition = new Position(10, 19);
+    void moveDownShouldIncreaseYCoordinatePlayer() {
+        Position expectedPosition = new Position(10, 21);
         mv.moveDir(DirectionType.DOWN, player);
-        assertEquals(expectedPosition.getY(), player.getPosition().getY(), "Позиция после DOWN должна измениться только по Y");
+        assertEquals(expectedPosition.getY(), player.getPosition().getY(), "Позиция после DOWN должна измениться только по Y (увеличиться)");
     }
 
     @Test
