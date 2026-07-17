@@ -5,8 +5,6 @@ import domain.characters.Enemies;
 import domain.map.Level;
 import domain.navigator.Position;
 
-import static domain.MathUtils.MathUtils.randomNumber;
-
 public class Vampire extends Enemies {
 
     private final EnemiesType type = EnemiesType.VAMPIRE;
@@ -18,8 +16,8 @@ public class Vampire extends Enemies {
         super(position);
         super.setHealthBegin((int) (health * Level.getCoefEnemy()));
         super.setMaxHealth(super.getHealth());
-        super.setAgility((int) (agility * Level.getCoefEnemy()));
-        super.setStrength((int) (strength * Level.getCoefEnemy()));
+        super.setAgilityRand((int) (agility * Level.getCoefEnemy()));
+        super.setStrengthRand((int) (strength * Level.getCoefEnemy()));
     }
 
     @Override
