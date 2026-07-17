@@ -2,11 +2,14 @@ package datalayer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import datalayer.converter.DungeonGeneratorConverter;
 import datalayer.converter.GameConverter;
 import datalayer.converter.RoomConverter;
+import datalayer.dto.DungeonGeneratorDTO;
 import datalayer.dto.GameDTO;
 import datalayer.dto.RoomDTO;
 import domain.gameSession.Game;
+import domain.map.DungeonGenerator;
 import domain.map.Room;
 
 import java.io.FileReader;
@@ -37,6 +40,16 @@ public class DataLayer {
         RoomDTO roomDTO = RoomConverter.toDTO(room);
         try(FileWriter writer = new FileWriter(FILE_PATH, false)) {
             gson.toJson(roomDTO, writer);
+            logger.info("Game data saved to " + FILE_PATH);
+        } catch (IOException e) {
+            System.out.println("Error saving game: " + e.getMessage());
+        }
+    }
+
+    public static void saveDungeon(DungeonGenerator dungeon) {
+        DungeonGeneratorDTO dto = DungeonGeneratorConverter.toDTO(dungeon);
+        try(FileWriter writer = new FileWriter(FILE_PATH, false)) {
+            gson.toJson(dto, writer);
             logger.info("Game data saved to " + FILE_PATH);
         } catch (IOException e) {
             System.out.println("Error saving game: " + e.getMessage());

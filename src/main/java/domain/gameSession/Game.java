@@ -96,7 +96,7 @@ public class Game {
             return;
         }
         Level.setLevelUp(level++);
-        this.generator = new DungeonGenerator(70, 60);
+        this.generator = new DungeonGenerator();
         this.generator.generateDungeon();
         this.rooms = generator.getRooms();
         this.corridors = generator.getCorridors();
