@@ -27,7 +27,7 @@ public class Game {
     private List<Room> rooms;
     private List<Corridor> corridors;
     private Player player;
-    private final Backpack backpack;
+    private Backpack backpack;
     private List<Item> allItemList = new ArrayList<>();
     private final List<Enemies> allEnemiesList = new ArrayList<>();
     private final BattleInfoType battleInfo = new BattleInfoType();
@@ -49,6 +49,8 @@ public class Game {
 
         initializeGame();
     }
+
+    public void setBackpack(Backpack backpack) {this.backpack = backpack;}
 
     /**
      * Генерирует новый уровень с новыми комнатами и коридорами
