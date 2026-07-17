@@ -12,34 +12,13 @@ import static domain.MathUtils.MathUtils.randomNumber;
 public class Elixir extends Item {
 
     private final ItemsType type = ItemsType.ELIXIR;
+    private ItemsSubType subType;
     private int value = 50;
-    private ItemsSubType subType = null;
 
     public Elixir(Position position) {
         super(position);
-        this.setSubType();
-        this.setValue((int) (value * Level.getCoefItem()));
-    }
-
-    /**
-     * Задает рандомный подтип предмета
-     */
-    private void setSubType() {
-        this.subType = randomItemsSubType();
-    }
-
-    @Override
-    public ItemsSubType getSubType() {
-        return subType;
-    }
-
-    @Override
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = randomNumber((int) (value * 0.95), (int) (value * 1.05));
+        this.setSubTypeRand();
+        this.setValueRand((int) (value * Level.getCoefItem()));
     }
 
     @Override
@@ -50,6 +29,23 @@ public class Elixir extends Item {
     @Override
     public ItemsType getType() {
         return type;
+    }
+
+    @Override
+    public ItemsSubType getSubType() {return subType;}
+    @Override
+    public void setSubType(ItemsSubType subType) {this.subType = subType;}
+    private void setSubTypeRand() {
+        this.subType = randomItemsSubType();
+    }
+
+    @Override
+    public int getValue() {
+        return value;
+    }
+    public void setValue(int value) {this.value = value;}
+    public void setValueRand(int value) {
+        this.value = randomNumber((int) (value * 0.95), (int) (value * 1.05));
     }
 
     @Override

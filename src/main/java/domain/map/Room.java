@@ -17,8 +17,8 @@ import static domain.MathUtils.MathUtils.randomNumber;
 
 public class Room {
 
-    private final int width;
-    private final int height;
+    private int width;
+    private int height;
     private final int area;
     private int capacityEnemy;
     private int capacityItem;
@@ -26,15 +26,13 @@ public class Room {
     private Position position;
     private RoomType roomType;
 
-    private final ArrayList<Enemies> enemyList = new ArrayList<>(capacityEnemy);
-    private final ArrayList<Item> itemList = new ArrayList<>(capacityItem);
+    private ArrayList<Enemies> enemyList = new ArrayList<>(capacityEnemy);
+    private ArrayList<Item> itemList = new ArrayList<>(capacityItem);
 
     public Room(int x, int y) {
         this.width = randomNumber(5, 12);
         this.height = randomNumber(5, 12);
         this.area = width * height;
-
-//        this.position = randomPositionRoom(x, y);
         this.position = new Position(x, y);
         this.setRoomType(area);
         this.setCapacityEnemy(capacityEnemy);
@@ -45,26 +43,28 @@ public class Room {
         addItemList();
     }
 
-    public ArrayList<Item> getItemList() {
-        return itemList;
-    }
-
-    public ArrayList<Enemies> getEnemyList() {
-        return enemyList;
-    }
-
-    public RoomType getRoomType() { return roomType; }
-
     public int getWidth() { return width; }
+    public void setWidth(int width) {this.width = width;}
 
     public int getHeight() { return height; }
+    public void setHeight(int height) {this.height = height;}
 
     public int getArea() { return area; }
 
     public int getCapacityEnemy() { return capacityEnemy; }
-
     public int getCapacityItem() { return capacityItem; }
+
     public Position getPosition() { return position; }
+    public void setPosition(Position position) { this.position = position; }
+
+    public RoomType getRoomType() { return roomType; }
+
+    public ArrayList<Enemies> getEnemyList() {return enemyList;}
+    public void setEnemyList(ArrayList<Enemies> enemyList) {this.enemyList = enemyList;}
+
+    public ArrayList<Item> getItemList() {return itemList;}
+    public void setItemList(ArrayList<Item> itemList) {this.itemList = itemList;}
+
 
     public void setCapacityEnemy(int capacity) {
         this.capacityEnemy = randomCapacityValueEnemy(roomType);

@@ -4,7 +4,7 @@ import domain.backpack.Item;
 import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.navigator.Position;
-import domain.map.TileType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,20 +12,36 @@ public class DungeonGenerator {
     private static final int MAP_SIZE = 45;
     private static final int ROOM_PADDING = 5; // Отступ между комнатами
 
+    private final int mapWidth = 70;
+    private final int mapHeight = 60;
     private TileType[][] map;
-    private final List<Room> rooms;
-    private final List<Corridor> corridors;
-    private final int mapWidth;
-    private final int mapHeight;
+    private List<Room> rooms;
+    private List<Corridor> corridors;
 
-    public DungeonGenerator(int mapWidth, int mapHeight) {
-        this.mapWidth = mapWidth;
-        this.mapHeight = mapHeight;
+    public DungeonGenerator() {
         this.map = new TileType[mapWidth][mapHeight];
         this.rooms = new ArrayList<>();
         this.corridors = new ArrayList<>();
         initializeMap();
     }
+
+    public TileType[][] getMap() {
+        return map;
+    }
+    public void setMap(TileType[][] map) {
+        this.map = map;
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
+    }
+    public void setRooms(List<Room> rooms) {this.rooms = rooms;}
+
+    public List<Corridor> getCorridors() {
+        return corridors;
+    }
+    public void setCorridors(List<Corridor> corridors) {this.corridors = corridors;}
+
 
     /**
      * метод инициализирует карту стенами
@@ -174,29 +190,7 @@ public class DungeonGenerator {
         return x >= 0 && x < mapWidth && y >= 0 && y < mapHeight;
     }
 
-    public TileType[][] getMap() {
-        return map;
-    }
 
-    public void setMap(TileType[][] map) {
-        this.map = map;
-    }
-
-    public List<Room> getRooms() {
-        return rooms;
-    }
-
-    public List<Corridor> getCorridors() {
-        return corridors;
-    }
-
-    public int getMapWidth() {
-        return mapWidth;
-    }
-
-    public int getMapHeight() {
-        return mapHeight;
-    }
 
     /**
      * метод проверяет, является ли позиция проходимой
@@ -216,7 +210,7 @@ public class DungeonGenerator {
      */
     public void createPlayer(Player player) {
         Position posPlayer = player.getPosition();
-        if (player.isStunned()) {
+        if (player.getIsStunned()) {
             map[posPlayer.getX()][posPlayer.getY()] = TileType.PLAYER_STUNNED;
         } else {
             map[posPlayer.getX()][posPlayer.getY()] = TileType.PLAYER;

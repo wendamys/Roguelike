@@ -1,7 +1,5 @@
 package datalayer.dto;
 
-import domain.characters.Player;
-
 public class PlayerDTO {
     private String name;
     private int maxHealth;
@@ -10,7 +8,7 @@ public class PlayerDTO {
     private int buffStrength;
     private int gold;
     private boolean isStunned;
-    private PositionDTO position;
+    private PositionDTO positionDTO;
 
     public PlayerDTO() {}
 
@@ -32,9 +30,9 @@ public class PlayerDTO {
     public int getGold() { return gold; }
     public void setGold(int gold) { this.gold = gold; }
 
-    public boolean isStunned() { return isStunned; }
-    public void setStunned(boolean isStunned) { this.isStunned = isStunned; }
+    public boolean getIsStunned() { return isStunned; }
+    public void setIsStunned(boolean stunned) { isStunned = stunned; }
 
-    public PositionDTO getPosition() { return position; }
-    public void setPosition(PositionDTO position) { this.position = position; }
+    public PositionDTO getPositionDTO() { return positionDTO; }
+    public void setPositionDTO(PositionDTO positionDTO) { this.positionDTO = positionDTO; }
 }

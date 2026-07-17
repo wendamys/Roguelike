@@ -18,8 +18,8 @@ public class Zombie extends Enemies {
         super(position);
         super.setHealthBegin((int) (health * Level.getCoefEnemy()));
         super.setMaxHealth(super.getHealth());
-        super.setAgility((int) (agility * Level.getCoefEnemy()));
-        super.setStrength((int) (strength * Level.getCoefEnemy()));
+        super.setAgilityRand((int) (agility * Level.getCoefEnemy()));
+        super.setStrengthRand((int) (strength * Level.getCoefEnemy()));
     }
 
     @Override
@@ -44,13 +44,12 @@ public class Zombie extends Enemies {
 
     @Override
     public String toString() {
-        return String.format("Zombie: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s\nposIsClose: %s",
+        return String.format("Zombie: \nname: %s\nhealth: %d\nagility: %d\nstrength: %d\ntype: %s",
                 getName(),
                 getHealth(),
                 getAgility(),
                 getStrength(),
-                getType(),
-                getPosition().getIsClose()
+                getType()
         );
     }
 }

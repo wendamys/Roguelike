@@ -1,50 +1,39 @@
 package datalayer.converter;
 
-import datalayer.dto.ItemsTypeDTO;
-import datalayer.dto.ItemsSubTypeDTO;import datalayer.dto.ItemDTO;
+import datalayer.dto.ItemDTO;
 import domain.backpack.Item;
-import domain.backpack.ItemsSubType;
-import domain.backpack.ItemsType;
 import domain.backpack.items.Elixir;
 import domain.backpack.items.Food;
 import domain.backpack.items.Scroll;
 import domain.backpack.items.Weapon;
 
 public class ItemConverter {
+
     public static ItemDTO toDTO(Item item) {
         if (item == null) return null;
+
         ItemDTO dto = new ItemDTO();
-        dto.setType(item.getType() != null ? ItemsTypeDTO.valueOf(item.getType().name()) : null);
-        dto.setSubType(item.getSubType() != null ? ItemsSubTypeDTO.valueOf(item.getSubType().name()) : null);
+        dto.setType(item.getType());
+        dto.setName(item.getName());
+        dto.setSubtype(item.getSubType());
         dto.setValue(item.getValue());
-        dto.setPosition(PositionConverter.toDTO(item.getPosition()));
+        dto.setPositionDTO(PositionConverter.toDTO(item.getPosition()));
         return dto;
     }
 
     public static Item fromDTO(ItemDTO dto) {
-        if (dto == null) return null;
-        ItemsType type = dto.getType() != null ? ItemsType.valueOf(dto.getType().name()) : null;
-        ItemsSubType subType = dto.getSubType() != null ? ItemsSubType.valueOf(dto.getSubType().name()) : null;
-        
-        switch (type) {
-            case FOOD:
-                Food food = new Food(PositionConverter.fromDTO(dto.getPosition()));
-                food.setValue(dto.getValue());
-                return food;
-            case SCROLL:
-                Scroll scroll = new Scroll(PositionConverter.fromDTO(dto.getPosition()));
-                scroll.setValue(dto.getValue());
-                return scroll;
-            case WEAPON:
-                Weapon weapon = new Weapon(PositionConverter.fromDTO(dto.getPosition()));
-                weapon.setValue(dto.getValue());
-                return weapon;
-            case ELIXIR:
-                Elixir elixir = new Elixir(PositionConverter.fromDTO(dto.getPosition()));
-                elixir.setValue(dto.getValue());
-                return elixir;
-            default:
-                return null;
+        if(dto == null) return null;
+
+        Item item = null;
+        switch (dto.getType()) {
+            case ELIXIR -> item = new Elixir(PositionConverter.fromDTO(dto.getPositionDTO()));
+            case SCROLL -> item = new Scroll(PositionConverter.fromDTO(dto.getPositionDTO()));
+            case FOOD -> item = new Food(PositionConverter.fromDTO(dto.getPositionDTO()));
+            case WEAPON -> item = new Weapon(PositionConverter.fromDTO(dto.getPositionDTO()));
         }
+        item.setName(dto.getName());
+        item.setSubType(item.getSubType());
+        item.setValueRand(item.getValue());
+        return item;
     }
 }

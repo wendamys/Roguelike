@@ -2,11 +2,10 @@ package datalayer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import datalayer.dto.GameDTO;
 import datalayer.converter.GameConverter;
+import datalayer.dto.GameDTO;
 import domain.gameSession.Game;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;

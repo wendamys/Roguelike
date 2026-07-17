@@ -4,19 +4,22 @@ import datalayer.dto.PositionDTO;
 import domain.navigator.Position;
 
 public class PositionConverter {
+
     public static PositionDTO toDTO(Position position) {
-        if (position == null) return null;
-        PositionDTO dto = new PositionDTO();
-        dto.setX(position.getX());
-        dto.setY(position.getY());
-        dto.setIsClose(position.getIsClose());
-        return dto;
+        if(position == null) return null;
+
+        PositionDTO positionDTO = new PositionDTO();
+        positionDTO.setX(position.getX());
+        positionDTO.setY(position.getY());
+
+        return positionDTO;
     }
 
     public static Position fromDTO(PositionDTO dto) {
-        if (dto == null) return null;
+        if(dto == null) return null;
+
         Position position = new Position(dto.getX(), dto.getY());
-        position.setIsClose(dto.getIsClose());
+
         return position;
     }
 }

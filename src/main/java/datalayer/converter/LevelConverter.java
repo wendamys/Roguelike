@@ -4,16 +4,16 @@ import datalayer.dto.LevelDTO;
 import domain.map.Level;
 
 public class LevelConverter {
-    public static LevelDTO toDTO(Level level) {
-        if (level == null) return null;
+    
+    public static LevelDTO toDTO() {
         LevelDTO dto = new LevelDTO();
         dto.setLevelUp(Level.getLevelUp());
         return dto;
     }
-
-    public static Level fromDTO(LevelDTO dto) {
-        if (dto == null) return null;
-        Level.setLevelUp(dto.getLevelUp());
-        return Level.class != null ? new Level() : null;
+    
+    public static void fromDTO(LevelDTO dto) {
+        if (dto != null) {
+            Level.setLevelUp(dto.getLevelUp());
+        }
     }
 }

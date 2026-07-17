@@ -5,12 +5,11 @@ public class Level {
 
     public Level() {}
 
-    public static void setLevelUp(int levelUp) {
-        Level.levelUp = levelUp;
-    }
-
     public static int getLevelUp() {
         return levelUp;
+    }
+    public static void setLevelUp(int levelUp) {
+        Level.levelUp = levelUp;
     }
 
     public static double getCoefEnemy() {

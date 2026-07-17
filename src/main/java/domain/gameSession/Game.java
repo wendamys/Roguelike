@@ -26,9 +26,9 @@ public class Game {
     private DungeonGenerator generator;
     private List<Room> rooms;
     private List<Corridor> corridors;
-    private final Player player;
-    private final Backpack backpack;
-    private final List<Item> allItemList = new ArrayList<>();
+    private Player player;
+    private Backpack backpack;
+    private List<Item> allItemList = new ArrayList<>();
     private final List<Enemies> allEnemiesList = new ArrayList<>();
     private final BattleInfoType battleInfo = new BattleInfoType();
     private final AttackSystem attackSystem = new AttackSystem();
@@ -50,6 +50,44 @@ public class Game {
         initializeGame();
     }
 
+    public DungeonGenerator getGenerator() {
+        return generator;
+    }
+    public void setGenerator(DungeonGenerator generator) {this.generator = generator;}
+
+    public List<Room> getRooms() {return rooms;}
+    public void setRooms(List<Room> rooms) {this.rooms = rooms;}
+
+    public void setBackpack(Backpack backpack) {this.backpack = backpack;}
+
+    public Player getPlayer() {
+        return player;
+    }
+    public void setPlayer(Player player) { this.player = player; }
+
+    public Backpack getBackpack() {
+        return backpack;
+    }
+
+    public Position getPosLevel() {
+        return posLevel;
+    }
+
+    public boolean isGameEnded() {
+        return isGameEnded;
+    }
+
+    public void setGameEnded(boolean gameEnded) {
+        isGameEnded = gameEnded;
+    }
+
+    public List<Enemies> getAllEnemiesList() {return allEnemiesList;}
+
+    public List<Item> getAllItemList() {
+        return allItemList;
+    }
+
+
     /**
      * Генерирует новый уровень с новыми комнатами и коридорами
      */
@@ -58,7 +96,7 @@ public class Game {
             return;
         }
         Level.setLevelUp(level++);
-        this.generator = new DungeonGenerator(70, 60);
+        this.generator = new DungeonGenerator();
         this.generator.generateDungeon();
         this.rooms = generator.getRooms();
         this.corridors = generator.getCorridors();
@@ -141,8 +179,8 @@ public class Game {
 
     private void movePlayer(DirectionType direction) {
         // Если игрок в стане, пропускаем ход
-        if (player.isStunned()) {
-            player.setStunned(false);
+        if (player.getIsStunned()) {
+            player.setIsStunned(false);
             return;
         }
 
@@ -359,37 +397,5 @@ public class Game {
     private void winGame() {
         System.out.println("\n=== You win! ===");
         System.out.println("Final score: " + player.getGold() + " gold");
-    }
-
-    public DungeonGenerator getGenerator() {
-        return generator;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public Backpack getBackpack() {
-        return backpack;
-    }
-
-    public Position getPosLevel() {
-        return posLevel;
-    }
-
-    public boolean isGameEnded() {
-        return isGameEnded;
-    }
-
-    public void setGameEnded(boolean gameEnded) {
-        isGameEnded = gameEnded;
-    }
-
-    public List<Enemies> getAllEnemiesList() {
-        return allEnemiesList;
-    }
-
-    public List<Item> getAllItemList() {
-        return allItemList;
     }
 }

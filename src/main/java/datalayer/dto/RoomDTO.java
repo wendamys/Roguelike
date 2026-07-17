@@ -1,37 +1,33 @@
 package datalayer.dto;
 
-import domain.map.Room;
-import domain.map.RoomType;
+import domain.characters.Enemies;
+
+import java.util.ArrayList;
 
 public class RoomDTO {
     private int width;
     private int height;
-    private int area;
-    private int capacityEnemy;
-    private int capacityItem;
-    private RoomTypeDTO roomType;
-    private PositionDTO position;
+    private ArrayList<EnemiesDTO> enemiesListDTO;
+    private ArrayList<ItemDTO> itemListDTO;
+    private PositionDTO positionDTO;
 
-    public RoomDTO() {}
+    public RoomDTO() {
+        enemiesListDTO = new ArrayList<>();
+        itemListDTO = new ArrayList<>();
+    }
 
-    public int getWidth() { return width; }
-    public void setWidth(int width) { this.width = width; }
+    public int getWidth() {return width;}
+    public void setWidth(int width) {this.width = width;}
 
-    public int getHeight() { return height; }
-    public void setHeight(int height) { this.height = height; }
+    public int getHeight() {return height;}
+    public void setHeight(int height) {this.height = height;}
 
-    public int getArea() { return area; }
-    public void setArea(int area) { this.area = area; }
+    public ArrayList<EnemiesDTO> getEnemiesListDTO() {return enemiesListDTO;}
+    public void setEnemiesListDTO(ArrayList<EnemiesDTO> enemiesListDTO) {this.enemiesListDTO = enemiesListDTO;}
 
-    public int getCapacityEnemy() { return capacityEnemy; }
-    public void setCapacityEnemy(int capacityEnemy) { this.capacityEnemy = capacityEnemy; }
+    public ArrayList<ItemDTO> getItemListDTO() {return itemListDTO;}
+    public void setItemListDTO(ArrayList<ItemDTO> itemListDTO) {this.itemListDTO = itemListDTO;}
 
-    public int getCapacityItem() { return capacityItem; }
-    public void setCapacityItem(int capacityItem) { this.capacityItem = capacityItem; }
-
-    public RoomTypeDTO getRoomType() { return roomType; }
-    public void setRoomType(RoomTypeDTO roomType) { this.roomType = roomType; }
-
-    public PositionDTO getPosition() { return position; }
-    public void setPosition(PositionDTO position) { this.position = position; }
+    public PositionDTO getPositionDTO() {return positionDTO;}
+    public void setPositionDTO(PositionDTO positionDTO) {this.positionDTO = positionDTO;}
 }

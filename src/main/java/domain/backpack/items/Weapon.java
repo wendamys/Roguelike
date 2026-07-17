@@ -16,7 +16,17 @@ public class Weapon extends Item {
 
     public Weapon(Position position) {
         super(position);
-        this.setValue((int) (value * Level.getCoefItem()));
+        this.setValueRand((int) (value * Level.getCoefItem()));
+    }
+
+    @Override
+    public String getName() {
+        return "W";
+    }
+
+    @Override
+    public ItemsType getType() {
+        return type;
     }
 
     public ItemsSubType getSubType() {
@@ -27,19 +37,9 @@ public class Weapon extends Item {
     public int getValue() {
         return value;
     }
-
-    public void setValue(int value) {
+    public void setValue(int value) {this.value = value;}
+    public void setValueRand(int value) {
         this.value = randomNumber((int) (value * 0.95), (int) (value * 1.05));
-    }
-
-    @Override
-    public ItemsType getType() {
-        return type;
-    }
-
-    @Override
-    public String getName() {
-        return "W";
     }
 
     @Override

@@ -1,22 +1,29 @@
 package datalayer.dto;
 
+import domain.backpack.ItemsSubType;
+import domain.backpack.ItemsType;
+
 public class ItemDTO {
-    private ItemsTypeDTO type;
-    private ItemsSubTypeDTO subType;
+    private ItemsType type;
+    private String name;
+    private ItemsSubType subtype;
     private int value;
-    private PositionDTO position;
+    private PositionDTO positionDTO;
 
     public ItemDTO() {}
 
-    public ItemsTypeDTO getType() { return type; }
-    public void setType(ItemsTypeDTO type) { this.type = type; }
+    public ItemsType getType() {return type;}
+    public void setType(ItemsType type) {this.type = type; }
 
-    public ItemsSubTypeDTO getSubType() { return subType; }
-    public void setSubType(ItemsSubTypeDTO subType) { this.subType = subType; }
+    public String getName() {return name; }
+    public void setName(String name) {this.name = name; }
 
-    public int getValue() { return value; }
-    public void setValue(int value) { this.value = value; }
+    public ItemsSubType getSubtype() {return subtype;}
+    public void setSubtype(ItemsSubType subtype) {this.subtype = subtype; }
 
-    public PositionDTO getPosition() { return position; }
-    public void setPosition(PositionDTO position) { this.position = position; }
+    public int getValue() {return value;}
+    public void setValue(int value) {this.value = value; }
+
+    public PositionDTO getPositionDTO() {return positionDTO;}
+    public void setPositionDTO(PositionDTO positionDTO) {this.positionDTO = positionDTO;}
 }

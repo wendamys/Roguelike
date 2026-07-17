@@ -1,30 +1,29 @@
 package datalayer.dto;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BackpackDTO {
-    private List<ItemDTO> elixirList;
-    private List<ItemDTO> foodList;
-    private List<ItemDTO> scrollList;
-    private List<ItemDTO> weaponList;
+    private ArrayList<ItemDTO> elixirListDTO;
+    private ArrayList<ItemDTO> scrollListDTO;
+    private ArrayList<ItemDTO> foodListDTO;
+    private ArrayList<ItemDTO> weaponListDTO;
 
     public BackpackDTO() {
-        this.elixirList = new ArrayList<>();
-        this.foodList = new ArrayList<>();
-        this.scrollList = new ArrayList<>();
-        this.weaponList = new ArrayList<>();
+        elixirListDTO = new ArrayList<>();
+        scrollListDTO = new ArrayList<>();
+        foodListDTO = new ArrayList<>();
+        weaponListDTO = new ArrayList<>();
     }
 
-    public List<ItemDTO> getElixirList() { return elixirList; }
-    public void setElixirList(List<ItemDTO> elixirList) { this.elixirList = elixirList; }
+    public ArrayList<ItemDTO> getElixirListDTO() {return elixirListDTO;}
+    public void setElixirListDTO(ArrayList<ItemDTO> elixirListDTO) {this.elixirListDTO = elixirListDTO;}
 
-    public List<ItemDTO> getFoodList() { return foodList; }
-    public void setFoodList(List<ItemDTO> foodList) { this.foodList = foodList; }
+    public ArrayList<ItemDTO> getScrollListDTO() {return scrollListDTO;}
+    public void setScrollListDTO(ArrayList<ItemDTO> scrollListDTO) {this.scrollListDTO = scrollListDTO;}
 
-    public List<ItemDTO> getScrollList() { return scrollList; }
-    public void setScrollList(List<ItemDTO> scrollList) { this.scrollList = scrollList; }
+    public ArrayList<ItemDTO> getFoodListDTO() {return foodListDTO;}
+    public void setFoodListDTO(ArrayList<ItemDTO> foodListDTO) {this.foodListDTO = foodListDTO;}
 
-    public List<ItemDTO> getWeaponList() { return weaponList; }
-    public void setWeaponList(List<ItemDTO> weaponList) { this.weaponList = weaponList; }
+    public ArrayList<ItemDTO> getWeaponListDTO() {return weaponListDTO;}
+    public void setWeaponListDTO(ArrayList<ItemDTO> weaponListDTO) {this.weaponListDTO = weaponListDTO;}
 }
