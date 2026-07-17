@@ -50,7 +50,43 @@ public class Game {
         initializeGame();
     }
 
+    public List<Room> getRooms() {return rooms;}
+    public void setRooms(List<Room> rooms) {this.rooms = rooms;}
+
+
+
     public void setBackpack(Backpack backpack) {this.backpack = backpack;}
+    public DungeonGenerator getGenerator() {
+        return generator;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+    public void setPlayer(Player player) { this.player = player; }
+
+    public Backpack getBackpack() {
+        return backpack;
+    }
+
+    public Position getPosLevel() {
+        return posLevel;
+    }
+
+    public boolean isGameEnded() {
+        return isGameEnded;
+    }
+
+    public void setGameEnded(boolean gameEnded) {
+        isGameEnded = gameEnded;
+    }
+
+    public List<Enemies> getAllEnemiesList() {return allEnemiesList;}
+
+    public List<Item> getAllItemList() {
+        return allItemList;
+    }
+
 
     /**
      * Генерирует новый уровень с новыми комнатами и коридорами
@@ -361,38 +397,5 @@ public class Game {
     private void winGame() {
         System.out.println("\n=== You win! ===");
         System.out.println("Final score: " + player.getGold() + " gold");
-    }
-
-    public DungeonGenerator getGenerator() {
-        return generator;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-    public void setPlayer(Player player) { this.player = player; }
-
-    public Backpack getBackpack() {
-        return backpack;
-    }
-
-    public Position getPosLevel() {
-        return posLevel;
-    }
-
-    public boolean isGameEnded() {
-        return isGameEnded;
-    }
-
-    public void setGameEnded(boolean gameEnded) {
-        isGameEnded = gameEnded;
-    }
-
-    public List<Enemies> getAllEnemiesList() {
-        return allEnemiesList;
-    }
-
-    public List<Item> getAllItemList() {
-        return allItemList;
     }
 }
