@@ -14,12 +14,6 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         Game game = new Game();
-//        game.start();
-//        game.getPlayer().setName("qwe");
-//        game.getBackpack().takeItem(new Elixir(new Position(0, 0)));
-
-//        DungeonGenerator dungeonGenerator = new DungeonGenerator();
-        DataLayer.saveDungeon(game.getGenerator());
-
+        DataLayer.save(game);
     }
 }

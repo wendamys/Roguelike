@@ -38,7 +38,7 @@ public class DungeonGeneratorConverter {
         generator.setRooms(rooms);
 
         ArrayList<Corridor> corridors = new ArrayList<>();
-        ArrayList<Room> roomListCopy = new ArrayList<>(rooms); // копия для поиска по ссылке
+        ArrayList<Room> roomListCopy = new ArrayList<>(rooms);
         dto.getCorridorsDTO().forEach(corridorDTO -> {
             Room room1 = findRoomByPosition(roomListCopy, corridorDTO.getRoom1PositionDTO());
             Room room2 = findRoomByPosition(roomListCopy, corridorDTO.getRoom2PositionDTO());

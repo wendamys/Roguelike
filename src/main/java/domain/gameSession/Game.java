@@ -50,15 +50,15 @@ public class Game {
         initializeGame();
     }
 
-    public List<Room> getRooms() {return rooms;}
-    public void setRooms(List<Room> rooms) {this.rooms = rooms;}
-
-
-
-    public void setBackpack(Backpack backpack) {this.backpack = backpack;}
     public DungeonGenerator getGenerator() {
         return generator;
     }
+    public void setGenerator(DungeonGenerator generator) {this.generator = generator;}
+
+    public List<Room> getRooms() {return rooms;}
+    public void setRooms(List<Room> rooms) {this.rooms = rooms;}
+
+    public void setBackpack(Backpack backpack) {this.backpack = backpack;}
 
     public Player getPlayer() {
         return player;
