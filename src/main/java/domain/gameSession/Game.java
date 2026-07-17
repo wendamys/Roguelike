@@ -28,7 +28,7 @@ public class Game {
     private List<Corridor> corridors;
     private Player player;
     private final Backpack backpack;
-    private final List<Item> allItemList = new ArrayList<>();
+    private List<Item> allItemList = new ArrayList<>();
     private final List<Enemies> allEnemiesList = new ArrayList<>();
     private final BattleInfoType battleInfo = new BattleInfoType();
     private final AttackSystem attackSystem = new AttackSystem();

@@ -12,25 +12,13 @@ import static domain.MathUtils.MathUtils.randomNumber;
 public class Scroll extends Item {
 
     private final ItemsType type = ItemsType.SCROLL;
+    private ItemsSubType subType;
     private int value = 10;
-    private ItemsSubType subType = null;
 
     public Scroll(Position position) {
         super(position);
-        this.setSubType();
-        this.setValue((int) (value * Level.getCoefItem()));
-    }
-
-    /**
-     * Задает рандомный подтип предмета
-     */
-    private void setSubType() {
-        this.subType = randomItemsSubType();
-    }
-
-    @Override
-    public ItemsSubType getSubType() {
-        return subType;
+        this.setSubTypeRand();
+        this.setValueRand((int) (value * Level.getCoefItem()));
     }
 
     @Override
@@ -39,17 +27,18 @@ public class Scroll extends Item {
     }
 
     @Override
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = randomNumber((int) (value * 0.9), (int) (value * 1.1));
-    }
+    public ItemsType getType() {return type;}
 
     @Override
-    public ItemsType getType() {
-        return type;
+    public ItemsSubType getSubType() {return subType;}
+    @Override
+    public void setSubType(ItemsSubType subType) {this.subType = subType;}
+    private void setSubTypeRand() {
+        this.subType = randomItemsSubType();
+    }
+
+    public void setValueRand(int value) {
+        this.value = randomNumber((int) (value * 0.9), (int) (value * 1.1));
     }
 
     @Override
