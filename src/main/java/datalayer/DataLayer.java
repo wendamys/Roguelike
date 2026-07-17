@@ -33,15 +33,15 @@ public class DataLayer {
         }
     }
 
-//    public static void saveRoom(Room room) {
-//        RoomDTO roomDTO = RoomConverter.toDTO(room);
-//        try(FileWriter writer = new FileWriter(FILE_PATH, false)) {
-//            gson.toJson(roomDTO, writer);
-//            logger.info("Game data saved to " + FILE_PATH);
-//        } catch (IOException e) {
-//            System.out.println("Error saving game: " + e.getMessage());
-//        }
-//    }
+    public static void saveRoom(Room room) {
+        RoomDTO roomDTO = RoomConverter.toDTO(room);
+        try(FileWriter writer = new FileWriter(FILE_PATH, false)) {
+            gson.toJson(roomDTO, writer);
+            logger.info("Game data saved to " + FILE_PATH);
+        } catch (IOException e) {
+            System.out.println("Error saving game: " + e.getMessage());
+        }
+    }
 
     public static GameDTO loadDTO() {
         try (FileReader reader = new FileReader(FILE_PATH)) {
