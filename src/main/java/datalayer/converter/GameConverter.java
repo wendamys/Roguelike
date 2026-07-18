@@ -12,7 +12,7 @@ public class GameConverter {
         dto.setPlayerDTO(PlayerConverter.toDTO(game.getPlayer()));
         dto.setBackpackDTO(BackpackConverter.toDTO(game.getBackpack()));
         dto.setLevelDTO(LevelConverter.toDTO());
-        dto.setDungeonGeneratorDTO(DungeonGeneratorConverter.toDTO(game.getGenerator()));
+        dto.setDungeDTO(DungeConverter.toDTO(game.getGenerator()));
 
         return dto;
     }
@@ -24,7 +24,7 @@ public class GameConverter {
         game.setPlayer(PlayerConverter.fromDTO(dto.getPlayerDTO()));
         game.setBackpack(BackpackConverter.fromDTO(dto.getBackpackDTO()));
         LevelConverter.fromDTO(dto.getLevelDTO());
-        game.setGenerator(DungeonGeneratorConverter.fromDTO(dto.getDungeonGeneratorDTO()));
+        game.setGenerator(DungeConverter.fromDTO(dto.getDungeDTO()));
 
         return game;
     }

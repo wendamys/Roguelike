@@ -1,12 +1,10 @@
 package datalayer.dto;
 
-import java.util.ArrayList;
-
 public class GameDTO {
     private PlayerDTO playerDTO;
     private BackpackDTO backpackDTO;
     private LevelDTO levelDTO;
-    private DungeonGeneratorDTO dungeonGeneratorDTO;
+    private DungeDTO dungeDTO;
 
     public GameDTO() {}
 
@@ -19,6 +17,6 @@ public class GameDTO {
     public LevelDTO getLevelDTO() {return levelDTO;}
     public void setLevelDTO(LevelDTO levelDTO) {this.levelDTO = levelDTO;}
 
-    public DungeonGeneratorDTO getDungeonGeneratorDTO() {return dungeonGeneratorDTO;}
-    public void setDungeonGeneratorDTO(DungeonGeneratorDTO dungeonGeneratorDTO) {this.dungeonGeneratorDTO = dungeonGeneratorDTO;}
+    public DungeDTO getDungeDTO() {return dungeDTO;}
+    public void setDungeDTO(DungeDTO dungeDTO) {this.dungeDTO = dungeDTO;}
 }
