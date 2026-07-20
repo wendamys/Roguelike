@@ -10,7 +10,8 @@ import datalayer.DataLayer;
 import datalayer.dto.GameDTO;
 import domain.backpack.Item;
 import domain.backpack.items.Elixir;
-import domain.gameSession.Game;
+import domain.gameSession.GameFacade;
+import domain.gameSession.GameFacadeImpl;
 import domain.map.DungeonGenerator;
 import domain.map.Room;
 import domain.navigator.Position;
@@ -20,8 +21,9 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Game game = new Game();
-        DataLayer.save(game);
+        GameFacade facade = new GameFacadeImpl();
+//        facade.startGame(); // Uncomment to start the game
+        DataLayer.save(facade);
         GameDTO dto = new GameDTO();
         dto = DataLayer.loadDTO();
 

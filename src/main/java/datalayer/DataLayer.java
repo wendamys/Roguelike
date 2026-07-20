@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import datalayer.converter.GameConverter;
 import datalayer.dto.GameDTO;
 import domain.gameSession.Game;
+import domain.gameSession.GameFacade;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -20,8 +21,8 @@ public class DataLayer {
     
     public DataLayer() {}
 
-    public static void save(Game game) {
-        GameDTO gameDTO = GameConverter.toDTO(game);
+    public static void save(GameFacade gameFacade) {
+        GameDTO gameDTO = GameConverter.toDTO(gameFacade);
         try(FileWriter writer = new FileWriter(FILE_PATH, false)) {
             gson.toJson(gameDTO, writer);
             logger.info("Game data saved to " + FILE_PATH);

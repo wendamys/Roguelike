@@ -87,11 +87,31 @@ public class Game {
         return allItemList;
     }
 
+    /**
+     * Public method to use an item by index and type
+     * @param index index of the item in backpack
+     * @param type type of the item
+     * @return true if item was used successfully
+     */
+    public boolean useItemByIndex(int index, ItemsType type) {
+        return backpack.useItemByIndex(index, type, player);
+    }
+
+    /**
+     * Public method to select inventory type for item usage
+     * @param type type of items to select
+     */
+    public void selectInventoryType(ItemsType type) {
+        selectedInventoryType = type;
+        backpack.seeList(type);
+        System.out.println("Введите цифру 1-9 для выбора предмета:");
+    }
+
 
     /**
      * Генерирует новый уровень с новыми комнатами и коридорами
      */
-    private void generateNewLevel() {
+    public void generateNewLevel() {
         if (level >= 25) {
             return;
         }
@@ -107,7 +127,7 @@ public class Game {
     /**
      * метод инициализирует игру
      */
-    private void initializeGame() {
+    public void initializeGame() {
         generator.createPlayer(player);
         for (var room : rooms) {
             if (room != rooms.getFirst()) {
@@ -177,7 +197,11 @@ public class Game {
         };
     }
 
-    private void movePlayer(DirectionType direction) {
+    /**
+     * Move player in specified direction
+     * @param direction direction to move
+     */
+    public void movePlayer(DirectionType direction) {
         // Если игрок в стане, пропускаем ход
         if (player.getIsStunned()) {
             player.setIsStunned(false);
