@@ -23,6 +23,8 @@ public interface GameFacade {
 
     void setGameEnded(boolean ended);
 
+    void processCommand(String command);
+
     // ============= Access to Core Components =============
 
     Player getPlayer();

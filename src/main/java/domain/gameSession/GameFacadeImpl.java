@@ -35,6 +35,11 @@ public class GameFacadeImpl implements GameFacade {
         game.setGameEnded(ended);
     }
 
+    @Override
+    public void processCommand(String command) {
+
+    }
+
     // ============= Access to Core Components =============
 
     @Override
