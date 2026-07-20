@@ -76,9 +76,14 @@ public class GameFacadeImpl implements GameFacade {
 
     // ============= Inventory Management =============
 
-    @Override
-    public void useItem(int index, ItemsType type) {
-        game.useItemByIndex(index, type);
+    /**
+     * Use an item by index and type
+     * @param index index of the item
+     * @param type type of the item
+     * @return true if item was used successfully
+     */
+    public boolean useItem(int index, ItemsType type) {
+        return game.useItemByIndex(index, type);
     }
 
     @Override

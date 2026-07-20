@@ -1,10 +1,23 @@
 package datalayer.converter;
 
 import datalayer.dto.GameDTO;
+import domain.controller.Controller;
 import domain.gameSession.Game;
 import domain.gameSession.GameFacade;
 
 public class GameConverter {
+
+    public static GameDTO toDTO(Controller controller) {
+        if(controller == null) return null;
+
+        GameDTO dto = new GameDTO();
+        dto.setPlayerDTO(PlayerConverter.toDTO(controller.getPlayer()));
+        dto.setBackpackDTO(BackpackConverter.toDTO(controller.getGameFacade().getBackpack()));
+        dto.setLevelDTO(LevelConverter.toDTO());
+        dto.setDungeDTO(DungeConverter.toDTO(controller.getGameFacade().getGenerator()));
+
+        return dto;
+    }
 
     public static GameDTO toDTO(GameFacade gameFacade) {
         if(gameFacade == null) return null;

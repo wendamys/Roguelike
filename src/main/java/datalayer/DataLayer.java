@@ -21,8 +21,8 @@ public class DataLayer {
     
     public DataLayer() {}
 
-    public static void save(GameFacade gameFacade) {
-        GameDTO gameDTO = GameConverter.toDTO(gameFacade);
+    public static void save(domain.controller.Controller controller) {
+        GameDTO gameDTO = GameConverter.toDTO(controller);
         try(FileWriter writer = new FileWriter(FILE_PATH, false)) {
             gson.toJson(gameDTO, writer);
             logger.info("Game data saved to " + FILE_PATH);

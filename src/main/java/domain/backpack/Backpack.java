@@ -75,6 +75,16 @@ public class Backpack {
     }
 
     /**
+     * Alias for getItem
+     * @param index индекс предмета
+     * @param type тип предмета
+     * @return предмет или null
+     */
+    public Item getItemByIndex(int index, ItemsType type) {
+        return getItem(index, type);
+    }
+
+    /**
      * Использует предмет по индексу
      * @param index индекс предмета
      * @param type тип предмета

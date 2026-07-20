@@ -43,7 +43,13 @@ public interface GameFacade {
 
     // ============= Inventory Management =============
 
-    void useItem(int index, ItemsType type);
+    /**
+     * Use an item by index and type
+     * @param index index of the item
+     * @param type type of the item
+     * @return true if item was used successfully
+     */
+    boolean useItem(int index, ItemsType type);
 
     void selectInventoryType(ItemsType type);
 
