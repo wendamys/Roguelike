@@ -13,7 +13,6 @@ import com.googlecode.lanterna.terminal.Terminal;
 import domain.backpack.Backpack;
 import domain.backpack.Item;
 import domain.backpack.ItemsType;
-import domain.characters.Enemies;
 import domain.gameSession.Game;
 import domain.map.Level;
 import domain.map.TileType;
