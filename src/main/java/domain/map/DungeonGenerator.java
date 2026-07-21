@@ -42,6 +42,13 @@ public class DungeonGenerator {
     }
     public void setCorridors(List<Corridor> corridors) {this.corridors = corridors;}
 
+    public int getMapWidth() {
+        return mapWidth;
+    }
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
 
     /**
      * метод инициализирует карту стенами
