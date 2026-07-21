@@ -36,6 +36,7 @@ public class Game {
     private Position posLevel;
     private boolean isGameEnded = false;
     private ItemsType selectedInventoryType = null; // Тип предмета, выбранный для использования
+    private String lastMessage = ""; // Последнее игровое сообщение, для presentation-слоя
 
     public Game() {
         generateNewLevel();
@@ -85,6 +86,14 @@ public class Game {
 
     public List<Item> getAllItemList() {
         return allItemList;
+    }
+
+    public ItemsType getSelectedInventoryType() {
+        return selectedInventoryType;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
     }
 
 
@@ -142,6 +151,18 @@ public class Game {
         }
     }
 
+    /**
+     * метод обрабатывает один ход, вызывается из presentation (Lanterna),
+     * не печатает ничего в консоль — вся отрисовка выполняется в presentation-слое
+     * @param input команда игрока (направление или команда инвентаря)
+     */
+    public void processInput(String input) {
+        handleInput(input);
+        if (player.getHealth() > 0 && !isGameEnded) {
+            enemyTurns();
+        }
+    }
+
     private void handleInput(String input) {
         DirectionType direction = parseDirection(input);
         if (direction != null) {
@@ -159,9 +180,9 @@ public class Game {
                 if (c >= '1' && c <= '9') {
                     int index = c - '1'; // 1 -> 0, 2 -> 1, ...
                     if (backpack.useItemByIndex(index, selectedInventoryType, player)) {
-                        System.out.println("Предмет использован!");
+                        lastMessage = "Предмет использован!";
                     } else {
-                        System.out.println("Предмет с этим индексом не найден!");
+                        lastMessage = "Предмет с этим индексом не найден!";
                     }
                     selectedInventoryType = null; // Сброс выбора
                     return null;
@@ -235,7 +256,7 @@ public class Game {
      * @param enemy враг для атаки
      */
     private void attackEnemy(Enemies enemy) {
-        System.out.println("Атака врага: " + enemy.getType());
+        lastMessage = "Атака врага: " + enemy.getType();
         attackSystem.attack(player, enemy, PLAYER, battleInfo, backpack);
     }
 
@@ -258,9 +279,9 @@ public class Game {
                 if (c >= '1' && c <= '9') {
                     int index = c - '1'; // 1 -> 0, 2 -> 1, ...
                     if (backpack.useItemByIndex(index, selectedInventoryType, player)) {
-                        System.out.println("Предмет использован!");
+                        lastMessage = "Предмет использован!";
                     } else {
-                        System.out.println("Предмет с этим индексом не найден!");
+                        lastMessage = "Предмет с этим индексом не найден!";
                     }
                     selectedInventoryType = null; // Сброс выбора
                     return;
@@ -283,9 +304,9 @@ public class Game {
                 ItemsType type = parseInventoryType(typeChar);
                 if (type != null) {
                     if (backpack.useItemByIndex(index, type, player)) {
-                        System.out.println("Предмет использован!");
+                        lastMessage = "Предмет использован!";
                     } else {
-                        System.out.println("Неверный индекс предмета!");
+                        lastMessage = "Неверный индекс предмета!";
                     }
                     return;
                 }
@@ -294,11 +315,6 @@ public class Game {
             }
         }
         
-        // Обычное открытие инвентаря
-        ItemsType type = parseInventoryType(input);
-        if (type != null) {
-            backpack.seeList(type);
-        }
     }
 
     private ItemsType parseInventoryType(String input) {
@@ -320,8 +336,7 @@ public class Game {
         ItemsType type = parseInventoryType(input);
         if (type != null) {
             selectedInventoryType = type;
-            backpack.seeList(type);
-            System.out.println("Введите цифру 1-9 для выбора предмета:");
+            lastMessage = "Введите цифру 1-9 для выбора предмета:";
             return true;
         }
         return false;
