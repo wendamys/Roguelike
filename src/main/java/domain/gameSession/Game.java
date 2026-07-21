@@ -15,7 +15,9 @@ import domain.map.*;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
@@ -36,7 +38,8 @@ public class Game {
     private Position posLevel;
     private boolean isGameEnded = false;
     private ItemsType selectedInventoryType = null; // Тип предмета, выбранный для использования
-    private String lastMessage = ""; // Последнее игровое сообщение, для presentation-слоя
+    private static final int MESSAGE_LOG_CAPACITY = 10;
+    private final Deque<String> messageLog = new ArrayDeque<>(); // История последних сообщений, для presentation-слоя
 
     public Game() {
         generateNewLevel();
@@ -92,8 +95,23 @@ public class Game {
         return selectedInventoryType;
     }
 
-    public String getLastMessage() {
-        return lastMessage;
+    /**
+     * метод добавляет сообщение в лог, отбрасывая самое старое при переполнении
+     * @param message игровое сообщение
+     */
+    private void addMessage(String message) {
+        messageLog.addLast(message);
+        if (messageLog.size() > MESSAGE_LOG_CAPACITY) {
+            messageLog.removeFirst();
+        }
+    }
+
+    /**
+     * метод возвращает историю сообщений от старых к новым
+     * @return список сообщений, не более MESSAGE_LOG_CAPACITY
+     */
+    public List<String> getMessageLog() {
+        return new ArrayList<>(messageLog);
     }
 
 
@@ -180,9 +198,9 @@ public class Game {
                 if (c >= '1' && c <= '9') {
                     int index = c - '1'; // 1 -> 0, 2 -> 1, ...
                     if (backpack.useItemByIndex(index, selectedInventoryType, player)) {
-                        lastMessage = "Предмет использован!";
+                        addMessage("Предмет использован!");
                     } else {
-                        lastMessage = "Предмет с этим индексом не найден!";
+                        addMessage("Предмет с этим индексом не найден!");
                     }
                     selectedInventoryType = null; // Сброс выбора
                     return null;
@@ -256,7 +274,7 @@ public class Game {
      * @param enemy враг для атаки
      */
     private void attackEnemy(Enemies enemy) {
-        lastMessage = "Атака врага: " + enemy.getType();
+        addMessage("Атака врага: " + enemy.getType());
         attackSystem.attack(player, enemy, PLAYER, battleInfo, backpack);
     }
 
@@ -264,11 +282,13 @@ public class Game {
      * метод проверки предмета на карте с позицией игрока
      */
     private void checkAndCollectItems() {
-        for (var item : allItemList) {
+        allItemList.removeIf(item -> {
             if (player.getPosition().equals(item.getPosition())) {
                 backpack.takeItem(item);
+                return true;
             }
-        }
+            return false;
+        });
     }
 
     private void handleInventoryCommand(String input) {
@@ -279,9 +299,9 @@ public class Game {
                 if (c >= '1' && c <= '9') {
                     int index = c - '1'; // 1 -> 0, 2 -> 1, ...
                     if (backpack.useItemByIndex(index, selectedInventoryType, player)) {
-                        lastMessage = "Предмет использован!";
+                        addMessage("Предмет использован!");
                     } else {
-                        lastMessage = "Предмет с этим индексом не найден!";
+                        addMessage("Предмет с этим индексом не найден!");
                     }
                     selectedInventoryType = null; // Сброс выбора
                     return;
@@ -304,9 +324,9 @@ public class Game {
                 ItemsType type = parseInventoryType(typeChar);
                 if (type != null) {
                     if (backpack.useItemByIndex(index, type, player)) {
-                        lastMessage = "Предмет использован!";
+                        addMessage("Предмет использован!");
                     } else {
-                        lastMessage = "Неверный индекс предмета!";
+                        addMessage("Неверный индекс предмета!");
                     }
                     return;
                 }
@@ -336,7 +356,7 @@ public class Game {
         ItemsType type = parseInventoryType(input);
         if (type != null) {
             selectedInventoryType = type;
-            lastMessage = "Введите цифру 1-9 для выбора предмета:";
+            addMessage("Введите цифру 1-9 для выбора предмета:");
             return true;
         }
         return false;
