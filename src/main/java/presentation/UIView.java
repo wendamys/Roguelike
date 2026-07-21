@@ -13,6 +13,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 import domain.backpack.Backpack;
 import domain.backpack.Item;
 import domain.backpack.ItemsType;
+import domain.characters.Enemies;
 import domain.gameSession.Game;
 import domain.map.Level;
 import domain.map.TileType;
@@ -29,6 +30,10 @@ public class UIView {
 
     // строка карты сдвинута на 1 вниз, чтобы наверху был статус игрока
     private static final int MAP_ROW_OFFSET = 1;
+    private static final int RIGHT_PANEL_X_MARGIN = 3;   // отступ правой панели от края карты
+    private static final int RIGHT_TOP_ROW = 0;           // статус игрока
+    private static final int RIGHT_INVENTORY_ROW = 20;    // правая средняя: сводка по инвентарю
+    private static final int RIGHT_LOG_ROW = 40;          // правая нижняя: лог сообщений
 
     private final Screen screen;
 
@@ -65,8 +70,10 @@ public class UIView {
         TextGraphics tg = screen.newTextGraphics();
 
         drawMap(game, tg);
-        drawStatus(game, tg);
+        drawBottomBar(game, tg);
+        drawPlayerStatus(game, tg);
         drawInventory(game, tg);
+        drawMessageLog(game, tg);
 
         screen.refresh();
     }
@@ -89,35 +96,64 @@ public class UIView {
     }
 
     /**
-     * метод рисует строку статуса игрока сверху и последнее игровое сообщение
+     * метод рисует строку под полем: уровень, кол-во оставшихся предметов, кол-во живых врагов
      */
-    private void drawStatus(Game game, TextGraphics tg) {
-        tg.setForegroundColor(TextColor.ANSI.WHITE);
-        tg.putString(0, 0, game.getPlayer() + "  lvl: " + Level.getLevelUp());
+    private void drawBottomBar(Game game, TextGraphics tg) {
+        long aliveEnemies = game.getAllEnemiesList().stream()
+                .filter(enemy -> enemy.getHealth() > 0)
+                .count();
+        int remainingItems = game.getAllItemList().size();
+        String text = "Уровень: " + Level.getLevelUp() +
+                "   Предметов: " + remainingItems +
+                "   Врагов: " + aliveEnemies;
 
-        if (!game.getLastMessage().isEmpty()) {
-            int height = game.getGenerator().getMapHeight();
-            tg.setForegroundColor(TextColor.ANSI.YELLOW);
-            tg.putString(0, height + MAP_ROW_OFFSET + 1, game.getLastMessage());
+        int width = game.getGenerator().getMapWidth();
+        if (text.length() > width) {
+            text = text.substring(0, width);
         }
+        int startX = Math.max(0, (width - text.length()) / 2);
+
+        tg.setForegroundColor(TextColor.ANSI.WHITE);
+        tg.putString(startX, game.getGenerator().getMapHeight() + MAP_ROW_OFFSET, text);
     }
 
     /**
-     * метод рисует панель рюкзака справа от карты, когда игрок выбрал тип предмета (e/h/j/k)
+     * метод рисует статус игрока в правой верхней части экрана
+     */
+    private void drawPlayerStatus(Game game, TextGraphics tg) {
+        int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN;
+        tg.setForegroundColor(TextColor.ANSI.WHITE);
+        tg.putString(panelX, RIGHT_TOP_ROW, game.getPlayer().toString());
+    }
+
+    /**
+     * метод рисует в правой средней части постоянную сводку по инвентарю,
+     * а если игрок выбрал тип предмета (e/h/j/k) - детальный список под ней
      */
     private void drawInventory(Game game, TextGraphics tg) {
-        ItemsType type = game.getSelectedInventoryType();
-        if (type == null) {
+        int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN;
+        int row = RIGHT_INVENTORY_ROW;
+
+        tg.setForegroundColor(TextColor.ANSI.CYAN);
+        tg.putString(panelX, row++, "Инвентарь:");
+
+        Backpack backpack = game.getBackpack();
+        tg.setForegroundColor(TextColor.ANSI.WHITE);
+        tg.putString(panelX, row++, "Эликсиры: " + backpack.getElixirList().size());
+        tg.putString(panelX, row++, "Еда: " + backpack.getFoodList().size());
+        tg.putString(panelX, row++, "Свитки: " + backpack.getScrollList().size());
+        tg.putString(panelX, row++, "Оружие: " + backpack.getWeaponList().size());
+
+        ItemsType selected = game.getSelectedInventoryType();
+        if (selected == null) {
             return;
         }
 
-        int panelX = game.getGenerator().getMapWidth() + 3;
-        int row = MAP_ROW_OFFSET;
-
+        row++;
         tg.setForegroundColor(TextColor.ANSI.CYAN);
-        tg.putString(panelX, row++, titleFor(type) + ":");
+        tg.putString(panelX, row++, titleFor(selected) + ":");
 
-        List<Item> items = itemsFor(game.getBackpack(), type);
+        List<Item> items = itemsFor(backpack, selected);
         tg.setForegroundColor(TextColor.ANSI.WHITE);
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
@@ -126,6 +162,22 @@ public class UIView {
 
         tg.setForegroundColor(TextColor.ANSI.YELLOW);
         tg.putString(panelX, row + 1, "Нажми 1-9 для выбора предмета");
+    }
+
+    /**
+     * метод рисует в правой нижней части историю последних сообщений игры
+     */
+    private void drawMessageLog(Game game, TextGraphics tg) {
+        int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN;
+        int row = RIGHT_LOG_ROW;
+
+        tg.setForegroundColor(TextColor.ANSI.CYAN);
+        tg.putString(panelX, row++, "Лог:");
+
+        tg.setForegroundColor(TextColor.ANSI.WHITE);
+        for (String entry : game.getMessageLog()) {
+            tg.putString(panelX, row++, "> " + entry);
+        }
     }
 
     /**
