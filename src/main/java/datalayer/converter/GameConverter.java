@@ -25,7 +25,8 @@ public class GameConverter {
         game.setPlayer(PlayerConverter.fromDTO(dto.getPlayerDTO()));
         game.setBackpack(BackpackConverter.fromDTO(dto.getBackpackDTO()));
         LevelConverter.fromDTO(dto.getLevelDTO());
-        game.setLevel(dto.getLevelDTO().getLevelUp());
+        // Game.level всегда на 1 больше отображаемого Level.getLevelUp() (см. generateNewLevel: level++ пост-инкремент)
+        game.setLevel(dto.getLevelDTO().getLevelUp() + 1);
 
         DungeonGenerator generator = DungeConverter.fromDTO(dto.getDungeDTO());
         game.setGenerator(generator);
