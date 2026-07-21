@@ -34,7 +34,7 @@ public class Main {
         Game game = new Game();
 
         Terminal terminal = new DefaultTerminalFactory()
-                .setInitialTerminalSize(new TerminalSize(180, 80))
+                .setInitialTerminalSize(new TerminalSize(120, 62))
                 .createTerminal();
 
         Screen screen = new TerminalScreen(terminal);
