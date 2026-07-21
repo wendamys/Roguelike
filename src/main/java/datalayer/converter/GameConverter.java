@@ -2,6 +2,7 @@ package datalayer.converter;
 
 import datalayer.dto.GameDTO;
 import domain.gameSession.Game;
+import domain.map.DungeonGenerator;
 
 public class GameConverter {
 
@@ -24,7 +25,14 @@ public class GameConverter {
         game.setPlayer(PlayerConverter.fromDTO(dto.getPlayerDTO()));
         game.setBackpack(BackpackConverter.fromDTO(dto.getBackpackDTO()));
         LevelConverter.fromDTO(dto.getLevelDTO());
-        game.setGenerator(DungeConverter.fromDTO(dto.getDungeDTO()));
+        game.setLevel(dto.getLevelDTO().getLevelUp());
+
+        DungeonGenerator generator = DungeConverter.fromDTO(dto.getDungeDTO());
+        game.setGenerator(generator);
+        game.setRooms(generator.getRooms());
+
+        game.restoreItemsAndEnemies();
+        game.placeRestoredEntitiesOnMap();
 
         return game;
     }

@@ -74,6 +74,14 @@ public class Game {
         return posLevel;
     }
 
+    public void setPosLevel(Position posLevel) {
+        this.posLevel = posLevel;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     public boolean isGameEnded() {
         return isGameEnded;
     }
@@ -122,6 +130,38 @@ public class Game {
             if (room != rooms.getFirst()) {
                 allItemList.addAll(room.getItemList());
                 allEnemiesList.addAll(room.getEnemyList());
+                generator.createItem(room);
+                generator.createEnemies(room);
+            }
+            if (room == rooms.getLast()) {
+                posLevel = generator.createLevel(room);
+            }
+        }
+    }
+
+    /**
+     * метод восстанавливает плоские списки предметов и врагов по комнатам
+     * (используется при загрузке — комнаты уже содержат восстановленные списки)
+     */
+    public void restoreItemsAndEnemies() {
+        allItemList.clear();
+        allEnemiesList.clear();
+        for (Room room : rooms) {
+            if (room != rooms.getFirst()) {
+                allItemList.addAll(room.getItemList());
+                allEnemiesList.addAll(room.getEnemyList());
+            }
+        }
+    }
+
+    /**
+     * метод расставляет игрока, предметы, врагов и выход на восстановленной карте
+     * (используется при загрузке, не добавляет предметы/врагов повторно в комнаты)
+     */
+    public void placeRestoredEntitiesOnMap() {
+        generator.createPlayer(player);
+        for (Room room : rooms) {
+            if (room != rooms.getFirst()) {
                 generator.createItem(room);
                 generator.createEnemies(room);
             }
