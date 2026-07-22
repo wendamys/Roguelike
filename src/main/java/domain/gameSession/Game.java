@@ -41,6 +41,7 @@ public class Game {
     private boolean isGameEnded = false;
     private DifficultyType difficulty;
     private FogOfWar fog;
+    private int enemiesKilled = 0;
     private ItemsType selectedInventoryType = null; // Тип предмета, выбранный для использования
     private static final int MESSAGE_LOG_CAPACITY = 10;
     private final Deque<String> messageLog = new ArrayDeque<>(); // История последних сообщений, для presentation-слоя
@@ -69,6 +70,24 @@ public class Game {
 
     public FogOfWar getFog() {
         return fog;
+    }
+
+    public int getEnemiesKilled() {
+        return enemiesKilled;
+    }
+
+    public void setEnemiesKilled(int enemiesKilled) {
+        this.enemiesKilled = enemiesKilled;
+    }
+
+    /**
+     * метод считает итоговый счёт игрока
+     * @return счёт с учётом золота, убитых врагов, достигнутого уровня и сложности
+     */
+    public int calculateScore() {
+        int base = player.getGold() + enemiesKilled * 10 + (Level.getLevelUp() - 1) * 50;
+        // округляем, а не обрезаем: 180 * 1.15 в double даёт 206.9999, обрезание дало бы 206
+        return Math.round((float) (base * difficulty.getCoef()));
     }
 
     public DungeonGenerator getGenerator() {
@@ -340,8 +359,14 @@ public class Game {
      * @param enemy враг для атаки
      */
     private void attackEnemy(Enemies enemy) {
+        boolean wasAlive = enemy.getHealth() > 0;
         attackSystem.attack(player, enemy, PLAYER, battleInfo, backpack);
         drainBattleEvents();
+
+        // считаем только переход из живого в мёртвого, чтобы добивание не накручивало счётчик
+        if (wasAlive && enemy.getHealth() <= 0) {
+            enemiesKilled++;
+        }
 
         // Если мимик раскрылся, обновляем его отображение на карте
         if (enemy instanceof Mimic && !((Mimic) enemy).getAmbushAI().isMimicking()) {

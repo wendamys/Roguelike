@@ -7,6 +7,7 @@ public class GameDTO {
     private DungeDTO dungeDTO;
     private String difficulty;
     private boolean[][] explored;
+    private int enemiesKilled;
 
     public GameDTO() {}
 
@@ -15,6 +16,9 @@ public class GameDTO {
 
     public boolean[][] getExplored() { return explored; }
     public void setExplored(boolean[][] explored) { this.explored = explored; }
+
+    public int getEnemiesKilled() { return enemiesKilled; }
+    public void setEnemiesKilled(int enemiesKilled) { this.enemiesKilled = enemiesKilled; }
 
     public PlayerDTO getPlayerDTO() { return playerDTO; }
     public void setPlayerDTO(PlayerDTO playerDTO) { this.playerDTO = playerDTO; }
