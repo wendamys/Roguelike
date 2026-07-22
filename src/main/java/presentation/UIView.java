@@ -130,10 +130,10 @@ public class UIView {
 
         Backpack backpack = game.getBackpack();
         tg.setForegroundColor(TextColor.ANSI.WHITE);
-        tg.putString(panelX, row++, "Эликсиры: " + backpack.getElixirList().size());
-        tg.putString(panelX, row++, "Еда: " + backpack.getFoodList().size());
-        tg.putString(panelX, row++, "Свитки: " + backpack.getScrollList().size());
-        tg.putString(panelX, row++, "Оружие: " + backpack.getWeaponList().size());
+        tg.putString(panelX, row++, "Эликсиры:  " + backpack.getElixirList().size());
+        tg.putString(panelX, row++, "Еда:       " + backpack.getFoodList().size());
+        tg.putString(panelX, row++, "Свитки:    " + backpack.getScrollList().size());
+        tg.putString(panelX, row++, "Оружие:    " + backpack.getWeaponList().size());
 
         ItemsType selected = game.getSelectedInventoryType();
         if (selected == null) {
