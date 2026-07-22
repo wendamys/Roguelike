@@ -1,6 +1,7 @@
 package presentation;
 
 import datalayer.DataLayer;
+import domain.gameSession.DifficultyType;
 import domain.gameSession.Game;
 
 import java.io.IOException;
@@ -42,8 +43,9 @@ public class Controller {
             switch (startScreen.selectChoice()) {
                 case EXIT -> appRunning = false;
                 case START -> {
+                    DifficultyType difficulty = startScreen.selectDifficulty();
                     String name = startScreen.readPlayerName();
-                    Game game = new Game();
+                    Game game = new Game(difficulty);
                     game.getPlayer().setName(name);
                     runGameSession(game);
                 }

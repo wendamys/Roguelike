@@ -8,6 +8,7 @@ import domain.backpack.items.Scroll;
 import domain.backpack.items.Weapon;
 import domain.characters.Enemies;
 import domain.characters.enemies.*;
+import domain.gameSession.DifficultyType;
 import domain.navigator.Position;
 
 import java.util.ArrayList;
@@ -25,11 +26,17 @@ public class Room {
 
     private Position position;
     private RoomType roomType;
+    private final DifficultyType difficulty;
 
     private ArrayList<Enemies> enemyList = new ArrayList<>(capacityEnemy);
     private ArrayList<Item> itemList = new ArrayList<>(capacityItem);
 
     public Room(int x, int y) {
+        this(x, y, DifficultyType.EASY);
+    }
+
+    public Room(int x, int y, DifficultyType difficulty) {
+        this.difficulty = difficulty;
         this.width = randomNumber(5, 12);
         this.height = randomNumber(5, 12);
         this.area = width * height;
@@ -133,14 +140,29 @@ public class Room {
      * @param enemiesType тип врага
      */
     private void addEnemyValue(EnemiesType enemiesType) {
-        switch (enemiesType) {
-            case ZOMBIE -> enemyList.add(new Zombie(randomPosition()));
-            case OGRE -> enemyList.add(new Ogre(randomPosition()));
-            case VAMPIRE -> enemyList.add(new Vampire(randomPosition()));
-            case SNAKE -> enemyList.add(new Snake(randomPosition()));
-            case MIMIC -> enemyList.add(new Mimic(randomPosition()));
-            case GHOST -> enemyList.add(new Ghost(randomPosition()));
-        }
+        Enemies enemy = switch (enemiesType) {
+            case ZOMBIE -> new Zombie(randomPosition());
+            case OGRE -> new Ogre(randomPosition());
+            case VAMPIRE -> new Vampire(randomPosition());
+            case SNAKE -> new Snake(randomPosition());
+            case MIMIC -> new Mimic(randomPosition());
+            case GHOST -> new Ghost(randomPosition());
+        };
+        applyDifficulty(enemy);
+        enemyList.add(enemy);
+    }
+
+    /**
+     * метод домножает статы врага на коэффициент сложности
+     * maxHealth пересчитывается обязательно: конструкторы врагов выставляют его
+     * сразу после setHealthBegin, до применения коэффициента
+     * @param enemy враг
+     */
+    private void applyDifficulty(Enemies enemy) {
+        double coef = difficulty.getCoef();
+        enemy.setHealth((int) (enemy.getHealth() * coef));
+        enemy.setMaxHealth(enemy.getHealth());
+        enemy.setStrength((int) (enemy.getStrength() * coef));
     }
 
     /**

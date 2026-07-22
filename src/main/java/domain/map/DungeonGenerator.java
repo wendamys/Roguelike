@@ -5,6 +5,7 @@ import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.characters.enemies.EnemiesType;
 import domain.characters.enemies.Mimic;
+import domain.gameSession.DifficultyType;
 import domain.navigator.Position;
 
 import java.util.ArrayList;
@@ -19,8 +20,14 @@ public class DungeonGenerator {
     private TileType[][] map;
     private List<Room> rooms;
     private List<Corridor> corridors;
+    private final DifficultyType difficulty;
 
     public DungeonGenerator() {
+        this(DifficultyType.EASY);
+    }
+
+    public DungeonGenerator(DifficultyType difficulty) {
+        this.difficulty = difficulty;
         this.map = new TileType[mapWidth][mapHeight];
         this.rooms = new ArrayList<>();
         this.corridors = new ArrayList<>();
@@ -82,7 +89,7 @@ public class DungeonGenerator {
             attempts++;
             int gridX = randomNumber(1, MAP_SIZE - 1);
             int gridY = randomNumber(1, MAP_SIZE - 1);
-            Room room = new Room(gridX, gridY);
+            Room room = new Room(gridX, gridY, difficulty);
             if (!roomIntersectsAny(room)) {
                 rooms.add(room);
                 carveRoom(room);

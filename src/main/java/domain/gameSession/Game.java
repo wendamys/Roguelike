@@ -38,11 +38,17 @@ public class Game {
     private int level = 1;
     private Position posLevel;
     private boolean isGameEnded = false;
+    private DifficultyType difficulty;
     private ItemsType selectedInventoryType = null; // Тип предмета, выбранный для использования
     private static final int MESSAGE_LOG_CAPACITY = 10;
     private final Deque<String> messageLog = new ArrayDeque<>(); // История последних сообщений, для presentation-слоя
 
     public Game() {
+        this(DifficultyType.EASY);
+    }
+
+    public Game(DifficultyType difficulty) {
+        this.difficulty = difficulty;
         generateNewLevel();
 
         if (rooms.isEmpty()) {
@@ -53,6 +59,10 @@ public class Game {
         this.backpack = new Backpack();
 
         initializeGame();
+    }
+
+    public DifficultyType getDifficulty() {
+        return difficulty;
     }
 
     public DungeonGenerator getGenerator() {
@@ -132,7 +142,7 @@ public class Game {
             return;
         }
         Level.setLevelUp(level++);
-        this.generator = new DungeonGenerator();
+        this.generator = new DungeonGenerator(difficulty);
         this.generator.generateDungeon();
         this.rooms = generator.getRooms();
         this.corridors = generator.getCorridors();

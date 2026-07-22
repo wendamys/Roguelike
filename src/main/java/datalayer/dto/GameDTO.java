@@ -5,8 +5,12 @@ public class GameDTO {
     private BackpackDTO backpackDTO;
     private LevelDTO levelDTO;
     private DungeDTO dungeDTO;
+    private String difficulty;
 
     public GameDTO() {}
+
+    public String getDifficulty() { return difficulty; }
+    public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
 
     public PlayerDTO getPlayerDTO() { return playerDTO; }
     public void setPlayerDTO(PlayerDTO playerDTO) { this.playerDTO = playerDTO; }
