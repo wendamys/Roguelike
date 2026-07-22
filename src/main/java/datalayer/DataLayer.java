@@ -34,7 +34,7 @@ public class DataLayer {
         try (FileReader reader = new FileReader(FILE_PATH)) {
             logger.info("Game data loaded successfully from " + FILE_PATH);
             return gson.fromJson(reader, GameDTO.class);
-        } catch (IOException e) {
+        } catch (IOException | RuntimeException e) {
             System.err.println("Error loading game data: " + e.getMessage());
             return null;
         }

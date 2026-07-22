@@ -1,8 +1,6 @@
 package datalayer.converter;
 
 import datalayer.dto.*;
-import domain.backpack.Item;
-import domain.characters.Enemies;
 import domain.map.Corridor;
 import domain.map.DungeonGenerator;
 import domain.map.Room;
@@ -44,7 +42,6 @@ public class DungeConverter {
 
         ArrayList<Room> rooms = new ArrayList<>();
         dto.getRoomsDTO().forEach(roomDTO -> rooms.add(RoomConverter.fromDTO(roomDTO)));
-        generator.setRooms(rooms);
 
         ArrayList<Corridor> corridors = new ArrayList<>();
         ArrayList<Room> roomListCopy = new ArrayList<>(rooms);
@@ -55,40 +52,9 @@ public class DungeConverter {
                 corridors.add(CorridorConverter.fromDTO(corridorDTO, room1, room2));
             }
         });
-        generator.setCorridors(corridors);
-        
-        // Восстанавливаем всех врагов в комнаты
-        ArrayList<Enemies> allEnemies = new ArrayList<>();
-        dto.getAllEnemiesListDTO().forEach(enemyDTO -> allEnemies.add(EnemiesConverter.fromDTO(enemyDTO)));
-        // Распределяем врагов по комнатам (по позиции)
-        for (Enemies enemy : allEnemies) {
-            for (Room room : rooms) {
-                if (enemy.getPosition().getX() >= room.getPosition().getX() && 
-                    enemy.getPosition().getX() < room.getPosition().getX() + room.getWidth() &&
-                    enemy.getPosition().getY() >= room.getPosition().getY() && 
-                    enemy.getPosition().getY() < room.getPosition().getY() + room.getHeight()) {
-                    room.getEnemyList().add(enemy);
-                    break;
-                }
-            }
-        }
-        
-        // Восстанавливаем все предметы в комнаты
-        ArrayList<Item> allItems = new ArrayList<>();
-        dto.getAllItemsListDTO().forEach(itemDTO -> allItems.add(ItemConverter.fromDTO(itemDTO)));
-        // Распределяем предметы по комнатам (по позиции)
-        for (domain.backpack.Item item : allItems) {
-            for (Room room : rooms) {
-                if (item.getPosition().getX() >= room.getPosition().getX() && 
-                    item.getPosition().getX() < room.getPosition().getX() + room.getWidth() &&
-                    item.getPosition().getY() >= room.getPosition().getY() && 
-                    item.getPosition().getY() < room.getPosition().getY() + room.getHeight()) {
-                    room.getItemList().add(item);
-                    break;
-                }
-            }
-        }
-        
+
+        generator.rebuildMap(rooms, corridors);
+
         return generator;
     }
     

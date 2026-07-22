@@ -175,6 +175,28 @@ public class DungeonGenerator {
     }
 
     /**
+     * метод перестраивает карту тайлов по уже готовым комнатам и коридорам
+     * (используется при загрузке сохранённой игры, без случайной генерации)
+     * @param rooms восстановленные комнаты
+     * @param corridors восстановленные коридоры
+     */
+    public void rebuildMap(List<Room> rooms, List<Corridor> corridors) {
+        initializeMap();
+        this.rooms = new ArrayList<>(rooms);
+        this.corridors = new ArrayList<>(corridors);
+        for (Room room : rooms) {
+            carveRoom(room);
+        }
+        for (Corridor corridor : corridors) {
+            for (Position p : corridor.getPath()) {
+                if (isInBounds(p.getX(), p.getY()) && map[p.getX()][p.getY()] == TileType.WALL) {
+                    map[p.getX()][p.getY()] = TileType.FLOOR;
+                }
+            }
+        }
+    }
+
+    /**
      * метод возвращает соседей комнаты (комнаты, соединенные коридором)
      */
     public List<Room> getConnectedRooms(Room room) {

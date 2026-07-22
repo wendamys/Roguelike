@@ -1,15 +1,10 @@
 package presentation;
 
-import com.googlecode.lanterna.SGR;
-import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.screen.TerminalScreen;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.Terminal;
 import domain.backpack.Backpack;
 import domain.backpack.Item;
 import domain.backpack.ItemsType;
@@ -21,8 +16,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * UIView полностью владеет Lanterna: создаёт Terminal/Screen, рисует игру
- * и читает нажатые клавиши, переводя их в нейтральный RawKey.
+ * UIView рисует игру и читает нажатые клавиши через общий Screen,
+ * переданный снаружи (создаётся один раз в Main и разделяется со StartScreen/EndScreen).
  * Ничего не знает о том, что означает клавиша для игры - этим занимается Controller.
  */
 public class UIView {
@@ -36,11 +31,8 @@ public class UIView {
 
     private final Screen screen;
 
-    public UIView() throws IOException {
-        Terminal terminal = new DefaultTerminalFactory()
-                .setInitialTerminalSize(new TerminalSize(120, 62))
-                .createTerminal();
-        this.screen = new TerminalScreen(terminal);
+    public UIView(Screen screen) {
+        this.screen = screen;
     }
 
     public void start() throws IOException {
@@ -203,20 +195,6 @@ public class UIView {
             case WEAPON -> "Оружие";
             default -> "Инвентарь";
         };
-    }
-
-    /**
-     * метод рисует экран победы/поражения после окончания игры
-     */
-    public void renderEndScreen(Game game) throws IOException {
-        TextGraphics tg = screen.newTextGraphics();
-        tg.setForegroundColor(TextColor.ANSI.WHITE);
-        tg.enableModifiers(SGR.BOLD);
-        String message = game.isGameEnded() && game.getPlayer().getHealth() > 0
-                ? "=== You win! === Final score: " + game.getPlayer().getGold() + " gold. Нажми любую клавишу для выхода."
-                : "=== GAME OVER === Final score: " + game.getPlayer().getGold() + " gold. Нажми любую клавишу для выхода.";
-        tg.putString(2, 0, message);
-        screen.refresh();
     }
 
     /**
