@@ -30,6 +30,9 @@ dist/
 nbdist/
 .nb-gradle/
 
+# === Рабочие материалы Claude Code (спеки, планы) ===
+docs/superpowers/
+
 # === Системный мусор и логи ===
 .DS_Store
 Thumbs.db
