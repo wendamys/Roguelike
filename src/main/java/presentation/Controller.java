@@ -97,7 +97,7 @@ public class Controller {
     private String mapKeyToCommand(RawKey key) {
         char c = Character.toLowerCase(key.getCharacter());
         if (c == 'w' || c == 'a' || c == 's' || c == 'd' ||
-                c == 'e' || c == 'h' || c == 'j' || c == 'k' ||
+                c == 'e' || c == 'h' || c == 'j' || c == 'k' || c == 'i' ||
                 (c >= '0' && c <= '9')) {
             return String.valueOf(c);
         }

@@ -29,6 +29,7 @@ public class UIView {
     private static final int RIGHT_PANEL_X_MARGIN = 3;   // отступ правой панели от края карты
     private static final int RIGHT_TOP_ROW = 0;           // статус игрока
     private static final int RIGHT_INVENTORY_ROW = 20;    // правая средняя: сводка по инвентарю
+    private static final int SHOP_PANEL_X_OFFSET = 18;    // сдвиг панели магазина правее инвентаря
 
     private final Screen screen;
 
@@ -65,6 +66,7 @@ public class UIView {
         drawBottomBar(game, tg);
         drawPlayerStatus(game, tg);
         drawInventory(game, tg);
+        drawShop(game, tg);
         drawMessageLog(game, tg);
 
         screen.refresh();
@@ -187,6 +189,36 @@ public class UIView {
     }
 
     /**
+     * метод рисует панель магазина справа от инвентаря, если магазин открыт
+     */
+    private void drawShop(Game game, TextGraphics tg) {
+        if (!game.isShopOpen()) {
+            return;
+        }
+
+        int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN + SHOP_PANEL_X_OFFSET;
+        int row = RIGHT_INVENTORY_ROW;
+
+        tg.setForegroundColor(TextColor.ANSI.CYAN);
+        tg.putString(panelX, row++, "Магазин (i - закрыть)");
+
+        List<Item> items = game.getShop().getItems();
+        tg.setForegroundColor(TextColor.ANSI.WHITE);
+        if (items.isEmpty()) {
+            tg.putString(panelX, row++, "Пусто");
+        }
+        for (int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
+            tg.putString(panelX, row++, "[" + (i + 1) + "] " + shopLabelFor(item.getType())
+                    + " (" + item.getValue() + ") " + game.getShop().priceOf(item) + "з");
+        }
+
+        row++;
+        tg.setForegroundColor(TextColor.ANSI.YELLOW);
+        tg.putString(panelX, row, "Ваше золото: " + game.getPlayer().getGold());
+    }
+
+    /**
      * метод рисует в правой нижней части историю последних сообщений игры
      */
     private void drawMessageLog(Game game, TextGraphics tg) {
@@ -202,6 +234,19 @@ public class UIView {
         for (String entry : game.getMessageLog()) {
             tg.putString(panelX, row++, "> " + entry);
         }
+    }
+
+    /**
+     * метод возвращает короткое название типа предмета для строки магазина
+     * (getName() у предметов возвращает односимвольную букву, для магазина она нечитаема)
+     */
+    private String shopLabelFor(ItemsType type) {
+        return switch (type) {
+            case ELIXIR -> "Эликсир";
+            case FOOD -> "Еда";
+            case SCROLL -> "Свиток";
+            case WEAPON -> "Оружие";
+        };
     }
 
     /**

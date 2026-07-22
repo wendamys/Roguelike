@@ -15,6 +15,7 @@ import domain.characters.enemies.EnemiesType;
 import domain.map.*;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
+import domain.shop.Shop;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -42,6 +43,8 @@ public class Game {
     private DifficultyType difficulty;
     private FogOfWar fog;
     private int enemiesKilled = 0;
+    private Shop shop;
+    private boolean shopOpen = false;
     private ItemsType selectedInventoryType = null; // Тип предмета, выбранный для использования
     private static final int MESSAGE_LOG_CAPACITY = 10;
     private final Deque<String> messageLog = new ArrayDeque<>(); // История последних сообщений, для presentation-слоя
@@ -70,6 +73,14 @@ public class Game {
 
     public FogOfWar getFog() {
         return fog;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public boolean isShopOpen() {
+        return shopOpen;
     }
 
     public int getEnemiesKilled() {
@@ -181,6 +192,7 @@ public class Game {
         this.rooms = generator.getRooms();
         this.corridors = generator.getCorridors();
         this.fog = new FogOfWar(generator.getMapWidth(), generator.getMapHeight());
+        this.shop = new Shop(difficulty);
         allEnemiesList.clear();
         allItemList.clear();
     }
@@ -389,6 +401,22 @@ public class Game {
     }
 
     private void handleInventoryCommand(String input) {
+        // Открытие/закрытие магазина
+        if (input.equals("i")) {
+            shopOpen = !shopOpen;
+            selectedInventoryType = null;
+            return;
+        }
+
+        // При открытом магазине цифры пока не покупают - логика покупки не реализована
+        if (shopOpen && input.length() == 1) {
+            char c = input.charAt(0);
+            if (c >= '1' && c <= '9') {
+                addMessage("Покупка появится позже");
+                return;
+            }
+        }
+
         // Если выбран тип предмета, то цифра 1-9 используется для выбора предмета
         if (selectedInventoryType != null) {
             if (input.length() == 1) {
