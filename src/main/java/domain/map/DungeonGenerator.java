@@ -1,6 +1,7 @@
 package domain.map;
 
 import domain.backpack.Item;
+import domain.backpack.Store;
 import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.characters.enemies.EnemiesType;
@@ -19,11 +20,13 @@ public class DungeonGenerator {
     private TileType[][] map;
     private List<Room> rooms;
     private List<Corridor> corridors;
+    private final Store store;
 
     public DungeonGenerator() {
         this.map = new TileType[mapWidth][mapHeight];
         this.rooms = new ArrayList<>();
         this.corridors = new ArrayList<>();
+        this.store = new Store();
         initializeMap();
     }
 
@@ -50,6 +53,8 @@ public class DungeonGenerator {
     public int getMapHeight() {
         return mapHeight;
     }
+
+    public Store getStore() {return store;}
 
     /**
      * метод инициализирует карту стенами
@@ -312,6 +317,12 @@ public class DungeonGenerator {
         Position posLevel = room.getCentreRoom();
         map[posLevel.getX()][posLevel.getY()] = TileType.LEVEL;
         return posLevel;
+    }
+
+    public Position createStore(Room room) {
+        Position posStore = room.getCentreRoom();
+        map[posStore.getX()][posStore.getY()] = TileType.STORE;
+        return posStore;
     }
 
     /**

@@ -3,6 +3,7 @@ package domain.gameSession;
 import domain.backpack.Backpack;
 import domain.backpack.Item;
 import domain.backpack.ItemsType;
+import domain.backpack.Store;
 import domain.battle.AttackSystem;
 import domain.battle.BattleInfoType;
 import domain.characters.enemies.Mimic;
@@ -40,7 +41,8 @@ public class Game {
     private boolean isGameEnded = false;
     private ItemsType selectedInventoryType = null; // Тип предмета, выбранный для использования
     private static final int MESSAGE_LOG_CAPACITY = 10;
-    private final Deque<String> messageLog = new ArrayDeque<>(); // История последних сообщений, для presentation-слоя
+    private final Deque<String> messageLog = new ArrayDeque<>();// История последних сообщений, для presentation-слоя
+    private Store store;
 
     public Game() {
         generateNewLevel();
@@ -104,6 +106,8 @@ public class Game {
         return selectedInventoryType;
     }
 
+    public Store getStore() {return store;}
+
     /**
      * метод добавляет сообщение в лог, отбрасывая самое старое при переполнении
      * @param message игровое сообщение
@@ -136,6 +140,7 @@ public class Game {
         this.generator.generateDungeon();
         this.rooms = generator.getRooms();
         this.corridors = generator.getCorridors();
+        this.store = generator.getStore();
         allEnemiesList.clear();
         allItemList.clear();
     }
@@ -151,6 +156,9 @@ public class Game {
                 allEnemiesList.addAll(room.getEnemyList());
                 generator.createItem(room);
                 generator.createEnemies(room);
+            }
+            if(room == rooms.get(3)) {
+
             }
             if (room == rooms.getLast()) {
                 posLevel = generator.createLevel(room);
