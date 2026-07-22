@@ -158,7 +158,7 @@ public class Game {
                 generator.createEnemies(room);
             }
             if(room == rooms.get(3)) {
-
+                generator.createStore(room);
             }
             if (room == rooms.getLast()) {
                 posLevel = generator.createLevel(room);
@@ -191,6 +191,9 @@ public class Game {
             if (room != rooms.getFirst()) {
                 generator.createItem(room);
                 generator.createEnemies(room);
+            }
+            if(room == rooms.get(3)) {
+                generator.createStore(room);
             }
             if (room == rooms.getLast()) {
                 posLevel = generator.createLevel(room);

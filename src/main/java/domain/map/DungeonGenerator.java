@@ -319,10 +319,9 @@ public class DungeonGenerator {
         return posLevel;
     }
 
-    public Position createStore(Room room) {
+    public void createStore(Room room) {
         Position posStore = room.getCentreRoom();
         map[posStore.getX()][posStore.getY()] = TileType.STORE;
-        return posStore;
     }
 
     /**
