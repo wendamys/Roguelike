@@ -214,7 +214,7 @@ public class Game {
             }
         }
         generator.placeShop();
-        fog.update(player, rooms, difficulty);
+        fog.update(player, rooms, difficulty, generator.getMap());
     }
 
     /**
@@ -263,7 +263,7 @@ public class Game {
                 posLevel = generator.createLevel(room);
             }
         }
-        fog.update(player, rooms, difficulty);
+        fog.update(player, rooms, difficulty, generator.getMap());
     }
 
     /**
@@ -293,7 +293,7 @@ public class Game {
      */
     public void processInput(String input) {
         handleInput(input);
-        fog.update(player, rooms, difficulty);
+        fog.update(player, rooms, difficulty, generator.getMap());
         if (player.getHealth() > 0 && !isGameEnded) {
             enemyTurns();
         }
