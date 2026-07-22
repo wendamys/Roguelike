@@ -578,7 +578,7 @@ public class Game {
                 generator.isPositionWalkable(pos)
                 && !isPositionOccupied(pos)
                 && !pos.equals(posLevel)
-                && !isItemTile(generator.getMap()[pos.getX()][pos.getY()]);
+                && !DungeonGenerator.isPickupTile(generator.getMap()[pos.getX()][pos.getY()]);
 
         for (Enemies enemy : allEnemiesList) {
             if (enemy.getHealth() <= 0) {
@@ -593,8 +593,8 @@ public class Game {
                 generator.createEnemy(enemy);
             }
 
-            // Атака игрока, если враг оказался на соседней клетке
-            if (player.getPosition().distanceTo(enemy.getPosition()) < 2) {
+            // Атака игрока только ортогонально - оттуда, откуда он может ответить
+            if (enemy.canAttack(player)) {
                 // Сброс флага первой атаки вампира при начале боя
                 if (enemy.getType() == EnemiesType.VAMPIRE) {
                     battleInfo.vampireFirstAttack = true;
@@ -613,16 +613,6 @@ public class Game {
             addMessage(event);
         }
         battleInfo.getEvents().clear();
-    }
-
-    /**
-     * метод проверяет, лежит ли на клетке предмет
-     * @param tile тайл карты
-     * @return true если предмет
-     */
-    private boolean isItemTile(TileType tile) {
-        return tile == TileType.ELIXIR || tile == TileType.SCROLL
-                || tile == TileType.WEAPON || tile == TileType.FOOD;
     }
 
     /**

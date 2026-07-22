@@ -6,10 +6,15 @@ import domain.characters.Player;
 import domain.characters.enemies.EnemiesType;
 import domain.characters.enemies.Mimic;
 import domain.gameSession.DifficultyType;
+import domain.navigator.DirectionType;
 import domain.navigator.Position;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DungeonGenerator {
     private static final int MAP_SIZE = 45;
@@ -100,39 +105,148 @@ public class DungeonGenerator {
             return;
         }
 
-        ColorKey[] colors = ColorKey.values();
-        int colorIndex = 0;
+        Room startRoom = rooms.getFirst();
+        Position start = startRoom.getCentreRoom();
+        Set<ColorKey> held = new HashSet<>();
+        Room holder = startRoom;
 
-        for (Room room : rooms) {
-            if (colorIndex >= colors.length) {
+        for (ColorKey color : ColorKey.values()) {
+            Room locked = tryLockAnyRoom(color, start, held, holder);
+            if (locked == null) {
                 break;
             }
-            if (room == rooms.getFirst()) {
+            // игрок гарантированно возьмёт этот ключ, значит комната снова доступна
+            held.add(color);
+            holder = locked;
+        }
+    }
+
+    /**
+     * метод пытается запереть одну из подходящих комнат данным цветом.
+     * Запирание примеряется и откатывается, если ломает проходимость уровня:
+     * двери могут разрезать коридор, который вёл к ранее запертой комнате.
+     * @return запертая комната или null, если ни одну запереть не удалось
+     */
+    private Room tryLockAnyRoom(ColorKey color, Position start, Set<ColorKey> held, Room holder) {
+        Set<Position> zone = reachable(start, held);
+
+        for (Room candidate : rooms) {
+            if (candidate == rooms.getFirst() || candidate.getDoor() != null) {
                 continue;
             }
-            List<Position> entrances = findEntrances(room);
+            if (!zone.contains(candidate.getCentreRoom())) {
+                continue;
+            }
+            List<Position> entrances = findEntrances(candidate);
             if (entrances.isEmpty()) {
                 continue;
             }
-
-            ColorKey color = colors[colorIndex++];
-            room.setDoor(new Door(room, color, entrances));
-            lockedRooms.add(room);
-            for (Position entrance : entrances) {
-                map[entrance.getX()][entrance.getY()] = doorTileFor(color);
-            }
-        }
-
-        for (int i = 0; i < lockedRooms.size(); i++) {
-            Room holder = i == 0 ? rooms.getFirst() : lockedRooms.get(i - 1);
-            ColorKey color = lockedRooms.get(i).getDoor().getColorKey();
-            Position keyPos = freePositionInside(holder);
+            // ключ кладём в уже доступную зону ДО того, как запрём комнату
+            Position keyPos = freePositionInside(holder, zone);
             if (keyPos == null) {
                 continue;
             }
+
+            TileType keyBackup = map[keyPos.getX()][keyPos.getY()];
+            List<TileType> doorBackup = new ArrayList<>();
+            for (Position entrance : entrances) {
+                doorBackup.add(map[entrance.getX()][entrance.getY()]);
+            }
+
+            Key key = new Key(keyPos, color);
             map[keyPos.getX()][keyPos.getY()] = keyTileFor(color);
-            keys.add(new Key(keyPos, color));
+            keys.add(key);
+            for (Position entrance : entrances) {
+                map[entrance.getX()][entrance.getY()] = doorTileFor(color);
+            }
+            candidate.setDoor(new Door(candidate, color, entrances));
+            lockedRooms.add(candidate);
+
+            if (levelIsSolvable(start)) {
+                return candidate;
+            }
+
+            // откат: этот вариант сделал уровень непроходимым
+            map[keyPos.getX()][keyPos.getY()] = keyBackup;
+            for (int i = 0; i < entrances.size(); i++) {
+                Position entrance = entrances.get(i);
+                map[entrance.getX()][entrance.getY()] = doorBackup.get(i);
+            }
+            keys.remove(key);
+            lockedRooms.remove(candidate);
+            candidate.setDoor(null);
         }
+        return null;
+    }
+
+    /**
+     * метод проверяет, что уровень проходится: все ключи собираются по цепочке,
+     * все запертые комнаты открываются и выход на следующий уровень достижим
+     * @param start стартовая позиция игрока
+     * @return true если уровень проходим
+     */
+    private boolean levelIsSolvable(Position start) {
+        Set<ColorKey> held = new HashSet<>();
+        List<Key> remaining = new ArrayList<>(keys);
+
+        boolean progress = true;
+        while (progress) {
+            progress = false;
+            Set<Position> reach = reachable(start, held);
+            for (Key key : new ArrayList<>(remaining)) {
+                if (reach.contains(key.getPosition())) {
+                    held.add(key.getColorKey());
+                    remaining.remove(key);
+                    progress = true;
+                }
+            }
+        }
+        if (!remaining.isEmpty()) {
+            return false;
+        }
+
+        Set<Position> finalReach = reachable(start, held);
+        for (Room room : lockedRooms) {
+            if (!finalReach.contains(room.getCentreRoom())) {
+                return false;
+            }
+        }
+        return finalReach.contains(rooms.getLast().getCentreRoom());
+    }
+
+    /**
+     * метод считает клетки, достижимые от старта с учётом уже собранных ключей:
+     * дверь проходима, только если её цвет есть в held
+     * @param start стартовая позиция
+     * @param held собранные цвета ключей
+     * @return множество достижимых клеток
+     */
+    private Set<Position> reachable(Position start, Set<ColorKey> held) {
+        Set<Position> seen = new HashSet<>();
+        Deque<Position> queue = new ArrayDeque<>();
+        queue.add(start);
+        seen.add(start);
+
+        while (!queue.isEmpty()) {
+            Position cur = queue.poll();
+            for (DirectionType dir : DirectionType.values()) {
+                Position next = cur.posDir(dir);
+                if (!isInBounds(next.getX(), next.getY()) || seen.contains(next)) {
+                    continue;
+                }
+                TileType tile = map[next.getX()][next.getY()];
+                if (tile == TileType.WALL) {
+                    continue;
+                }
+                ColorKey doorColor = colorOfDoorTile(tile);
+                if (doorColor != null && !held.contains(doorColor)) {
+                    continue;
+                }
+                seen.add(next);
+                queue.add(next);
+            }
+        }
+        return seen;
     }
 
     /**
@@ -180,7 +294,7 @@ public class DungeonGenerator {
      * @param room комната
      * @return позиция или null, если свободных клеток нет
      */
-    private Position freePositionInside(Room room) {
+    private Position freePositionInside(Room room, Set<Position> zone) {
         Position centre = room.getCentreRoom();
         Position pos = room.getPosition();
         for (int x = pos.getX(); x < pos.getX() + room.getWidth(); x++) {
@@ -188,13 +302,33 @@ public class DungeonGenerator {
                 if (!isInBounds(x, y) || map[x][y] != TileType.FLOOR) {
                     continue;
                 }
+                // центр занимает игрок или выход на следующий уровень
                 if (x == centre.getX() && y == centre.getY()) {
                     continue;
                 }
-                return new Position(x, y);
+                Position candidate = new Position(x, y);
+                if (!zone.contains(candidate)) {
+                    continue;
+                }
+                // предметы и враги расставляются позже и затёрли бы тайл ключа
+                if (isOccupiedByContent(room, candidate)) {
+                    continue;
+                }
+                return candidate;
             }
         }
         return null;
+    }
+
+    /**
+     * метод проверяет, не запланирован ли на клетке предмет или враг комнаты
+     */
+    private boolean isOccupiedByContent(Room room, Position pos) {
+        boolean itemHere = room.getItemList().stream()
+                .anyMatch(item -> item.getPosition() != null && pos.equals(item.getPosition()));
+        boolean enemyHere = room.getEnemyList().stream()
+                .anyMatch(enemy -> enemy.getPosition() != null && pos.equals(enemy.getPosition()));
+        return itemHere || enemyHere;
     }
 
     /**
@@ -254,6 +388,16 @@ public class DungeonGenerator {
      */
     public static boolean isDoorTile(TileType tile) {
         return colorOfDoorTile(tile) != null;
+    }
+
+    /**
+     * метод проверяет, лежит ли на клетке что-то подбираемое: предмет или ключ.
+     * Враги на такие клетки не встают, иначе затирают их своим символом
+     */
+    public static boolean isPickupTile(TileType tile) {
+        return tile == TileType.ELIXIR || tile == TileType.SCROLL
+                || tile == TileType.WEAPON || tile == TileType.FOOD
+                || colorOfKeyTile(tile) != null;
     }
 
     /**

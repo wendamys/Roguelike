@@ -145,6 +145,22 @@ abstract public class Enemies extends Character {
             isStunned = false;
             return null;
         }
+        // Стоя вплотную, враг бьёт и не двигается. Иначе он ушёл бы на диагональ
+        // (там расстояние 1.41 против 1.0 у занятой клетки игрока), бил бы оттуда,
+        // а игрок ответить не смог бы - он атакует только по WASD.
+        if (canAttack(player)) {
+            return null;
+        }
         return ai.decideMove(this, player, walkable);
+    }
+
+    /**
+     * метод проверяет, может ли враг атаковать игрока с текущей клетки.
+     * Только ортогонально - ровно оттуда, откуда игрок может ударить в ответ
+     * @param player игрок
+     * @return true если атака возможна
+     */
+    public boolean canAttack(Player player) {
+        return getPosition().distanceTo(player.getPosition()) == 1.0;
     }
 }
