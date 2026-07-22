@@ -139,6 +139,15 @@ public class Game {
         return new ArrayList<>(messageLog);
     }
 
+    /**
+     * метод возвращает вместимость лога, нужен presentation-слою
+     * для расчёта позиции панели логов
+     * @return максимальное число сообщений в логе
+     */
+    public static int getMessageLogCapacity() {
+        return MESSAGE_LOG_CAPACITY;
+    }
+
 
     /**
      * Генерирует новый уровень с новыми комнатами и коридорами
@@ -258,11 +267,7 @@ public class Game {
                 char c = input.charAt(0);
                 if (c >= '1' && c <= '9') {
                     int index = c - '1'; // 1 -> 0, 2 -> 1, ...
-                    if (backpack.useItemByIndex(index, selectedInventoryType, player)) {
-                        addMessage("Предмет использован!");
-                    } else {
-                        addMessage("Предмет с этим индексом не найден!");
-                    }
+                    backpack.useItemByIndex(index, selectedInventoryType, player);
                     selectedInventoryType = null; // Сброс выбора
                     return null;
                 }
@@ -335,9 +340,9 @@ public class Game {
      * @param enemy враг для атаки
      */
     private void attackEnemy(Enemies enemy) {
-        addMessage("Атака врага: " + enemy.getType());
         attackSystem.attack(player, enemy, PLAYER, battleInfo, backpack);
-        
+        drainBattleEvents();
+
         // Если мимик раскрылся, обновляем его отображение на карте
         if (enemy instanceof Mimic && !((Mimic) enemy).getAmbushAI().isMimicking()) {
             generator.deleteEnemy(enemy);
@@ -365,11 +370,7 @@ public class Game {
                 char c = input.charAt(0);
                 if (c >= '1' && c <= '9') {
                     int index = c - '1'; // 1 -> 0, 2 -> 1, ...
-                    if (backpack.useItemByIndex(index, selectedInventoryType, player)) {
-                        addMessage("Предмет использован!");
-                    } else {
-                        addMessage("Предмет с этим индексом не найден!");
-                    }
+                    backpack.useItemByIndex(index, selectedInventoryType, player);
                     selectedInventoryType = null; // Сброс выбора
                     return;
                 }
@@ -390,11 +391,7 @@ public class Game {
                 int index = Integer.parseInt(input.substring(1));
                 ItemsType type = parseInventoryType(typeChar);
                 if (type != null) {
-                    if (backpack.useItemByIndex(index, type, player)) {
-                        addMessage("Предмет использован!");
-                    } else {
-                        addMessage("Неверный индекс предмета!");
-                    }
+                    backpack.useItemByIndex(index, type, player);
                     return;
                 }
             } catch (NumberFormatException e) {
@@ -422,8 +419,8 @@ public class Game {
     private boolean handleInventoryTypeSelection(String input) {
         ItemsType type = parseInventoryType(input);
         if (type != null) {
+            // подсказка про 1-9 постоянно висит в панели инвентаря, в лог её не дублируем
             selectedInventoryType = type;
-            addMessage("Введите цифру 1-9 для выбора предмета:");
             return true;
         }
         return false;
@@ -461,8 +458,19 @@ public class Game {
                     battleInfo.vampireFirstAttack = true;
                 }
                 attackSystem.attack(player, enemy, ENEMIES, battleInfo, backpack);
+                drainBattleEvents();
             }
         }
+    }
+
+    /**
+     * метод переливает события боя в лог сообщений и очищает их
+     */
+    private void drainBattleEvents() {
+        for (String event : battleInfo.getEvents()) {
+            addMessage(event);
+        }
+        battleInfo.getEvents().clear();
     }
 
     /**

@@ -95,30 +95,34 @@ public class AttackSystem {
         switch (currTurn) {
             case PLAYER -> {
                 if (enemy.getHealth() == 0) return;
-                
+
                 // Активируем атаку мимика при ударе игрока
                 if (enemy instanceof Mimic) {
                     Mimic mimic = (Mimic) enemy;
                     if (mimic.getAmbushAI().isMimicking()) {
                         mimic.getAmbushAI().activateAttack();
-                        System.out.println("Мимик раскрылся и атакует!");
+                        battleInfo.getEvents().add("Мимик раскрылся и атакует!");
                     }
                 }
-                
+
                 // Проверка на попадание
                 if (checkHit(player, enemy, PLAYER, battleInfo)) {
                     int damage = calculateDamage(player, enemy, PLAYER, battleInfo, backpack);
                     int newHealth = Math.max(enemy.getHealth() - damage, 0);
-                    System.out.println("у ENEMIES "  + "Было hp: " + enemy.getHealth() + " Стало: " + newHealth);
+                    battleInfo.getEvents().add(labelOf(enemy) + ": " + newHealth + "/"
+                            + enemy.getMaxHealth() + " HP, урон " + damage);
                     enemy.setHealth(newHealth);
+                } else {
+                    battleInfo.getEvents().add("Промах по " + labelOf(enemy));
                 }
-                
+
                 if (enemy.getHealth() == 0) {
-                    player.setGold(player.getGold() + calculateLoot(enemy));
+                    int loot = calculateLoot(enemy);
+                    player.setGold(player.getGold() + loot);
                     if(enemy instanceof Mimic) {
                         backpack.takeItem(getItemMimic((Mimic) enemy));
                     }
-                    System.out.println("Голда у игрока: " + player.getGold());
+                    battleInfo.getEvents().add(labelOf(enemy) + " повержен (+" + loot + " золота)");
                 }
             }
             case ENEMIES -> {
@@ -128,31 +132,32 @@ public class AttackSystem {
                 if (checkHit(player, enemy, ENEMIES, battleInfo)) {
                     int damage = calculateDamage(player, enemy, ENEMIES, battleInfo, backpack);
                     int newHealth = Math.max(player.getHealth() - damage, 0);
-                    System.out.println("у PLAYER "  + "Было hp: " + player.getHealth() + " Стало: " + newHealth);
+                    battleInfo.getEvents().add(labelOf(enemy) + " бьёт: " + newHealth + "/"
+                            + player.getMaxHealth() + " HP, урон " + damage);
                     player.setHealth(newHealth);
-                    
+
                     // Стан от огра
                     if (enemy.getType() == EnemiesType.OGRE) {
                         StunAI stunAI = ((Ogre) enemy).getStunAI();
                         if (stunAI.tryStun()) {
                             battleInfo.isStunned = true;
                             player.setIsStunned(true);
-                            System.out.println("Игрок в стане!");
+                            battleInfo.getEvents().add("Игрок в стане!");
                         }
                     }
-                    
+
                     // Дебаф от змеи
                     if (enemy.getType() == EnemiesType.SNAKE) {
                         DebuffAI debuffAI = ((Snake) enemy).getDebuffAI();
                         if (debuffAI.tryApplyDebuff()) {
                             battleInfo.isMissNextAttack = true;
-                            System.out.println("Игрок получил дебаф промаха!");
+                            battleInfo.getEvents().add("Игрок получил дебаф промаха!");
                         }
                     }
-                    
+
                     // Восстановление здоровья вампира
                     if (enemy.getType() == EnemiesType.VAMPIRE && damage > 0) {
-                        regenVampire(enemy, damage);
+                        regenVampire(enemy, damage, battleInfo);
                     }
                 }
             }
@@ -180,14 +185,31 @@ public class AttackSystem {
      * @param enemy вампир
      * @param damage урон, нанесенный игроку
      */
-    private void regenVampire(Enemies enemy, int damage) {
+    private void regenVampire(Enemies enemy, int damage, BattleInfoType battleInfo) {
         if (enemy instanceof Vampire) {
             RegenAI regenAI = ((Vampire) enemy).getRegenAI();
             int regenAmount = regenAI.calculateRegen(damage);
             int newHealth = Math.min(enemy.getHealth() + regenAmount, enemy.getMaxHealth());
             enemy.setHealth(newHealth);
-            System.out.println("Vampire восстановил " + regenAmount + " здоровья");
+            battleInfo.getEvents().add("Вампир восстановил " + regenAmount + " HP");
         }
+    }
+
+    /**
+     * Возвращает человекочитаемое название врага для лога
+     *
+     * @param enemy Монстр
+     * @return название на русском
+     */
+    private static String labelOf(Enemies enemy) {
+        return switch (enemy.getType()) {
+            case ZOMBIE -> "Зомби";
+            case OGRE -> "Огр";
+            case VAMPIRE -> "Вампир";
+            case SNAKE -> "Змея";
+            case GHOST -> "Призрак";
+            case MIMIC -> "Мимик";
+        };
     }
 
     /**
@@ -206,7 +228,7 @@ public class AttackSystem {
                 // Если игрок получил дебаф промаха
                 if (battleInfo.isMissNextAttack) {
                     battleInfo.isMissNextAttack = false;
-                    System.out.println("Игрок промахнулся (дебаф)!");
+                    battleInfo.getEvents().add("Игрок промахнулся (дебаф)!");
                     return false;
                 }
                 chance = hitChanceFormula(player.getAgility(), enemy.getAgility());
@@ -215,7 +237,7 @@ public class AttackSystem {
                 // Если Ghost в инвизе, промах
                 if (enemy.getType() == EnemiesType.GHOST) {
                     if (enemy.getIsInvisible()) {
-                        System.out.println("Ghost невидим, промах!");
+                        battleInfo.getEvents().add("Призрак невидим, промах!");
                         return false;
                     }
                 }
@@ -263,7 +285,7 @@ public class AttackSystem {
             // Критический удар
             if (randomValueDouble() < 0.1) {
                 damage = (int) (damage * 1.5);
-                System.out.println("КРИТИЧЕСКИЙ УДАР!");
+                battleInfo.getEvents().add("КРИТИЧЕСКИЙ УДАР!");
             }
         } else if (currTurn == ENEMIES) {
             damage = EnemyDamageFormula(enemy, battleInfo);
@@ -271,7 +293,7 @@ public class AttackSystem {
             if (enemy.getType() == EnemiesType.VAMPIRE && battleInfo.vampireFirstAttack) {
                 battleInfo.vampireFirstAttack = false;
                 damage = damage * 2;
-                System.out.println("Vampire двойная атака!");
+                battleInfo.getEvents().add("Вампир: двойная атака!");
             }
         }
         return damage;

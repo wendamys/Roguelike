@@ -29,7 +29,6 @@ public class UIView {
     private static final int RIGHT_PANEL_X_MARGIN = 3;   // отступ правой панели от края карты
     private static final int RIGHT_TOP_ROW = 0;           // статус игрока
     private static final int RIGHT_INVENTORY_ROW = 20;    // правая средняя: сводка по инвентарю
-    private static final int RIGHT_LOG_ROW = 40;          // правая нижняя: лог сообщений
 
     private final Screen screen;
 
@@ -192,7 +191,9 @@ public class UIView {
      */
     private void drawMessageLog(Game game, TextGraphics tg) {
         int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN;
-        int row = RIGHT_LOG_ROW;
+        // при высоте 62 строки нумеруются 0..61: заголовок ложится на 50,
+        // десять записей занимают 51-60, последняя - на предпоследней строке экрана
+        int row = screen.getTerminalSize().getRows() - 2 - Game.getMessageLogCapacity();
 
         tg.setForegroundColor(TextColor.ANSI.CYAN);
         tg.putString(panelX, row++, "Лог:");
