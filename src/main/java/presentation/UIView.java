@@ -103,7 +103,8 @@ public class UIView {
      */
     private char geometrySymbolOf(TileType tile) {
         return switch (tile) {
-            case WALL, FLOOR, LEVEL -> tile.getSymbol();
+            // двери - часть геометрии, они должны оставаться видны в разведанной зоне
+            case WALL, FLOOR, LEVEL, DOOR_GREEN, DOOR_BLUE, DOOR_RED, DOOR_YELLOW -> tile.getSymbol();
             default -> TileType.FLOOR.getSymbol();
         };
     }
@@ -147,6 +148,10 @@ public class UIView {
         tg.putString(panelX, row++, "Strength: " + player.getBuffStrength());
         tg.putString(panelX, row++, "Weapon:   +" + player.getCurrentWeaponValue());
         tg.putString(panelX, row++, "Gold:     " + player.getGold());
+
+        if (!player.getKeys().isEmpty()) {
+            tg.putString(panelX, row++, "Ключи:    " + player.getKeys().size() + "/4");
+        }
     }
 
     /**
@@ -286,6 +291,10 @@ public class UIView {
             case GHOST, SNAKE, MIMIC -> TextColor.ANSI.WHITE;
             case PLAYER, PLAYER_STUNNED -> TextColor.ANSI.WHITE;
             case ELIXIR, SCROLL, WEAPON, FOOD -> TextColor.ANSI.CYAN;
+            case DOOR_GREEN, KEY_GREEN -> TextColor.ANSI.GREEN;
+            case DOOR_BLUE, KEY_BLUE -> TextColor.ANSI.BLUE;
+            case DOOR_RED, KEY_RED -> TextColor.ANSI.RED;
+            case DOOR_YELLOW, KEY_YELLOW -> TextColor.ANSI.YELLOW;
             case LEVEL -> TextColor.ANSI.YELLOW;
             case WALL -> TextColor.ANSI.WHITE;
             case FLOOR -> TextColor.ANSI.BLACK_BRIGHT;

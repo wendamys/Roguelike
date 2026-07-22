@@ -14,8 +14,27 @@ public class Key {
         this.colorKey = choiceColorKey();
     }
 
+    /**
+     * конструктор для генератора: цвет и позицию назначает он сам,
+     * статический список цветов при этом не расходуется
+     * @param position позиция ключа на карте
+     * @param colorKey цвет ключа
+     */
+    public Key(Position position, ColorKey colorKey) {
+        this.position = position;
+        this.colorKey = colorKey;
+    }
+
     public ColorKey getColorKey() {
         return colorKey;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     /**
@@ -75,6 +94,6 @@ public class Key {
 
     @Override
     public String toString() {
-        return String.format("");
+        return String.format("Key: color=%s, position=%s", colorKey, position);
     }
 }

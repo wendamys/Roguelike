@@ -2,6 +2,9 @@ package datalayer.converter;
 
 import datalayer.dto.PlayerDTO;
 import domain.characters.Player;
+import domain.map.ColorKey;
+
+import java.util.ArrayList;
 
 public class PlayerConverter {
 
@@ -18,6 +21,10 @@ public class PlayerConverter {
         dto.setIsStunned(player.getIsStunned());
         dto.setPositionDTO(PositionConverter.toDTO(player.getPosition()));
 
+        ArrayList<String> keys = new ArrayList<>();
+        player.getKeys().forEach(key -> keys.add(key.name()));
+        dto.setKeys(keys);
+
         return dto;
     }
 
@@ -32,6 +39,10 @@ public class PlayerConverter {
         player.setBuffStrength(dto.getBuffStrength());
         player.setGold(dto.getGold());
         player.setIsStunned(dto.getIsStunned());
+
+        if (dto.getKeys() != null) {
+            dto.getKeys().forEach(name -> player.addKey(ColorKey.valueOf(name)));
+        }
 
         return player;
     }

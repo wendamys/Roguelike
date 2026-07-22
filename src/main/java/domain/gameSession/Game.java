@@ -236,6 +236,21 @@ public class Game {
      * (используется при загрузке, не добавляет предметы/врагов повторно в комнаты)
      */
     public void placeRestoredEntitiesOnMap() {
+        // rebuildMap рисует только пол и стены, двери с ключами возвращаем на карту сами
+        for (Room room : rooms) {
+            Door door = room.getDoor();
+            if (door != null && door.getIsClose()) {
+                for (Position entrance : door.getEntrances()) {
+                    generator.getMap()[entrance.getX()][entrance.getY()] =
+                            DungeonGenerator.doorTileFor(door.getColorKey());
+                }
+            }
+        }
+        for (Key key : generator.getKeys()) {
+            Position pos = key.getPosition();
+            generator.getMap()[pos.getX()][pos.getY()] = DungeonGenerator.keyTileFor(key.getColorKey());
+        }
+
         generator.createPlayer(player);
         for (Room room : rooms) {
             if (room != rooms.getFirst()) {
@@ -328,6 +343,11 @@ public class Game {
             return;
         }
 
+        // Шаг в дверь: с ключом она открывается, без ключа ход просто тратится
+        if (tryOpenDoor(nextPos)) {
+            return;
+        }
+
         if (!generator.isPositionWalkable(nextPos)) {
             return;
         }
@@ -349,7 +369,76 @@ public class Game {
         generator.deletePosPlayer(player);
         player.setPosition(nextPos);
         checkAndCollectItems();
+        checkAndCollectKeys();
         generator.createPlayer(player);
+    }
+
+    /**
+     * метод обрабатывает шаг в дверь
+     * @param pos клетка, куда шагает игрок
+     * @return true если это была дверь и ход потрачен
+     */
+    private boolean tryOpenDoor(Position pos) {
+        if (!generator.isInBounds(pos.getX(), pos.getY())) {
+            return false;
+        }
+        TileType tile = generator.getMap()[pos.getX()][pos.getY()];
+        ColorKey color = DungeonGenerator.colorOfDoorTile(tile);
+        if (color == null) {
+            return false;
+        }
+
+        if (player.hasKey(color)) {
+            unlockRoom(color);
+            addMessage("Открыл " + colorLabel(color) + " дверь");
+        } else {
+            addMessage("Дверь заперта (" + colorLabel(color) + ")");
+        }
+        return true;
+    }
+
+    /**
+     * метод отпирает комнату целиком: один ключ открывает все её входы сразу,
+     * иначе закрытую дверь можно было бы обойти через соседний проход
+     * @param color цвет ключа
+     */
+    private void unlockRoom(ColorKey color) {
+        for (Room room : rooms) {
+            Door door = room.getDoor();
+            if (door == null || door.getColorKey() != color || !door.getIsClose()) {
+                continue;
+            }
+            for (Position entrance : door.getEntrances()) {
+                generator.getMap()[entrance.getX()][entrance.getY()] = TileType.FLOOR;
+            }
+            door.setClose(false);
+        }
+    }
+
+    /**
+     * метод подбирает ключ, если игрок встал на его клетку
+     */
+    private void checkAndCollectKeys() {
+        generator.getKeys().removeIf(key -> {
+            if (player.getPosition().equals(key.getPosition())) {
+                player.addKey(key.getColorKey());
+                addMessage("Подобрал " + colorLabel(key.getColorKey()) + " ключ");
+                return true;
+            }
+            return false;
+        });
+    }
+
+    /**
+     * метод возвращает название цвета для сообщений в логе
+     */
+    private String colorLabel(ColorKey color) {
+        return switch (color) {
+            case GREEN -> "зелёный";
+            case BLUE -> "синий";
+            case RED -> "красный";
+            case YELLOW -> "жёлтый";
+        };
     }
 
     /**

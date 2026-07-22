@@ -27,6 +27,7 @@ public class Room {
     private Position position;
     private RoomType roomType;
     private final DifficultyType difficulty;
+    private Door door; // null, если комната не заперта
 
     private ArrayList<Enemies> enemyList = new ArrayList<>(capacityEnemy);
     private ArrayList<Item> itemList = new ArrayList<>(capacityItem);
@@ -65,6 +66,9 @@ public class Room {
     public void setPosition(Position position) { this.position = position; }
 
     public RoomType getRoomType() { return roomType; }
+
+    public Door getDoor() { return door; }
+    public void setDoor(Door door) { this.door = door; }
 
     public ArrayList<Enemies> getEnemyList() {return enemyList;}
     public void setEnemyList(ArrayList<Enemies> enemyList) {this.enemyList = enemyList;}
