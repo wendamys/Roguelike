@@ -10,7 +10,7 @@ import domain.navigator.Position;
 public class Zombie extends Enemies {
 
     private final EnemiesType type = EnemiesType.ZOMBIE;
-    private int health = 30;
+    private int health = 50;
     private int agility = 15;
     private int strength = 15;
 
@@ -39,7 +39,7 @@ public class Zombie extends Enemies {
 
     @Override
     public int getHostility() {
-        return 2;
+        return 3;
     }
 
     @Override

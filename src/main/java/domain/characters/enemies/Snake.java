@@ -8,8 +8,8 @@ import domain.navigator.Position;
 public class Snake extends Enemies {
 
     private final EnemiesType type = EnemiesType.SNAKE;
-    private int health = 50;
-    private int agility = 30;
+    private int health = 60;
+    private int agility = 50;
     private int strength = 20;
 
     public Snake(Position position) {

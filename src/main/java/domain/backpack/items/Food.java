@@ -12,7 +12,7 @@ public class Food extends Item {
 
     private final ItemsType type = ItemsType.FOOD;
     private final ItemsSubType subType = ItemsSubType.HEALTH;
-    private int value = 50;
+    private int value = 45;
 
     public Food(Position position) {
         super(position);
@@ -43,6 +43,6 @@ public class Food extends Item {
 
     @Override
     public String toString() {
-        return String.format("Food: value %d, position(%d, %d)", getValue(), getPosition().getX(), getPosition().getY());
+        return String.format("(%d)", getValue());
     }
 }

@@ -18,7 +18,13 @@ public class AmbushAI implements EnemyAI {
         if (isMimicking) {
             return null;
         }
-        return baseAI.decideMove(enemy, player);
+        // В агрессивном режиме всегда преследуем игрока, без случайного движения
+        DirectionType convergence = enemy.convergenceIsHostility(player);
+        if (convergence != null) {
+            return convergence;
+        }
+        // Если игрок не в радиусе агра - идем к нему (без random())
+        return enemy.convergence(player);
     }
     
     /**

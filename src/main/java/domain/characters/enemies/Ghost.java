@@ -8,9 +8,9 @@ import domain.navigator.Position;
 public class Ghost extends Enemies {
 
     private final EnemiesType type = EnemiesType.GHOST;
-    private int health = 70;
-    private int agility = 40;
-    private int strength = 20;
+    private int health = 80;
+    private int agility = 70;
+    private int strength = 15;
 
     public Ghost(Position position) {
         super(position);
@@ -31,9 +31,7 @@ public class Ghost extends Enemies {
     }
 
     @Override
-    public int getHostility() {
-        return 5;
-    }
+    public int getHostility() {return 8;}
 
     @Override
     protected EnemyAI createAI() {

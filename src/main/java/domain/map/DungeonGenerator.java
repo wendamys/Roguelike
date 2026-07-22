@@ -3,6 +3,8 @@ package domain.map;
 import domain.backpack.Item;
 import domain.characters.Enemies;
 import domain.characters.Player;
+import domain.characters.enemies.EnemiesType;
+import domain.characters.enemies.Mimic;
 import domain.navigator.Position;
 
 import java.util.ArrayList;
@@ -48,7 +50,6 @@ public class DungeonGenerator {
     public int getMapHeight() {
         return mapHeight;
     }
-
 
     /**
      * метод инициализирует карту стенами
@@ -287,12 +288,18 @@ public class DungeonGenerator {
     public void createEnemies(Room room) {
         ArrayList <Enemies> enemyList = room.getEnemyList();
         for (Enemies enemy : enemyList) {
-            switch (enemy.getType()) {
-                case ZOMBIE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.ZOMBIE; break;
-                case OGRE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.OGRE; break;
-                case VAMPIRE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.VAMPIRE; break;
-                case SNAKE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.SNAKE; break;
-                default: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.GHOST;
+            if (enemy.getType() == EnemiesType.MIMIC) {
+                // Для мимика используем динамический TileType
+                map[enemy.getPosition().getX()][enemy.getPosition().getY()] = ((Mimic) enemy).getTileType();
+            } else {
+                switch (enemy.getType()) {
+                    case ZOMBIE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.ZOMBIE; break;
+                    case OGRE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.OGRE; break;
+                    case VAMPIRE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.VAMPIRE; break;
+                    case SNAKE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.SNAKE; break;
+                    case GHOST: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.GHOST; break;
+                    default: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.ZOMBIE;
+                }
             }
         }
     }
@@ -335,13 +342,18 @@ public class DungeonGenerator {
      */
     public void createEnemy(Enemies enemy) {
         Position pos = enemy.getPosition();
-        switch (enemy.getType()) {
-            case OGRE: map[pos.getX()][pos.getY()] = TileType.OGRE; break;
-            case GHOST: map[pos.getX()][pos.getY()] = TileType.GHOST; break;
-            case SNAKE: map[pos.getX()][pos.getY()] = TileType.SNAKE; break;
-            case VAMPIRE: map[pos.getX()][pos.getY()] = TileType.VAMPIRE; break;
-            case MIMIC: map[pos.getX()][pos.getY()] = TileType.MIMIC; break;
-            default: map[pos.getX()][pos.getY()] = TileType.ZOMBIE;
+        if (enemy.getType() == EnemiesType.MIMIC) {
+            // Для мимика используем динамический TileType
+            map[pos.getX()][pos.getY()] = ((Mimic) enemy).getTileType();
+        } else {
+            switch (enemy.getType()) {
+                case OGRE: map[pos.getX()][pos.getY()] = TileType.OGRE; break;
+                case GHOST: map[pos.getX()][pos.getY()] = TileType.GHOST; break;
+                case SNAKE: map[pos.getX()][pos.getY()] = TileType.SNAKE; break;
+                case VAMPIRE: map[pos.getX()][pos.getY()] = TileType.VAMPIRE; break;
+                case ZOMBIE: map[pos.getX()][pos.getY()] = TileType.ZOMBIE; break;
+                default: map[pos.getX()][pos.getY()] = TileType.ZOMBIE;
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         Terminal terminal = new DefaultTerminalFactory()
-                .setInitialTerminalSize(new TerminalSize(120, 62))
+                .setInitialTerminalSize(new TerminalSize(150, 62))
                 .createTerminal();
         Screen screen = new TerminalScreen(terminal);
 

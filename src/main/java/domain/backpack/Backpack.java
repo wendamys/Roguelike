@@ -115,7 +115,10 @@ public class Backpack {
     }
     
     private void addIfPossible(ArrayList<Item> list, Item item) {
-        if (list.size() < maxCapacity) list.add(item);
+        if (list.size() < maxCapacity) {
+            list.add(item);
+            item.setPosition(null);
+        }
     }
 
     /**

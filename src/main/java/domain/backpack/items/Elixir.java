@@ -13,7 +13,7 @@ public class Elixir extends Item {
 
     private final ItemsType type = ItemsType.ELIXIR;
     private ItemsSubType subType;
-    private int value = 50;
+    private int value = 30;
 
     public Elixir(Position position) {
         super(position);
@@ -50,6 +50,6 @@ public class Elixir extends Item {
 
     @Override
     public String toString() {
-        return String.format("Elixir: value %d, position(%d, %d), SubType %s", getValue(), getPosition().getX(), getPosition().getY(), getSubType());
+        return String.format("%s (%d) ", getSubType(), getValue());
     }
 }
