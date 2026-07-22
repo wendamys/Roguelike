@@ -8,6 +8,7 @@ import com.googlecode.lanterna.screen.Screen;
 import domain.backpack.Backpack;
 import domain.backpack.Item;
 import domain.backpack.ItemsType;
+import domain.characters.Player;
 import domain.gameSession.Game;
 import domain.map.FogOfWar;
 import domain.map.Level;
@@ -133,8 +134,18 @@ public class UIView {
      */
     private void drawPlayerStatus(Game game, TextGraphics tg) {
         int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN;
+        Player player = game.getPlayer();
+        int row = RIGHT_TOP_ROW;
+
+        tg.setForegroundColor(TextColor.ANSI.YELLOW);
+        tg.putString(panelX, row++, player.getName());
+
         tg.setForegroundColor(TextColor.ANSI.WHITE);
-        tg.putString(panelX, RIGHT_TOP_ROW, game.getPlayer().toString());
+        tg.putString(panelX, row++, "Health:   " + player.getHealth() + "/" + player.getMaxHealth());
+        tg.putString(panelX, row++, "Agility:  " + player.getBuffAgility());
+        tg.putString(panelX, row++, "Strength: " + player.getBuffStrength());
+        tg.putString(panelX, row++, "Weapon:   +" + player.getCurrentWeaponValue());
+        tg.putString(panelX, row++, "Gold:     " + player.getGold());
     }
 
     /**
