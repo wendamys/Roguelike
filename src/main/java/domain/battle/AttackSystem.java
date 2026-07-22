@@ -4,10 +4,13 @@ import domain.ai.StunAI;
 import domain.ai.DebuffAI;
 import domain.ai.RegenAI;
 import domain.backpack.Backpack;
+import domain.backpack.Item;
+import domain.backpack.items.*;
 import domain.characters.Character;
 import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.characters.enemies.*;
+import domain.navigator.Position;
 
 import static domain.MathUtils.MathUtils.randomNumber;
 import static domain.MathUtils.MathUtils.randomValueDouble;
@@ -103,6 +106,9 @@ public class AttackSystem {
                 
                 if (enemy.getHealth() == 0) {
                     player.setGold(player.getGold() + calculateLoot(enemy));
+                    if(enemy instanceof Mimic) {
+                        backpack.takeItem(getItemMimic((Mimic) enemy));
+                    }
                     System.out.println("Голда у игрока: " + player.getGold());
                 }
             }
@@ -142,6 +148,22 @@ public class AttackSystem {
                 }
             }
         }
+    }
+
+    /**
+     * Метод для рандомной генерации предмета в теле мимика
+     * @param mimic противникмимик
+     * @return возвращает предмет
+     */
+    private Item getItemMimic(Mimic mimic) {
+        if (mimic == null) return null;
+
+        return switch (mimic.getItemsType()) {
+            case ELIXIR -> new Elixir(null);
+            case SCROLL -> new Scroll(null);
+            case FOOD -> new Food(null);
+            default -> new Weapon(null);
+        };
     }
     
     /**

@@ -9,7 +9,7 @@ public class Vampire extends Enemies {
 
     private final EnemiesType type = EnemiesType.VAMPIRE;
     private int health = 80;
-    private int agility = 30;
+    private int agility = 40;
     private int strength = 40;
 
     public Vampire(Position position) {
@@ -41,7 +41,7 @@ public class Vampire extends Enemies {
 
     @Override
     public int getHostility() {
-        return 4;
+        return 6;
     }
 
     @Override

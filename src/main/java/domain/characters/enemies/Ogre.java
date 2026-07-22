@@ -9,8 +9,8 @@ public class Ogre extends Enemies {
 
     private final EnemiesType type = EnemiesType.OGRE;
     private int health = 80;
-    private int agility = 30;
-    private int strength = 30;
+    private int agility = 25;
+    private int strength = 40;
 
     public Ogre(Position position) {
         super(position);

@@ -49,7 +49,6 @@ public class DungeonGenerator {
         return mapHeight;
     }
 
-
     /**
      * метод инициализирует карту стенами
      */
@@ -292,6 +291,7 @@ public class DungeonGenerator {
                 case OGRE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.OGRE; break;
                 case VAMPIRE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.VAMPIRE; break;
                 case SNAKE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.SNAKE; break;
+                case MIMIC: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.MIMIC; break;
                 default: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.GHOST;
             }
         }

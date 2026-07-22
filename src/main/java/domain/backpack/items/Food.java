@@ -12,7 +12,7 @@ public class Food extends Item {
 
     private final ItemsType type = ItemsType.FOOD;
     private final ItemsSubType subType = ItemsSubType.HEALTH;
-    private int value = 40;
+    private int value = 45;
 
     public Food(Position position) {
         super(position);
