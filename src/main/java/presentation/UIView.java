@@ -8,7 +8,9 @@ import com.googlecode.lanterna.screen.Screen;
 import domain.backpack.Backpack;
 import domain.backpack.Item;
 import domain.backpack.ItemsType;
+import domain.characters.Player;
 import domain.gameSession.Game;
+import domain.map.FogOfWar;
 import domain.map.Level;
 import domain.map.TileType;
 
@@ -27,7 +29,7 @@ public class UIView {
     private static final int RIGHT_PANEL_X_MARGIN = 3;   // отступ правой панели от края карты
     private static final int RIGHT_TOP_ROW = 0;           // статус игрока
     private static final int RIGHT_INVENTORY_ROW = 20;    // правая средняя: сводка по инвентарю
-    private static final int RIGHT_LOG_ROW = 40;          // правая нижняя: лог сообщений
+    private static final int SHOP_PANEL_X_OFFSET = 18;    // сдвиг панели магазина правее инвентаря
 
     private final Screen screen;
 
@@ -64,6 +66,7 @@ public class UIView {
         drawBottomBar(game, tg);
         drawPlayerStatus(game, tg);
         drawInventory(game, tg);
+        drawShop(game, tg);
         drawMessageLog(game, tg);
 
         screen.refresh();
@@ -74,16 +77,36 @@ public class UIView {
      */
     private void drawMap(Game game, TextGraphics tg) {
         TileType[][] map = game.getGenerator().getMap();
+        FogOfWar fog = game.getFog();
         int width = game.getGenerator().getMapWidth();
         int height = game.getGenerator().getMapHeight();
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 TileType tile = map[x][y];
-                tg.setForegroundColor(colorFor(tile));
-                tg.putString(x, y + MAP_ROW_OFFSET, String.valueOf(tile.getSymbol()));
+                if (fog.isVisible(x, y)) {
+                    tg.setForegroundColor(colorFor(tile));
+                    tg.putString(x, y + MAP_ROW_OFFSET, String.valueOf(tile.getSymbol()));
+                } else if (fog.isExplored(x, y)) {
+                    tg.setForegroundColor(TextColor.ANSI.BLACK_BRIGHT);
+                    tg.putString(x, y + MAP_ROW_OFFSET, String.valueOf(geometrySymbolOf(tile)));
+                } else {
+                    tg.putString(x, y + MAP_ROW_OFFSET, " ");
+                }
             }
         }
+    }
+
+    /**
+     * метод возвращает символ геометрии клетки: враги и предметы в разведанной,
+     * но невидимой зоне не показываются - под ними всегда пол
+     */
+    private char geometrySymbolOf(TileType tile) {
+        return switch (tile) {
+            // двери - часть геометрии, они должны оставаться видны в разведанной зоне
+            case WALL, FLOOR, LEVEL, DOOR_GREEN, DOOR_BLUE, DOOR_RED, DOOR_YELLOW -> tile.getSymbol();
+            default -> TileType.FLOOR.getSymbol();
+        };
     }
 
     /**
@@ -113,8 +136,22 @@ public class UIView {
      */
     private void drawPlayerStatus(Game game, TextGraphics tg) {
         int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN;
+        Player player = game.getPlayer();
+        int row = RIGHT_TOP_ROW;
+
+        tg.setForegroundColor(TextColor.ANSI.YELLOW);
+        tg.putString(panelX, row++, player.getName());
+
         tg.setForegroundColor(TextColor.ANSI.WHITE);
-        tg.putString(panelX, RIGHT_TOP_ROW, game.getPlayer().toString());
+        tg.putString(panelX, row++, "Health:   " + player.getHealth() + "/" + player.getMaxHealth());
+        tg.putString(panelX, row++, "Agility:  " + player.getBuffAgility());
+        tg.putString(panelX, row++, "Strength: " + player.getBuffStrength());
+        tg.putString(panelX, row++, "Weapon:   +" + player.getCurrentWeaponValue());
+        tg.putString(panelX, row++, "Gold:     " + player.getGold());
+
+        if (!player.getKeys().isEmpty()) {
+            tg.putString(panelX, row++, "Ключи:    " + player.getKeys().size() + "/4");
+        }
     }
 
     /**
@@ -157,11 +194,43 @@ public class UIView {
     }
 
     /**
+     * метод рисует панель магазина справа от инвентаря, если магазин открыт
+     */
+    private void drawShop(Game game, TextGraphics tg) {
+        if (!game.isShopOpen()) {
+            return;
+        }
+
+        int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN + SHOP_PANEL_X_OFFSET;
+        int row = RIGHT_INVENTORY_ROW;
+
+        tg.setForegroundColor(TextColor.ANSI.CYAN);
+        tg.putString(panelX, row++, "Магазин (i - закрыть)");
+
+        List<Item> items = game.getShop().getItems();
+        tg.setForegroundColor(TextColor.ANSI.WHITE);
+        if (items.isEmpty()) {
+            tg.putString(panelX, row++, "Пусто");
+        }
+        for (int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
+            tg.putString(panelX, row++, "[" + (i + 1) + "] " + shopLabelFor(item.getType())
+                    + " (" + item.getValue() + ") " + game.getShop().priceOf(item) + "з");
+        }
+
+        row++;
+        tg.setForegroundColor(TextColor.ANSI.YELLOW);
+        tg.putString(panelX, row, "Ваше золото: " + game.getPlayer().getGold());
+    }
+
+    /**
      * метод рисует в правой нижней части историю последних сообщений игры
      */
     private void drawMessageLog(Game game, TextGraphics tg) {
         int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN;
-        int row = RIGHT_LOG_ROW;
+        // при высоте 62 строки нумеруются 0..61: заголовок ложится на 50,
+        // десять записей занимают 51-60, последняя - на предпоследней строке экрана
+        int row = screen.getTerminalSize().getRows() - 2 - Game.getMessageLogCapacity();
 
         tg.setForegroundColor(TextColor.ANSI.CYAN);
         tg.putString(panelX, row++, "Лог:");
@@ -170,6 +239,19 @@ public class UIView {
         for (String entry : game.getMessageLog()) {
             tg.putString(panelX, row++, "> " + entry);
         }
+    }
+
+    /**
+     * метод возвращает короткое название типа предмета для строки магазина
+     * (getName() у предметов возвращает односимвольную букву, для магазина она нечитаема)
+     */
+    private String shopLabelFor(ItemsType type) {
+        return switch (type) {
+            case ELIXIR -> "Эликсир";
+            case FOOD -> "Еда";
+            case SCROLL -> "Свиток";
+            case WEAPON -> "Оружие";
+        };
     }
 
     /**
@@ -209,6 +291,10 @@ public class UIView {
             case GHOST, SNAKE, MIMIC -> TextColor.ANSI.WHITE;
             case PLAYER, PLAYER_STUNNED -> TextColor.ANSI.WHITE;
             case ELIXIR, SCROLL, WEAPON, FOOD -> TextColor.ANSI.CYAN;
+            case DOOR_GREEN, KEY_GREEN -> TextColor.ANSI.GREEN;
+            case DOOR_BLUE, KEY_BLUE -> TextColor.ANSI.BLUE;
+            case DOOR_RED, KEY_RED -> TextColor.ANSI.RED;
+            case DOOR_YELLOW, KEY_YELLOW -> TextColor.ANSI.YELLOW;
             case LEVEL -> TextColor.ANSI.YELLOW;
             case WALL -> TextColor.ANSI.WHITE;
             case FLOOR -> TextColor.ANSI.BLACK_BRIGHT;

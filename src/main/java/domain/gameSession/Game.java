@@ -15,6 +15,7 @@ import domain.characters.enemies.EnemiesType;
 import domain.map.*;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
+import domain.shop.Shop;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 public class Game {
 
@@ -38,11 +40,21 @@ public class Game {
     private int level = 1;
     private Position posLevel;
     private boolean isGameEnded = false;
+    private DifficultyType difficulty;
+    private FogOfWar fog;
+    private int enemiesKilled = 0;
+    private Shop shop;
+    private boolean shopOpen = false;
     private ItemsType selectedInventoryType = null; // Тип предмета, выбранный для использования
     private static final int MESSAGE_LOG_CAPACITY = 10;
     private final Deque<String> messageLog = new ArrayDeque<>(); // История последних сообщений, для presentation-слоя
 
     public Game() {
+        this(DifficultyType.EASY);
+    }
+
+    public Game(DifficultyType difficulty) {
+        this.difficulty = difficulty;
         generateNewLevel();
 
         if (rooms.isEmpty()) {
@@ -53,6 +65,40 @@ public class Game {
         this.backpack = new Backpack();
 
         initializeGame();
+    }
+
+    public DifficultyType getDifficulty() {
+        return difficulty;
+    }
+
+    public FogOfWar getFog() {
+        return fog;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public boolean isShopOpen() {
+        return shopOpen;
+    }
+
+    public int getEnemiesKilled() {
+        return enemiesKilled;
+    }
+
+    public void setEnemiesKilled(int enemiesKilled) {
+        this.enemiesKilled = enemiesKilled;
+    }
+
+    /**
+     * метод считает итоговый счёт игрока
+     * @return счёт с учётом золота, убитых врагов, достигнутого уровня и сложности
+     */
+    public int calculateScore() {
+        int base = player.getGold() + enemiesKilled * 10 + (Level.getLevelUp() - 1) * 50;
+        // округляем, а не обрезаем: 180 * 1.15 в double даёт 206.9999, обрезание дало бы 206
+        return Math.round((float) (base * difficulty.getCoef()));
     }
 
     public DungeonGenerator getGenerator() {
@@ -123,6 +169,15 @@ public class Game {
         return new ArrayList<>(messageLog);
     }
 
+    /**
+     * метод возвращает вместимость лога, нужен presentation-слою
+     * для расчёта позиции панели логов
+     * @return максимальное число сообщений в логе
+     */
+    public static int getMessageLogCapacity() {
+        return MESSAGE_LOG_CAPACITY;
+    }
+
 
     /**
      * Генерирует новый уровень с новыми комнатами и коридорами
@@ -132,10 +187,12 @@ public class Game {
             return;
         }
         Level.setLevelUp(level++);
-        this.generator = new DungeonGenerator();
+        this.generator = new DungeonGenerator(difficulty);
         this.generator.generateDungeon();
         this.rooms = generator.getRooms();
         this.corridors = generator.getCorridors();
+        this.fog = new FogOfWar(generator.getMapWidth(), generator.getMapHeight());
+        this.shop = new Shop(difficulty);
         allEnemiesList.clear();
         allItemList.clear();
     }
@@ -156,6 +213,7 @@ public class Game {
                 posLevel = generator.createLevel(room);
             }
         }
+        fog.update(player, rooms, difficulty);
     }
 
     /**
@@ -178,6 +236,21 @@ public class Game {
      * (используется при загрузке, не добавляет предметы/врагов повторно в комнаты)
      */
     public void placeRestoredEntitiesOnMap() {
+        // rebuildMap рисует только пол и стены, двери с ключами возвращаем на карту сами
+        for (Room room : rooms) {
+            Door door = room.getDoor();
+            if (door != null && door.getIsClose()) {
+                for (Position entrance : door.getEntrances()) {
+                    generator.getMap()[entrance.getX()][entrance.getY()] =
+                            DungeonGenerator.doorTileFor(door.getColorKey());
+                }
+            }
+        }
+        for (Key key : generator.getKeys()) {
+            Position pos = key.getPosition();
+            generator.getMap()[pos.getX()][pos.getY()] = DungeonGenerator.keyTileFor(key.getColorKey());
+        }
+
         generator.createPlayer(player);
         for (Room room : rooms) {
             if (room != rooms.getFirst()) {
@@ -188,6 +261,7 @@ public class Game {
                 posLevel = generator.createLevel(room);
             }
         }
+        fog.update(player, rooms, difficulty);
     }
 
     /**
@@ -217,6 +291,7 @@ public class Game {
      */
     public void processInput(String input) {
         handleInput(input);
+        fog.update(player, rooms, difficulty);
         if (player.getHealth() > 0 && !isGameEnded) {
             enemyTurns();
         }
@@ -238,11 +313,7 @@ public class Game {
                 char c = input.charAt(0);
                 if (c >= '1' && c <= '9') {
                     int index = c - '1'; // 1 -> 0, 2 -> 1, ...
-                    if (backpack.useItemByIndex(index, selectedInventoryType, player)) {
-                        addMessage("Предмет использован!");
-                    } else {
-                        addMessage("Предмет с этим индексом не найден!");
-                    }
+                    backpack.useItemByIndex(index, selectedInventoryType, player);
                     selectedInventoryType = null; // Сброс выбора
                     return null;
                 }
@@ -272,6 +343,11 @@ public class Game {
             return;
         }
 
+        // Шаг в дверь: с ключом она открывается, без ключа ход просто тратится
+        if (tryOpenDoor(nextPos)) {
+            return;
+        }
+
         if (!generator.isPositionWalkable(nextPos)) {
             return;
         }
@@ -293,7 +369,76 @@ public class Game {
         generator.deletePosPlayer(player);
         player.setPosition(nextPos);
         checkAndCollectItems();
+        checkAndCollectKeys();
         generator.createPlayer(player);
+    }
+
+    /**
+     * метод обрабатывает шаг в дверь
+     * @param pos клетка, куда шагает игрок
+     * @return true если это была дверь и ход потрачен
+     */
+    private boolean tryOpenDoor(Position pos) {
+        if (!generator.isInBounds(pos.getX(), pos.getY())) {
+            return false;
+        }
+        TileType tile = generator.getMap()[pos.getX()][pos.getY()];
+        ColorKey color = DungeonGenerator.colorOfDoorTile(tile);
+        if (color == null) {
+            return false;
+        }
+
+        if (player.hasKey(color)) {
+            unlockRoom(color);
+            addMessage("Открыл " + colorLabel(color) + " дверь");
+        } else {
+            addMessage("Дверь заперта (" + colorLabel(color) + ")");
+        }
+        return true;
+    }
+
+    /**
+     * метод отпирает комнату целиком: один ключ открывает все её входы сразу,
+     * иначе закрытую дверь можно было бы обойти через соседний проход
+     * @param color цвет ключа
+     */
+    private void unlockRoom(ColorKey color) {
+        for (Room room : rooms) {
+            Door door = room.getDoor();
+            if (door == null || door.getColorKey() != color || !door.getIsClose()) {
+                continue;
+            }
+            for (Position entrance : door.getEntrances()) {
+                generator.getMap()[entrance.getX()][entrance.getY()] = TileType.FLOOR;
+            }
+            door.setClose(false);
+        }
+    }
+
+    /**
+     * метод подбирает ключ, если игрок встал на его клетку
+     */
+    private void checkAndCollectKeys() {
+        generator.getKeys().removeIf(key -> {
+            if (player.getPosition().equals(key.getPosition())) {
+                player.addKey(key.getColorKey());
+                addMessage("Подобрал " + colorLabel(key.getColorKey()) + " ключ");
+                return true;
+            }
+            return false;
+        });
+    }
+
+    /**
+     * метод возвращает название цвета для сообщений в логе
+     */
+    private String colorLabel(ColorKey color) {
+        return switch (color) {
+            case GREEN -> "зелёный";
+            case BLUE -> "синий";
+            case RED -> "красный";
+            case YELLOW -> "жёлтый";
+        };
     }
 
     /**
@@ -315,9 +460,15 @@ public class Game {
      * @param enemy враг для атаки
      */
     private void attackEnemy(Enemies enemy) {
-        addMessage("Атака врага: " + enemy.getType());
+        boolean wasAlive = enemy.getHealth() > 0;
         attackSystem.attack(player, enemy, PLAYER, battleInfo, backpack);
-        
+        drainBattleEvents();
+
+        // считаем только переход из живого в мёртвого, чтобы добивание не накручивало счётчик
+        if (wasAlive && enemy.getHealth() <= 0) {
+            enemiesKilled++;
+        }
+
         // Если мимик раскрылся, обновляем его отображение на карте
         if (enemy instanceof Mimic && !((Mimic) enemy).getAmbushAI().isMimicking()) {
             generator.deleteEnemy(enemy);
@@ -339,17 +490,29 @@ public class Game {
     }
 
     private void handleInventoryCommand(String input) {
+        // Открытие/закрытие магазина
+        if (input.equals("i")) {
+            shopOpen = !shopOpen;
+            selectedInventoryType = null;
+            return;
+        }
+
+        // При открытом магазине цифры пока не покупают - логика покупки не реализована
+        if (shopOpen && input.length() == 1) {
+            char c = input.charAt(0);
+            if (c >= '1' && c <= '9') {
+                addMessage("Покупка появится позже");
+                return;
+            }
+        }
+
         // Если выбран тип предмета, то цифра 1-9 используется для выбора предмета
         if (selectedInventoryType != null) {
             if (input.length() == 1) {
                 char c = input.charAt(0);
                 if (c >= '1' && c <= '9') {
                     int index = c - '1'; // 1 -> 0, 2 -> 1, ...
-                    if (backpack.useItemByIndex(index, selectedInventoryType, player)) {
-                        addMessage("Предмет использован!");
-                    } else {
-                        addMessage("Предмет с этим индексом не найден!");
-                    }
+                    backpack.useItemByIndex(index, selectedInventoryType, player);
                     selectedInventoryType = null; // Сброс выбора
                     return;
                 }
@@ -370,11 +533,7 @@ public class Game {
                 int index = Integer.parseInt(input.substring(1));
                 ItemsType type = parseInventoryType(typeChar);
                 if (type != null) {
-                    if (backpack.useItemByIndex(index, type, player)) {
-                        addMessage("Предмет использован!");
-                    } else {
-                        addMessage("Неверный индекс предмета!");
-                    }
+                    backpack.useItemByIndex(index, type, player);
                     return;
                 }
             } catch (NumberFormatException e) {
@@ -402,8 +561,8 @@ public class Game {
     private boolean handleInventoryTypeSelection(String input) {
         ItemsType type = parseInventoryType(input);
         if (type != null) {
+            // подсказка про 1-9 постоянно висит в панели инвентаря, в лог её не дублируем
             selectedInventoryType = type;
-            addMessage("Введите цифру 1-9 для выбора предмета:");
             return true;
         }
         return false;
@@ -413,44 +572,57 @@ public class Game {
      * Ход врагов - каждый враг делает движение и атаку
      */
     private void enemyTurns() {
+        // Порядок условий важен: isPositionWalkable проверяет границы карты,
+        // без него обращение к getMap() уйдёт за пределы массива на краю карты
+        Predicate<Position> walkable = pos ->
+                generator.isPositionWalkable(pos)
+                && !isPositionOccupied(pos)
+                && !pos.equals(posLevel)
+                && !isItemTile(generator.getMap()[pos.getX()][pos.getY()]);
+
         for (Enemies enemy : allEnemiesList) {
-            if (enemy.getHealth() > 0) {
-                DirectionType moveDir = enemy.decideMove(player);
+            if (enemy.getHealth() <= 0) {
+                continue;
+            }
 
-                if (moveDir != null) {
-                    Position nextEnemyPos = moveDir.applyTo(enemy.getPosition());
+            // AI уже вернул заведомо проходимое направление, повторно проверять не нужно
+            DirectionType moveDir = enemy.decideMove(player, walkable);
+            if (moveDir != null) {
+                generator.deleteEnemy(enemy);
+                enemy.setPosition(moveDir.applyTo(enemy.getPosition()));
+                generator.createEnemy(enemy);
+            }
 
-                    // Проверяем, не занята ли позиция игроком, другим врагом, стеной, предметом или переходом на след уровень
-                    if (
-                            !isPositionOccupied(nextEnemyPos) &&
-                            generator.isPositionWalkable(nextEnemyPos) &&
-                            !nextEnemyPos.equals(posLevel)
-                    ) {
-                        // Проверяем, что на позиции нет предмета
-                        TileType tileType = generator.getMap()[nextEnemyPos.getX()][nextEnemyPos.getY()];
-                        if (
-                                tileType != TileType.ELIXIR &&
-                                tileType != TileType.SCROLL &&
-                                tileType != TileType.WEAPON &&
-                                tileType != TileType.FOOD
-                        ) {
-                            generator.deleteEnemy(enemy);
-                            enemy.setPosition(nextEnemyPos);
-                            generator.createEnemy(enemy);
-                        }
-                    }
+            // Атака игрока, если враг оказался на соседней клетке
+            if (player.getPosition().distanceTo(enemy.getPosition()) < 2) {
+                // Сброс флага первой атаки вампира при начале боя
+                if (enemy.getType() == EnemiesType.VAMPIRE) {
+                    battleInfo.vampireFirstAttack = true;
                 }
-
-                // Атака игрока (только если враг был на соседней клетке ДО движения)
-                if (player.getPosition().distanceTo(enemy.getPosition()) < 2) {
-                    // Сброс флага первой атаки вампира при начале боя
-                    if (enemy.getType() == EnemiesType.VAMPIRE) {
-                        battleInfo.vampireFirstAttack = true;
-                    }
-                    attackSystem.attack(player, enemy, ENEMIES, battleInfo, backpack);
-                }
+                attackSystem.attack(player, enemy, ENEMIES, battleInfo, backpack);
+                drainBattleEvents();
             }
         }
+    }
+
+    /**
+     * метод переливает события боя в лог сообщений и очищает их
+     */
+    private void drainBattleEvents() {
+        for (String event : battleInfo.getEvents()) {
+            addMessage(event);
+        }
+        battleInfo.getEvents().clear();
+    }
+
+    /**
+     * метод проверяет, лежит ли на клетке предмет
+     * @param tile тайл карты
+     * @return true если предмет
+     */
+    private boolean isItemTile(TileType tile) {
+        return tile == TileType.ELIXIR || tile == TileType.SCROLL
+                || tile == TileType.WEAPON || tile == TileType.FOOD;
     }
 
     /**

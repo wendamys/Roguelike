@@ -5,6 +5,7 @@ import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.characters.enemies.EnemiesType;
 import domain.characters.enemies.Mimic;
+import domain.gameSession.DifficultyType;
 import domain.navigator.Position;
 
 import java.util.ArrayList;
@@ -19,8 +20,16 @@ public class DungeonGenerator {
     private TileType[][] map;
     private List<Room> rooms;
     private List<Corridor> corridors;
+    private final DifficultyType difficulty;
+    private final List<Key> keys = new ArrayList<>();
+    private final List<Room> lockedRooms = new ArrayList<>();
 
     public DungeonGenerator() {
+        this(DifficultyType.EASY);
+    }
+
+    public DungeonGenerator(DifficultyType difficulty) {
+        this.difficulty = difficulty;
         this.map = new TileType[mapWidth][mapHeight];
         this.rooms = new ArrayList<>();
         this.corridors = new ArrayList<>();
@@ -43,6 +52,14 @@ public class DungeonGenerator {
         return corridors;
     }
     public void setCorridors(List<Corridor> corridors) {this.corridors = corridors;}
+
+    public List<Key> getKeys() {
+        return keys;
+    }
+
+    public List<Room> getLockedRooms() {
+        return lockedRooms;
+    }
 
     public int getMapWidth() {
         return mapWidth;
@@ -68,6 +85,175 @@ public class DungeonGenerator {
     public void generateDungeon() {
         generateRooms();
         buildCorridors();
+        placeDoorsAndKeys();
+    }
+
+    /**
+     * метод запирает часть комнат цветными дверями и раскладывает ключи цепочкой:
+     * ключ первой запертой комнаты лежит в стартовой, ключ следующей - внутри предыдущей.
+     * Так уровень гарантированно проходится.
+     */
+    private void placeDoorsAndKeys() {
+        keys.clear();
+        lockedRooms.clear();
+        if (rooms.size() < 2) {
+            return;
+        }
+
+        ColorKey[] colors = ColorKey.values();
+        int colorIndex = 0;
+
+        for (Room room : rooms) {
+            if (colorIndex >= colors.length) {
+                break;
+            }
+            if (room == rooms.getFirst()) {
+                continue;
+            }
+            List<Position> entrances = findEntrances(room);
+            if (entrances.isEmpty()) {
+                continue;
+            }
+
+            ColorKey color = colors[colorIndex++];
+            room.setDoor(new Door(room, color, entrances));
+            lockedRooms.add(room);
+            for (Position entrance : entrances) {
+                map[entrance.getX()][entrance.getY()] = doorTileFor(color);
+            }
+        }
+
+        for (int i = 0; i < lockedRooms.size(); i++) {
+            Room holder = i == 0 ? rooms.getFirst() : lockedRooms.get(i - 1);
+            ColorKey color = lockedRooms.get(i).getDoor().getColorKey();
+            Position keyPos = freePositionInside(holder);
+            if (keyPos == null) {
+                continue;
+            }
+            map[keyPos.getX()][keyPos.getY()] = keyTileFor(color);
+            keys.add(new Key(keyPos, color));
+        }
+    }
+
+    /**
+     * метод ищет клетки, которыми коридоры прорезали стену комнаты
+     * @param room комната
+     * @return список входных клеток на периметре комнаты
+     */
+    private List<Position> findEntrances(Room room) {
+        List<Position> entrances = new ArrayList<>();
+        for (Corridor corridor : corridors) {
+            for (Position p : corridor.getPath()) {
+                if (isOnRoomPerimeter(p, room) && isInBounds(p.getX(), p.getY())
+                        && map[p.getX()][p.getY()] == TileType.FLOOR
+                        && entrances.stream().noneMatch(p::equals)) {
+                    entrances.add(p);
+                }
+            }
+        }
+        return entrances;
+    }
+
+    /**
+     * метод проверяет, лежит ли позиция на рамке стен комнаты
+     * (эту рамку рисует carveRoom)
+     */
+    private boolean isOnRoomPerimeter(Position pos, Room room) {
+        Position roomPos = room.getPosition();
+        int left = roomPos.getX() - 1;
+        int right = roomPos.getX() + room.getWidth();
+        int top = roomPos.getY() - 1;
+        int bottom = roomPos.getY() + room.getHeight();
+
+        boolean insideVertical = pos.getY() >= top && pos.getY() <= bottom;
+        boolean insideHorizontal = pos.getX() >= left && pos.getX() <= right;
+
+        boolean onVerticalWall = (pos.getX() == left || pos.getX() == right) && insideVertical;
+        boolean onHorizontalWall = (pos.getY() == top || pos.getY() == bottom) && insideHorizontal;
+
+        return onVerticalWall || onHorizontalWall;
+    }
+
+    /**
+     * метод ищет свободную клетку внутри комнаты под ключ,
+     * центр комнаты пропускается - там может стоять игрок или выход на уровень
+     * @param room комната
+     * @return позиция или null, если свободных клеток нет
+     */
+    private Position freePositionInside(Room room) {
+        Position centre = room.getCentreRoom();
+        Position pos = room.getPosition();
+        for (int x = pos.getX(); x < pos.getX() + room.getWidth(); x++) {
+            for (int y = pos.getY(); y < pos.getY() + room.getHeight(); y++) {
+                if (!isInBounds(x, y) || map[x][y] != TileType.FLOOR) {
+                    continue;
+                }
+                if (x == centre.getX() && y == centre.getY()) {
+                    continue;
+                }
+                return new Position(x, y);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * метод возвращает тайл двери нужного цвета
+     */
+    public static TileType doorTileFor(ColorKey color) {
+        return switch (color) {
+            case GREEN -> TileType.DOOR_GREEN;
+            case BLUE -> TileType.DOOR_BLUE;
+            case RED -> TileType.DOOR_RED;
+            case YELLOW -> TileType.DOOR_YELLOW;
+        };
+    }
+
+    /**
+     * метод возвращает тайл ключа нужного цвета
+     */
+    public static TileType keyTileFor(ColorKey color) {
+        return switch (color) {
+            case GREEN -> TileType.KEY_GREEN;
+            case BLUE -> TileType.KEY_BLUE;
+            case RED -> TileType.KEY_RED;
+            case YELLOW -> TileType.KEY_YELLOW;
+        };
+    }
+
+    /**
+     * метод определяет цвет двери по тайлу
+     * @return цвет или null, если тайл не дверь
+     */
+    public static ColorKey colorOfDoorTile(TileType tile) {
+        return switch (tile) {
+            case DOOR_GREEN -> ColorKey.GREEN;
+            case DOOR_BLUE -> ColorKey.BLUE;
+            case DOOR_RED -> ColorKey.RED;
+            case DOOR_YELLOW -> ColorKey.YELLOW;
+            default -> null;
+        };
+    }
+
+    /**
+     * метод определяет цвет ключа по тайлу
+     * @return цвет или null, если тайл не ключ
+     */
+    public static ColorKey colorOfKeyTile(TileType tile) {
+        return switch (tile) {
+            case KEY_GREEN -> ColorKey.GREEN;
+            case KEY_BLUE -> ColorKey.BLUE;
+            case KEY_RED -> ColorKey.RED;
+            case KEY_YELLOW -> ColorKey.YELLOW;
+            default -> null;
+        };
+    }
+
+    /**
+     * метод проверяет, является ли тайл закрытой дверью
+     */
+    public static boolean isDoorTile(TileType tile) {
+        return colorOfDoorTile(tile) != null;
     }
 
     /**
@@ -82,7 +268,7 @@ public class DungeonGenerator {
             attempts++;
             int gridX = randomNumber(1, MAP_SIZE - 1);
             int gridY = randomNumber(1, MAP_SIZE - 1);
-            Room room = new Room(gridX, gridY);
+            Room room = new Room(gridX, gridY, difficulty);
             if (!roomIntersectsAny(room)) {
                 rooms.add(room);
                 carveRoom(room);
@@ -216,7 +402,7 @@ public class DungeonGenerator {
         return (int) (Math.random() * (max - min + 1)) + min;
     }
 
-    private boolean isInBounds(int x, int y) {
+    public boolean isInBounds(int x, int y) {
         return x >= 0 && x < mapWidth && y >= 0 && y < mapHeight;
     }
 
@@ -231,7 +417,9 @@ public class DungeonGenerator {
         if (!isInBounds(pos.getX(), pos.getY())) {
             return false;
         }
-        return map[pos.getX()][pos.getY()] != TileType.WALL;
+        TileType tile = map[pos.getX()][pos.getY()];
+        // закрытая дверь непроходима, поэтому враги через неё тоже не ходят
+        return tile != TileType.WALL && !isDoorTile(tile);
     }
 
     /**

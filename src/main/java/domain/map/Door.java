@@ -8,16 +8,36 @@ import static domain.MathUtils.MathUtils.randomNumber;
 import static domain.navigator.DirectionType.*;
 
 import domain.navigator.DirectionType;
-import domain.navigator.DirectionType;
+import domain.navigator.Position;
 
 public class Door {
     private final Room room;
     private boolean isClose;
     private List <Door> completeAllDoor = new ArrayList<>();
 
+    // цвет двери привязан к комнате: все входы в неё одного цвета
+    // и открываются одним ключом, сколько бы проходов ни нарезал генератор
+    private ColorKey colorKey;
+    private List<Position> entrances = new ArrayList<>();
+
     public Door(Room room) {
         this.room = room;
         this.isClose = false;
+    }
+
+    public Door(Room room, ColorKey colorKey, List<Position> entrances) {
+        this.room = room;
+        this.colorKey = colorKey;
+        this.entrances = new ArrayList<>(entrances);
+        this.isClose = true;
+    }
+
+    public ColorKey getColorKey() {
+        return colorKey;
+    }
+
+    public List<Position> getEntrances() {
+        return entrances;
     }
 
     public int getWidth() {

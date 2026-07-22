@@ -5,7 +5,11 @@ import domain.backpack.items.Elixir;
 import domain.backpack.items.Food;
 import domain.backpack.items.Scroll;
 import domain.backpack.items.Weapon;
+import domain.map.ColorKey;
 import domain.navigator.Position;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * класс {@link #Player} описывает поведение игрока
@@ -22,6 +26,7 @@ public class Player extends Character {
     private int currentWeaponValue = 0;
     private int gold = 0;
     private boolean isStunned = false;
+    private final Set<ColorKey> keys = new HashSet<>();
 
     public Player(Position position) {
         super(position);
@@ -74,6 +79,18 @@ public class Player extends Character {
     }
     public void setGold(int gold) {
         this.gold = gold;
+    }
+
+    public Set<ColorKey> getKeys() {
+        return keys;
+    }
+
+    public void addKey(ColorKey colorKey) {
+        keys.add(colorKey);
+    }
+
+    public boolean hasKey(ColorKey colorKey) {
+        return keys.contains(colorKey);
     }
 
     public boolean getIsStunned() {

@@ -9,8 +9,12 @@ public class PlayerDTO {
     private int gold;
     private boolean isStunned;
     private PositionDTO positionDTO;
+    private java.util.ArrayList<String> keys = new java.util.ArrayList<>();
 
     public PlayerDTO() {}
+
+    public java.util.ArrayList<String> getKeys() { return keys; }
+    public void setKeys(java.util.ArrayList<String> keys) { this.keys = keys; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

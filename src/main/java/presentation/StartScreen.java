@@ -1,10 +1,12 @@
 package presentation;
 
+import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
+import domain.gameSession.DifficultyType;
 
 import java.io.IOException;
 
@@ -18,6 +20,21 @@ public class StartScreen {
     public enum Choice { START, LOAD, EXIT }
 
     private static final String[] MENU_LABELS = {"Start game", "Load game", "Exit"};
+
+    private static final String[] BANNER = {
+            " ____   ___   ____ _   _ _____ ",
+            "|  _ \\ / _ \\ / ___| | | | ____|",
+            "| |_) | | | | |  _| | | |  _|  ",
+            "|  _ <| |_| | |_| | |_| | |___ ",
+            "|_| \\_\\\\___/ \\____|\\___/|_____|"
+    };
+
+    // подсказки идут в том же порядке, что и значения DifficultyType
+    private static final String[] DIFFICULTY_HINTS = {
+            "Тумана войны нет, вся карта видна сразу",
+            "Видно только разведанное: вышел из комнаты - остались очертания",
+            "Ничего не видно дальше 3 клеток от игрока"
+    };
 
     private final Screen screen;
 
@@ -45,6 +62,31 @@ public class StartScreen {
                 return choices[selected];
             } else if (key.getKeyType() == KeyType.Escape || key.getKeyType() == KeyType.EOF) {
                 return Choice.EXIT;
+            }
+        }
+    }
+
+    /**
+     * метод рисует экран выбора сложности и ждёт выбор (W/S - навигация, Enter - подтверждение)
+     * @return выбранная сложность, EASY при отмене
+     */
+    public DifficultyType selectDifficulty() throws IOException {
+        DifficultyType[] values = DifficultyType.values();
+        int selected = 0;
+        while (true) {
+            drawDifficulty(selected);
+            KeyStroke key = screen.readInput();
+            if (key.getKeyType() == KeyType.Character && key.getCharacter() != null) {
+                char c = Character.toLowerCase(key.getCharacter());
+                if (c == 'w') {
+                    selected = (selected - 1 + values.length) % values.length;
+                } else if (c == 's') {
+                    selected = (selected + 1) % values.length;
+                }
+            } else if (key.getKeyType() == KeyType.Enter) {
+                return values[selected];
+            } else if (key.getKeyType() == KeyType.Escape || key.getKeyType() == KeyType.EOF) {
+                return DifficultyType.EASY;
             }
         }
     }
@@ -90,10 +132,42 @@ public class StartScreen {
     private void drawMenu(int selectedIndex) throws IOException {
         screen.clear();
         TextGraphics tg = screen.newTextGraphics();
+
+        tg.setForegroundColor(TextColor.ANSI.YELLOW);
+        tg.enableModifiers(SGR.BOLD);
+        for (int i = 0; i < BANNER.length; i++) {
+            tg.putString(2, 1 + i, BANNER[i]);
+        }
+        tg.disableModifiers(SGR.BOLD);
+
+        tg.setForegroundColor(TextColor.ANSI.BLACK_BRIGHT);
+        tg.putString(2, 2 + BANNER.length, "W/S - выбор, Enter - подтвердить");
+
         for (int i = 0; i < MENU_LABELS.length; i++) {
             tg.setForegroundColor(i == selectedIndex ? TextColor.ANSI.YELLOW : TextColor.ANSI.WHITE);
-            tg.putString(2, 2 + i, (i == selectedIndex ? "> " : "  ") + MENU_LABELS[i]);
+            tg.putString(2, 4 + BANNER.length + i, (i == selectedIndex ? "> " : "  ") + MENU_LABELS[i]);
         }
+        screen.refresh();
+    }
+
+    /**
+     * метод рисует экран выбора сложности с подсказкой про туман войны
+     */
+    private void drawDifficulty(int selectedIndex) throws IOException {
+        screen.clear();
+        TextGraphics tg = screen.newTextGraphics();
+
+        tg.setForegroundColor(TextColor.ANSI.CYAN);
+        tg.putString(2, 2, "Выберите сложность:");
+
+        DifficultyType[] values = DifficultyType.values();
+        for (int i = 0; i < values.length; i++) {
+            tg.setForegroundColor(i == selectedIndex ? TextColor.ANSI.YELLOW : TextColor.ANSI.WHITE);
+            tg.putString(2, 4 + i, (i == selectedIndex ? "> " : "  ") + values[i].getLabel());
+        }
+
+        tg.setForegroundColor(TextColor.ANSI.BLACK_BRIGHT);
+        tg.putString(2, 9, DIFFICULTY_HINTS[selectedIndex]);
         screen.refresh();
     }
 
