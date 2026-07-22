@@ -50,6 +50,6 @@ public class Elixir extends Item {
 
     @Override
     public String toString() {
-        return String.format("Elixir: value %d, subType %s", getValue(), getSubType());
+        return String.format("%s (%d) ", getSubType(), getValue());
     }
 }

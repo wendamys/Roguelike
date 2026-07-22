@@ -148,7 +148,8 @@ public class UIView {
         tg.setForegroundColor(TextColor.ANSI.WHITE);
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
-            tg.putString(panelX, row++, "[" + (i + 1) + "] " + item.getName() + " (" + item.getValue() + ")");
+//            tg.putString(panelX, row++, "[" + (i + 1) + "] " + item.getName() + " (" + item.getValue() + ")");
+            tg.putString(panelX, row++, "[" + (i + 1) + "] " + item.toString());
         }
 
         tg.setForegroundColor(TextColor.ANSI.YELLOW);

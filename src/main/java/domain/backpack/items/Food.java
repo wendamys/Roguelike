@@ -43,6 +43,6 @@ public class Food extends Item {
 
     @Override
     public String toString() {
-        return String.format("Food: value %d", getValue());
+        return String.format("(%d)", getValue());
     }
 }

@@ -48,6 +48,6 @@ public class Scroll extends Item {
 
     @Override
     public String toString() {
-        return String.format("Scroll: value %d, subType %s", getValue(), getSubType());
+        return String.format("%s (%d)", getSubType(), getValue());
     }
 }

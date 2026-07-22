@@ -149,8 +149,6 @@ public class Player extends Character {
 
     @Override
     public String toString() {
-        return String.format("%s Health: %d/%d Agility: %d Strength: %d (+%d) Gold: %d", getName(), getHealth(), getMaxHealth(), getBuffAgility(), getBuffStrength(), getCurrentWeaponValue(), getGold());
+        return String.format("%s Health: %d/%d Agility: %d Strength: %d Weapon: +%d Gold: %d", getName(), getHealth(), getMaxHealth(), getBuffAgility(), getBuffStrength(), getCurrentWeaponValue(), getGold());
     }
-
-
 }

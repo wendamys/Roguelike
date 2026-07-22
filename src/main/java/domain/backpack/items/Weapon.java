@@ -44,6 +44,6 @@ public class Weapon extends Item {
 
     @Override
     public String toString() {
-        return String.format("Weapon: damage %d", getValue());
+        return String.format("Damage (%d)", getValue());
     }
 }
