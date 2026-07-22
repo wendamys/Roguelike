@@ -5,6 +5,7 @@ import domain.backpack.Item;
 import domain.backpack.ItemsType;
 import domain.battle.AttackSystem;
 import domain.battle.BattleInfoType;
+import domain.characters.enemies.Mimic;
 
 import static domain.battle.CharacterType.*;
 
@@ -310,12 +311,18 @@ public class Game {
     }
 
     /**
-     * Атакует указанного врага
+     * Атакует указанного врага и обновляет карту, если это мимик и он раскрылся
      * @param enemy враг для атаки
      */
     private void attackEnemy(Enemies enemy) {
         addMessage("Атака врага: " + enemy.getType());
         attackSystem.attack(player, enemy, PLAYER, battleInfo, backpack);
+        
+        // Если мимик раскрылся, обновляем его отображение на карте
+        if (enemy instanceof Mimic && !((Mimic) enemy).getAmbushAI().isMimicking()) {
+            generator.deleteEnemy(enemy);
+            generator.createEnemy(enemy);
+        }
     }
 
     /**

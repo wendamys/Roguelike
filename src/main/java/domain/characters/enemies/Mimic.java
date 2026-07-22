@@ -3,6 +3,7 @@ package domain.characters.enemies;
 import domain.ai.*;
 import domain.backpack.ItemsType;
 import domain.characters.Enemies;
+import domain.map.TileType;
 import domain.map.Level;
 import domain.navigator.Position;
 
@@ -50,6 +51,41 @@ public class Mimic extends Enemies {
     }
 
     public ItemsType getItemsType() {return itemsType;}
+
+    /**
+     * Возвращает символ отображения мимика в зависимости от состояния
+     * @return символ предмета если имитирует, 'm' если атакует
+     */
+    public char getDisplaySymbol() {
+        if (getAmbushAI().isMimicking()) {
+            // В режиме имитации возвращаем символ предмета
+            return switch (itemsType) {
+                case FOOD -> 'F';
+                case SCROLL -> 'S';
+                case WEAPON -> 'W';
+                case ELIXIR -> 'E';
+            };
+        }
+        // В агрессивном режиме возвращаем 'm'
+        return 'm';
+    }
+
+    /**
+     * Возвращает TileType для отображения мимика
+     */
+    public TileType getTileType() {
+        if (getAmbushAI().isMimicking()) {
+            // В режиме имитации возвращаем соответствующий TileType предмета
+            return switch (itemsType) {
+                case FOOD -> TileType.FOOD;
+                case SCROLL -> TileType.SCROLL;
+                case WEAPON -> TileType.WEAPON;
+                case ELIXIR -> TileType.ELIXIR;
+            };
+        }
+        // В агрессивном режиме возвращаем MIMIC
+        return TileType.MIMIC;
+    }
 
     private ItemsType randomItem() {
         switch (randomNumber(1, 10)) {

@@ -96,6 +96,15 @@ public class AttackSystem {
             case PLAYER -> {
                 if (enemy.getHealth() == 0) return;
                 
+                // Активируем атаку мимика при ударе игрока
+                if (enemy instanceof Mimic) {
+                    Mimic mimic = (Mimic) enemy;
+                    if (mimic.getAmbushAI().isMimicking()) {
+                        mimic.getAmbushAI().activateAttack();
+                        System.out.println("Мимик раскрылся и атакует!");
+                    }
+                }
+                
                 // Проверка на попадание
                 if (checkHit(player, enemy, PLAYER, battleInfo)) {
                     int damage = calculateDamage(player, enemy, PLAYER, battleInfo, backpack);
