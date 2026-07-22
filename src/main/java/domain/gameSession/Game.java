@@ -55,6 +55,7 @@ public class Game {
 
     public Game(DifficultyType difficulty) {
         this.difficulty = difficulty;
+        this.backpack = new Backpack();
         generateNewLevel();
 
         if (rooms.isEmpty()) {
@@ -62,7 +63,6 @@ public class Game {
         }
 
         this.player = new Player(rooms.getFirst().getCentreRoom());
-        this.backpack = new Backpack();
 
         initializeGame();
     }

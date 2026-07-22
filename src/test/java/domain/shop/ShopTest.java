@@ -1,5 +1,6 @@
 package domain.shop;
 
+import domain.backpack.Backpack;
 import domain.backpack.Item;
 import domain.backpack.ItemsType;
 import domain.gameSession.DifficultyType;
@@ -13,6 +14,7 @@ public class ShopTest {
     @RepeatedTest(20)
     @DisplayName("Количество предметов каждого типа укладывается в диапазон сложности")
     void assortmentRespectsDifficulty() {
+        Backpack backpack = new Backpack();
         for (DifficultyType difficulty : DifficultyType.values()) {
             Shop shop = new Shop(difficulty);
             for (ItemsType type : ItemsType.values()) {
@@ -28,6 +30,7 @@ public class ShopTest {
     @RepeatedTest(5)
     @DisplayName("Цена предмета положительна")
     void priceIsPositive() {
+        Backpack backpack = new Backpack();
         Shop shop = new Shop(DifficultyType.EASY);
         for (Item item : shop.getItems()) {
             assertTrue(shop.priceOf(item) > 0);

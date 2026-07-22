@@ -8,7 +8,7 @@ package domain.gameSession;
 public enum DifficultyType {
     EASY(1.0, 2, 4, "Easy"),
     HARD(1.15, 1, 3, "Hard"),
-    VERY_HARD(1.3, 0, 2, "Very Hard");
+    VERY_HARD(1.3, 0, 2, "NIGHTMARE");
 
     private final double coef;
     private final int shopMin;

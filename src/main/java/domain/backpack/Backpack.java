@@ -12,6 +12,8 @@ public class Backpack {
     private final ArrayList<Item> scrollList = new ArrayList<>(maxCapacity);
     private final ArrayList<Item> weaponList = new ArrayList<>(maxCapacity);
 
+    private boolean isBuyShop = false;
+
     /**
      * метод переносит предмет в лист
      * @param item предмет
