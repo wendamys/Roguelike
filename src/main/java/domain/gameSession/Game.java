@@ -213,6 +213,7 @@ public class Game {
                 posLevel = generator.createLevel(room);
             }
         }
+        generator.placeShop();
         fog.update(player, rooms, difficulty);
     }
 
@@ -250,6 +251,7 @@ public class Game {
             Position pos = key.getPosition();
             generator.getMap()[pos.getX()][pos.getY()] = DungeonGenerator.keyTileFor(key.getColorKey());
         }
+        generator.drawShop();
 
         generator.createPlayer(player);
         for (Room room : rooms) {
@@ -367,10 +369,18 @@ public class Game {
         }
 
         generator.deletePosPlayer(player);
+        // игрок затирал собой тайл магазина, возвращаем его на место
+        if (player.getPosition().equals(generator.getShopPosition())) {
+            generator.drawShop();
+        }
+
         player.setPosition(nextPos);
         checkAndCollectItems();
         checkAndCollectKeys();
         generator.createPlayer(player);
+
+        // магазин открыт, пока игрок стоит на его клетке
+        shopOpen = nextPos.equals(generator.getShopPosition());
     }
 
     /**
@@ -490,13 +500,6 @@ public class Game {
     }
 
     private void handleInventoryCommand(String input) {
-        // Открытие/закрытие магазина
-        if (input.equals("i")) {
-            shopOpen = !shopOpen;
-            selectedInventoryType = null;
-            return;
-        }
-
         // При открытом магазине цифры пока не покупают - логика покупки не реализована
         if (shopOpen && input.length() == 1) {
             char c = input.charAt(0);
@@ -578,6 +581,7 @@ public class Game {
                 generator.isPositionWalkable(pos)
                 && !isPositionOccupied(pos)
                 && !pos.equals(posLevel)
+                && !pos.equals(generator.getShopPosition())
                 && !DungeonGenerator.isPickupTile(generator.getMap()[pos.getX()][pos.getY()]);
 
         for (Enemies enemy : allEnemiesList) {

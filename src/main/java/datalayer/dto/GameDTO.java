@@ -9,11 +9,15 @@ public class GameDTO {
     private boolean[][] explored;
     private int enemiesKilled;
     private java.util.ArrayList<KeyDTO> keysDTO = new java.util.ArrayList<>();
+    private PositionDTO shopPositionDTO;
 
     public GameDTO() {}
 
     public java.util.ArrayList<KeyDTO> getKeysDTO() { return keysDTO; }
     public void setKeysDTO(java.util.ArrayList<KeyDTO> keysDTO) { this.keysDTO = keysDTO; }
+
+    public PositionDTO getShopPositionDTO() { return shopPositionDTO; }
+    public void setShopPositionDTO(PositionDTO shopPositionDTO) { this.shopPositionDTO = shopPositionDTO; }
 
     public String getDifficulty() { return difficulty; }
     public void setDifficulty(String difficulty) { this.difficulty = difficulty; }

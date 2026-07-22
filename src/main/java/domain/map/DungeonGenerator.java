@@ -28,6 +28,7 @@ public class DungeonGenerator {
     private final DifficultyType difficulty;
     private final List<Key> keys = new ArrayList<>();
     private final List<Room> lockedRooms = new ArrayList<>();
+    private Position shopPosition;
 
     public DungeonGenerator() {
         this(DifficultyType.EASY);
@@ -640,6 +641,69 @@ public class DungeonGenerator {
      * метод создает переход на следующий уровень на карте
      * @param room комната
      */
+    /**
+     * метод ставит магазин в случайной незапертой комнате, кроме стартовой и последней
+     * @return позиция магазина или null, если подходящей комнаты не нашлось
+     */
+    public Position placeShop() {
+        List<Room> candidates = new ArrayList<>();
+        for (Room room : rooms) {
+            if (room == rooms.getFirst() || room == rooms.getLast() || room.getDoor() != null) {
+                continue;
+            }
+            candidates.add(room);
+        }
+        // комнат может сгенерироваться мало и все незапертые уйдут под старт/выход/двери,
+        // тогда магазин ставим в любую комнату кроме стартовой - игрок до неё дойдёт по ключам
+        if (candidates.isEmpty()) {
+            for (Room room : rooms) {
+                if (room != rooms.getFirst()) {
+                    candidates.add(room);
+                }
+            }
+        }
+        if (candidates.isEmpty()) {
+            return null;
+        }
+
+        // игрок в итоге соберёт все ключи, поэтому зону считаем с полным набором
+        Set<ColorKey> allColors = new HashSet<>();
+        for (Key key : keys) {
+            allColors.add(key.getColorKey());
+        }
+        Set<Position> zone = reachable(rooms.getFirst().getCentreRoom(), allColors);
+
+        // перебираем кандидатов со случайного места, а не сдаёмся после первого
+        int offset = randomNumber(0, candidates.size() - 1);
+        for (int i = 0; i < candidates.size(); i++) {
+            Room room = candidates.get((offset + i) % candidates.size());
+            Position pos = freePositionInside(room, zone);
+            if (pos != null) {
+                map[pos.getX()][pos.getY()] = TileType.SHOP;
+                shopPosition = pos;
+                return pos;
+            }
+        }
+        return null;
+    }
+
+    public Position getShopPosition() {
+        return shopPosition;
+    }
+
+    public void setShopPosition(Position shopPosition) {
+        this.shopPosition = shopPosition;
+    }
+
+    /**
+     * метод возвращает магазин на карту после загрузки сохранения
+     */
+    public void drawShop() {
+        if (shopPosition != null && isInBounds(shopPosition.getX(), shopPosition.getY())) {
+            map[shopPosition.getX()][shopPosition.getY()] = TileType.SHOP;
+        }
+    }
+
     public Position createLevel(Room room) {
         Position posLevel = room.getCentreRoom();
         map[posLevel.getX()][posLevel.getY()] = TileType.LEVEL;
