@@ -207,16 +207,16 @@ public class UIView {
         tg.setForegroundColor(TextColor.ANSI.CYAN);
         tg.putString(panelX, row++, "Магазин (i - закрыть)");
 
-        List<Item> items = game.getShop().getItems();
-        tg.setForegroundColor(TextColor.ANSI.WHITE);
-        if (items.isEmpty()) {
-            tg.putString(panelX, row++, "Пусто");
-        }
-        for (int i = 0; i < items.size(); i++) {
-            Item item = items.get(i);
-            tg.putString(panelX, row++, "[" + (i + 1) + "] " + shopLabelFor(item.getType())
-                    + " (" + item.getValue() + ") " + game.getShop().priceOf(item) + "з");
-        }
+//        List<Item> items = game.getShop().getItems();
+//        tg.setForegroundColor(TextColor.ANSI.WHITE);
+//        if (items.isEmpty()) {
+//            tg.putString(panelX, row++, "Пусто");
+//        }
+//        for (int i = 0; i < items.size(); i++) {
+//            Item item = items.get(i);
+//            tg.putString(panelX, row++, "[" + (i + 1) + "] " + shopLabelFor(item.getType())
+//                    + " (" + item.getValue() + ") " + game.getShop().priceOf(item) + "з");
+//        }
 
         row++;
         tg.setForegroundColor(TextColor.ANSI.YELLOW);
