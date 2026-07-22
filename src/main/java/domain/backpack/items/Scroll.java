@@ -13,7 +13,7 @@ public class Scroll extends Item {
 
     private final ItemsType type = ItemsType.SCROLL;
     private ItemsSubType subType;
-    private int value = 10;
+    private int value = 15;
 
     public Scroll(Position position) {
         super(position);
@@ -37,12 +37,17 @@ public class Scroll extends Item {
         this.subType = randomItemsSubType();
     }
 
+    @Override
+    public int getValue() {
+        return value;
+    }
+    public void setValue(int value) {this.value = value;}
     public void setValueRand(int value) {
         this.value = randomNumber((int) (value * 0.9), (int) (value * 1.1));
     }
 
     @Override
     public String toString() {
-        return String.format("Scroll: value %d, position(%d, %d), SubType %s", getValue(), getPosition().getX(), getPosition().getY(), getSubType());
+        return String.format("Scroll: value %d, subType %s", getValue(), getSubType());
     }
 }

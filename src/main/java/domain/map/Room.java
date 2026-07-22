@@ -185,10 +185,10 @@ public class Room {
      * @return тип предмета
      */
     private ItemsType randomItem() {
-        switch (randomNumber(1, 5)) {
+        switch (randomNumber(1, 10)) {
             case 1 -> { return ItemsType.ELIXIR; }
-            case 2 -> { return ItemsType.SCROLL; }
-            case 3 -> { return  ItemsType.WEAPON; }
+            case 2, 3, 4 -> { return ItemsType.SCROLL; }
+            case 10 -> { return  ItemsType.WEAPON; }
             default -> { return  ItemsType.FOOD; }
         }
     }

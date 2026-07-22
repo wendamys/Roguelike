@@ -19,6 +19,7 @@ public class Player extends Character {
     private int health = maxHealth;
     private int buffAgility = getAgility();
     private int buffStrength = getStrength();
+    private int currentWeaponValue = 0;
     private int gold = 0;
     private boolean isStunned = false;
 
@@ -61,6 +62,8 @@ public class Player extends Character {
     public void setBuffStrength(int strength) {
         this.buffStrength = getStrength() + strength;
     }
+
+    public int getCurrentWeaponValue() {return currentWeaponValue;}
 
     public int getGold() {
         return gold;
@@ -139,12 +142,14 @@ public class Player extends Character {
      * @param weapon предмет оружия
      */
     private void useWeaponValue(Weapon weapon) {
-        buffStrength += weapon.getValue();
+        buffStrength = buffStrength - currentWeaponValue;
+        currentWeaponValue = weapon.getValue();
+        buffStrength = buffStrength + currentWeaponValue;
     }
 
     @Override
     public String toString() {
-        return String.format("Health: %d/%d Agility: %d Strength: %d Gold: %d", getHealth(), getMaxHealth(), getBuffAgility(), getBuffStrength(), getGold());
+        return String.format("%s Health: %d/%d Agility: %d Strength: %d (+%d) Gold: %d", getName(), getHealth(), getMaxHealth(), getBuffAgility(), getBuffStrength(), getCurrentWeaponValue(), getGold());
     }
 
 

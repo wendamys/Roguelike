@@ -12,7 +12,7 @@ public class Weapon extends Item {
 
     private final ItemsType type = ItemsType.WEAPON;
     private final ItemsSubType subType = ItemsSubType.STRENGTH;
-    private int value = 60;
+    private int value = 50;
 
     public Weapon(Position position) {
         super(position);
@@ -44,6 +44,6 @@ public class Weapon extends Item {
 
     @Override
     public String toString() {
-        return String.format("Weapon: value %d, position(%d, %d)", getValue(), getPosition().getX(), getPosition().getY());
+        return String.format("Weapon: damage %d", getValue());
     }
 }
