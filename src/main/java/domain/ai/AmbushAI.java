@@ -3,6 +3,9 @@ package domain.ai;
 import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.navigator.DirectionType;
+import domain.navigator.Position;
+
+import java.util.function.Predicate;
 
 /**
  * AI для Mimic - стоит на месте, имитирует предмет
@@ -14,17 +17,17 @@ public class AmbushAI implements EnemyAI {
     private boolean isMimicking = true;
     
     @Override
-    public DirectionType decideMove(Enemies enemy, Player player) {
+    public DirectionType decideMove(Enemies enemy, Player player, Predicate<Position> walkable) {
         if (isMimicking) {
             return null;
         }
         // В агрессивном режиме всегда преследуем игрока, без случайного движения
-        DirectionType convergence = enemy.convergenceIsHostility(player);
+        DirectionType convergence = enemy.convergenceIsHostility(player, walkable);
         if (convergence != null) {
             return convergence;
         }
         // Если игрок не в радиусе агра - идем к нему (без random())
-        return enemy.convergence(player);
+        return enemy.convergence(player, walkable);
     }
     
     /**

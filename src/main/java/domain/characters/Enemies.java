@@ -5,6 +5,8 @@ import domain.characters.enemies.EnemiesType;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
 
+import java.util.function.Predicate;
+
 import static domain.MathUtils.MathUtils.randomNumber;
 
 
@@ -99,43 +101,50 @@ abstract public class Enemies extends Character {
     }
 
     /**
-     * метод выбирает лучшее направление движения до игрока
+     * метод выбирает лучшее направление движения до игрока среди проходимых клеток
      * @param player игрок
-     * @return направление движения
+     * @param walkable проверка проходимости клетки
+     * @return направление движения или null, если идти некуда
      */
-    public DirectionType convergence(Player player) {
-        double min = Double.MAX_VALUE; 
-        DirectionType dirMove = null; 
+    public DirectionType convergence(Player player, Predicate<Position> walkable) {
+        double min = Double.MAX_VALUE;
+        DirectionType dirMove = null;
         for (DirectionType dT : DirectionType.values()) {
-            double findRange = getPosition().posDir(dT).distanceTo(player.getPosition()); 
-            if (findRange <= min) {
-                min = findRange; 
+            Position next = getPosition().posDir(dT);
+            if (!walkable.test(next)) {
+                continue;
+            }
+            double findRange = next.distanceTo(player.getPosition());
+            if (findRange < min) {
+                min = findRange;
                 dirMove = dT;
             }
-        } 
+        }
         return dirMove;
     }
 
     /**
      * метод проверяет в радиусе агра ли игрок
      * @param player игрок
+     * @param walkable проверка проходимости клетки
      * @return Направление движения, либо null
      */
-    public DirectionType convergenceIsHostility(Player player) {
-        if (isHostility(player)) return convergence(player); 
+    public DirectionType convergenceIsHostility(Player player, Predicate<Position> walkable) {
+        if (isHostility(player)) return convergence(player, walkable);
         return null;
     }
-    
+
     /**
      * метод выбирает направление движения на основе AI
      * @param player игрок
+     * @param walkable проверка проходимости клетки
      * @return направление движения или null
      */
-    public DirectionType decideMove(Player player) {
+    public DirectionType decideMove(Player player, Predicate<Position> walkable) {
         if (isStunned) {
             isStunned = false;
             return null;
         }
-        return ai.decideMove(this, player);
+        return ai.decideMove(this, player, walkable);
     }
 }

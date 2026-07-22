@@ -22,6 +22,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 public class Game {
 
@@ -423,44 +424,46 @@ public class Game {
      * Ход врагов - каждый враг делает движение и атаку
      */
     private void enemyTurns() {
+        // Порядок условий важен: isPositionWalkable проверяет границы карты,
+        // без него обращение к getMap() уйдёт за пределы массива на краю карты
+        Predicate<Position> walkable = pos ->
+                generator.isPositionWalkable(pos)
+                && !isPositionOccupied(pos)
+                && !pos.equals(posLevel)
+                && !isItemTile(generator.getMap()[pos.getX()][pos.getY()]);
+
         for (Enemies enemy : allEnemiesList) {
-            if (enemy.getHealth() > 0) {
-                DirectionType moveDir = enemy.decideMove(player);
+            if (enemy.getHealth() <= 0) {
+                continue;
+            }
 
-                if (moveDir != null) {
-                    Position nextEnemyPos = moveDir.applyTo(enemy.getPosition());
+            // AI уже вернул заведомо проходимое направление, повторно проверять не нужно
+            DirectionType moveDir = enemy.decideMove(player, walkable);
+            if (moveDir != null) {
+                generator.deleteEnemy(enemy);
+                enemy.setPosition(moveDir.applyTo(enemy.getPosition()));
+                generator.createEnemy(enemy);
+            }
 
-                    // Проверяем, не занята ли позиция игроком, другим врагом, стеной, предметом или переходом на след уровень
-                    if (
-                            !isPositionOccupied(nextEnemyPos) &&
-                            generator.isPositionWalkable(nextEnemyPos) &&
-                            !nextEnemyPos.equals(posLevel)
-                    ) {
-                        // Проверяем, что на позиции нет предмета
-                        TileType tileType = generator.getMap()[nextEnemyPos.getX()][nextEnemyPos.getY()];
-                        if (
-                                tileType != TileType.ELIXIR &&
-                                tileType != TileType.SCROLL &&
-                                tileType != TileType.WEAPON &&
-                                tileType != TileType.FOOD
-                        ) {
-                            generator.deleteEnemy(enemy);
-                            enemy.setPosition(nextEnemyPos);
-                            generator.createEnemy(enemy);
-                        }
-                    }
+            // Атака игрока, если враг оказался на соседней клетке
+            if (player.getPosition().distanceTo(enemy.getPosition()) < 2) {
+                // Сброс флага первой атаки вампира при начале боя
+                if (enemy.getType() == EnemiesType.VAMPIRE) {
+                    battleInfo.vampireFirstAttack = true;
                 }
-
-                // Атака игрока (только если враг был на соседней клетке ДО движения)
-                if (player.getPosition().distanceTo(enemy.getPosition()) < 2) {
-                    // Сброс флага первой атаки вампира при начале боя
-                    if (enemy.getType() == EnemiesType.VAMPIRE) {
-                        battleInfo.vampireFirstAttack = true;
-                    }
-                    attackSystem.attack(player, enemy, ENEMIES, battleInfo, backpack);
-                }
+                attackSystem.attack(player, enemy, ENEMIES, battleInfo, backpack);
             }
         }
+    }
+
+    /**
+     * метод проверяет, лежит ли на клетке предмет
+     * @param tile тайл карты
+     * @return true если предмет
+     */
+    private boolean isItemTile(TileType tile) {
+        return tile == TileType.ELIXIR || tile == TileType.SCROLL
+                || tile == TileType.WEAPON || tile == TileType.FOOD;
     }
 
     /**
