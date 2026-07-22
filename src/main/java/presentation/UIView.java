@@ -221,7 +221,7 @@ public class UIView {
                     : String.valueOf(ofType.stream()
                             .mapToInt(item -> game.getShop().priceOf(item)).min().orElse(0));
             tg.putString(panelX, row++, String.format("%-11s%d  от %sз",
-                    shopLabelFor(type) + ":", ofType.size(), price));
+                    titleFor(type) + ":", ofType.size(), price));
         }
 
         row++;
@@ -249,19 +249,6 @@ public class UIView {
     }
 
     /**
-     * метод возвращает короткое название типа предмета для строки магазина
-     * (getName() у предметов возвращает односимвольную букву, для магазина она нечитаема)
-     */
-    private String shopLabelFor(ItemsType type) {
-        return switch (type) {
-            case ELIXIR -> "Эликсир";
-            case FOOD -> "Еда";
-            case SCROLL -> "Свиток";
-            case WEAPON -> "Оружие";
-        };
-    }
-
-    /**
      * метод возвращает список предметов рюкзака по типу
      */
     private List<Item> itemsFor(Backpack backpack, ItemsType type) {
@@ -275,7 +262,9 @@ public class UIView {
     }
 
     /**
-     * метод возвращает заголовок панели инвентаря по типу предмета
+     * метод возвращает название типа предмета - единственный маппинг ItemsType на подпись,
+     * его используют и заголовок инвентаря, и строки магазина
+     * (getName() у предметов возвращает односимвольную букву и для панелей не годится)
      */
     private String titleFor(ItemsType type) {
         return switch (type) {

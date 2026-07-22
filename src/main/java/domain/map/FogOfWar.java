@@ -37,12 +37,37 @@ public class FogOfWar {
         return isInBounds(x, y) && explored[x][y];
     }
 
+    /**
+     * метод отдаёт копию разведанного, чтобы состояние тумана нельзя было менять снаружи
+     */
     public boolean[][] getExplored() {
-        return explored;
+        boolean[][] copy = new boolean[width][height];
+        for (int x = 0; x < width; x++) {
+            System.arraycopy(explored[x], 0, copy[x], 0, height);
+        }
+        return copy;
     }
 
-    public void setExplored(boolean[][] explored) {
-        this.explored = explored;
+    /**
+     * метод восстанавливает разведанное из сохранения.
+     * Копирует поклеточно и игнорирует лишнее: сейв мог быть снят на карте другого размера,
+     * и хранение чужого массива по ссылке уронило бы отрисовку по выходу за границы
+     * @param source разведанные клетки из сохранения
+     */
+    public void setExplored(boolean[][] source) {
+        if (source == null) {
+            return;
+        }
+        boolean[][] restored = new boolean[width][height];
+        int maxX = Math.min(width, source.length);
+        for (int x = 0; x < maxX; x++) {
+            if (source[x] == null) {
+                continue;
+            }
+            int maxY = Math.min(height, source[x].length);
+            System.arraycopy(source[x], 0, restored[x], 0, maxY);
+        }
+        this.explored = restored;
     }
 
     /**

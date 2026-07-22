@@ -237,21 +237,8 @@ public class Game {
      * (используется при загрузке, не добавляет предметы/врагов повторно в комнаты)
      */
     public void placeRestoredEntitiesOnMap() {
-        // rebuildMap рисует только пол и стены, двери с ключами возвращаем на карту сами
-        for (Room room : rooms) {
-            Door door = room.getDoor();
-            if (door != null && door.getIsClose()) {
-                for (Position entrance : door.getEntrances()) {
-                    generator.getMap()[entrance.getX()][entrance.getY()] =
-                            DungeonGenerator.doorTileFor(door.getColorKey());
-                }
-            }
-        }
-        for (Key key : generator.getKeys()) {
-            Position pos = key.getPosition();
-            generator.getMap()[pos.getX()][pos.getY()] = DungeonGenerator.keyTileFor(key.getColorKey());
-        }
-        generator.drawShop();
+        // rebuildMap рисует только пол и стены, двери с ключами возвращает генератор
+        generator.redrawStaticEntities();
 
         generator.createPlayer(player);
         for (Room room : rooms) {
@@ -263,6 +250,14 @@ public class Game {
                 posLevel = generator.createLevel(room);
             }
         }
+
+        // старые сохранения не знали про магазин - ставим его заново, иначе уровень будет без него
+        if (generator.getShopPosition() == null) {
+            generator.placeShop();
+        }
+        // состояние панели производное от позиции игрока, отдельно его не храним
+        shopOpen = player.getPosition().equals(generator.getShopPosition());
+
         fog.update(player, rooms, difficulty, generator.getMap());
     }
 

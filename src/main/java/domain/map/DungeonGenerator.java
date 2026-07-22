@@ -12,8 +12,10 @@ import domain.navigator.Position;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class DungeonGenerator {
@@ -111,8 +113,15 @@ public class DungeonGenerator {
         Set<ColorKey> held = new HashSet<>();
         Room holder = startRoom;
 
+        // входы зависят только от комнат и коридоров, поэтому считаем их один раз,
+        // а не заново на каждого кандидата в каждой из четырёх итераций по цветам
+        Map<Room, List<Position>> entrancesByRoom = new HashMap<>();
+        for (Room room : rooms) {
+            entrancesByRoom.put(room, findEntrances(room));
+        }
+
         for (ColorKey color : ColorKey.values()) {
-            Room locked = tryLockAnyRoom(color, start, held, holder);
+            Room locked = tryLockAnyRoom(color, start, held, holder, entrancesByRoom);
             if (locked == null) {
                 break;
             }
@@ -128,7 +137,8 @@ public class DungeonGenerator {
      * двери могут разрезать коридор, который вёл к ранее запертой комнате.
      * @return запертая комната или null, если ни одну запереть не удалось
      */
-    private Room tryLockAnyRoom(ColorKey color, Position start, Set<ColorKey> held, Room holder) {
+    private Room tryLockAnyRoom(ColorKey color, Position start, Set<ColorKey> held, Room holder,
+                                Map<Room, List<Position>> entrancesByRoom) {
         Set<Position> zone = reachable(start, held);
 
         for (Room candidate : rooms) {
@@ -138,8 +148,8 @@ public class DungeonGenerator {
             if (!zone.contains(candidate.getCentreRoom())) {
                 continue;
             }
-            List<Position> entrances = findEntrances(candidate);
-            if (entrances.isEmpty()) {
+            List<Position> entrances = entrancesByRoom.get(candidate);
+            if (entrances == null || entrances.isEmpty()) {
                 continue;
             }
             // ключ кладём в уже доступную зону ДО того, как запрём комнату
@@ -696,7 +706,37 @@ public class DungeonGenerator {
     }
 
     /**
-     * метод возвращает магазин на карту после загрузки сохранения
+     * метод возвращает на карту всю статику генератора: закрытые двери, ещё не подобранные
+     * ключи и магазин. Нужен после rebuildMap, который рисует только пол и стены.
+     * Держим в одном месте: новый тип статического тайла достаточно добавить сюда
+     */
+    public void redrawStaticEntities() {
+        for (Room room : rooms) {
+            Door door = room.getDoor();
+            if (door == null || !door.getIsClose()) {
+                continue;
+            }
+            for (Position entrance : door.getEntrances()) {
+                if (isInBounds(entrance.getX(), entrance.getY())) {
+                    map[entrance.getX()][entrance.getY()] = doorTileFor(door.getColorKey());
+                }
+            }
+        }
+
+        for (Key key : keys) {
+            Position pos = key.getPosition();
+            if (pos != null && isInBounds(pos.getX(), pos.getY())) {
+                map[pos.getX()][pos.getY()] = keyTileFor(key.getColorKey());
+            }
+        }
+
+        if (shopPosition != null && isInBounds(shopPosition.getX(), shopPosition.getY())) {
+            map[shopPosition.getX()][shopPosition.getY()] = TileType.SHOP;
+        }
+    }
+
+    /**
+     * метод возвращает магазин на карту, когда игрок сходит с его клетки
      */
     public void drawShop() {
         if (shopPosition != null && isInBounds(shopPosition.getX(), shopPosition.getY())) {
