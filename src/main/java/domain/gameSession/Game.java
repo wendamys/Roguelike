@@ -40,6 +40,7 @@ public class Game {
     private Position posLevel;
     private boolean isGameEnded = false;
     private DifficultyType difficulty;
+    private FogOfWar fog;
     private ItemsType selectedInventoryType = null; // Тип предмета, выбранный для использования
     private static final int MESSAGE_LOG_CAPACITY = 10;
     private final Deque<String> messageLog = new ArrayDeque<>(); // История последних сообщений, для presentation-слоя
@@ -64,6 +65,10 @@ public class Game {
 
     public DifficultyType getDifficulty() {
         return difficulty;
+    }
+
+    public FogOfWar getFog() {
+        return fog;
     }
 
     public DungeonGenerator getGenerator() {
@@ -147,6 +152,7 @@ public class Game {
         this.generator.generateDungeon();
         this.rooms = generator.getRooms();
         this.corridors = generator.getCorridors();
+        this.fog = new FogOfWar(generator.getMapWidth(), generator.getMapHeight());
         allEnemiesList.clear();
         allItemList.clear();
     }
@@ -167,6 +173,7 @@ public class Game {
                 posLevel = generator.createLevel(room);
             }
         }
+        fog.update(player, rooms, difficulty);
     }
 
     /**
@@ -199,6 +206,7 @@ public class Game {
                 posLevel = generator.createLevel(room);
             }
         }
+        fog.update(player, rooms, difficulty);
     }
 
     /**
@@ -228,6 +236,7 @@ public class Game {
      */
     public void processInput(String input) {
         handleInput(input);
+        fog.update(player, rooms, difficulty);
         if (player.getHealth() > 0 && !isGameEnded) {
             enemyTurns();
         }

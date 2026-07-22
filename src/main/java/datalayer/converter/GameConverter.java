@@ -16,6 +16,7 @@ public class GameConverter {
         dto.setLevelDTO(LevelConverter.toDTO());
         dto.setDungeDTO(DungeConverter.toDTO(game.getGenerator()));
         dto.setDifficulty(game.getDifficulty().name());
+        dto.setExplored(game.getFog().getExplored());
 
         return dto;
     }
@@ -36,6 +37,10 @@ public class GameConverter {
 
         game.restoreItemsAndEnemies();
         game.placeRestoredEntitiesOnMap();
+
+        if (dto.getExplored() != null) {
+            game.getFog().setExplored(dto.getExplored());
+        }
 
         return game;
     }

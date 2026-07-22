@@ -6,11 +6,15 @@ public class GameDTO {
     private LevelDTO levelDTO;
     private DungeDTO dungeDTO;
     private String difficulty;
+    private boolean[][] explored;
 
     public GameDTO() {}
 
     public String getDifficulty() { return difficulty; }
     public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
+
+    public boolean[][] getExplored() { return explored; }
+    public void setExplored(boolean[][] explored) { this.explored = explored; }
 
     public PlayerDTO getPlayerDTO() { return playerDTO; }
     public void setPlayerDTO(PlayerDTO playerDTO) { this.playerDTO = playerDTO; }

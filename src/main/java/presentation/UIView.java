@@ -9,6 +9,7 @@ import domain.backpack.Backpack;
 import domain.backpack.Item;
 import domain.backpack.ItemsType;
 import domain.gameSession.Game;
+import domain.map.FogOfWar;
 import domain.map.Level;
 import domain.map.TileType;
 
@@ -74,16 +75,35 @@ public class UIView {
      */
     private void drawMap(Game game, TextGraphics tg) {
         TileType[][] map = game.getGenerator().getMap();
+        FogOfWar fog = game.getFog();
         int width = game.getGenerator().getMapWidth();
         int height = game.getGenerator().getMapHeight();
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 TileType tile = map[x][y];
-                tg.setForegroundColor(colorFor(tile));
-                tg.putString(x, y + MAP_ROW_OFFSET, String.valueOf(tile.getSymbol()));
+                if (fog.isVisible(x, y)) {
+                    tg.setForegroundColor(colorFor(tile));
+                    tg.putString(x, y + MAP_ROW_OFFSET, String.valueOf(tile.getSymbol()));
+                } else if (fog.isExplored(x, y)) {
+                    tg.setForegroundColor(TextColor.ANSI.BLACK_BRIGHT);
+                    tg.putString(x, y + MAP_ROW_OFFSET, String.valueOf(geometrySymbolOf(tile)));
+                } else {
+                    tg.putString(x, y + MAP_ROW_OFFSET, " ");
+                }
             }
         }
+    }
+
+    /**
+     * метод возвращает символ геометрии клетки: враги и предметы в разведанной,
+     * но невидимой зоне не показываются - под ними всегда пол
+     */
+    private char geometrySymbolOf(TileType tile) {
+        return switch (tile) {
+            case WALL, FLOOR, LEVEL -> tile.getSymbol();
+            default -> TileType.FLOOR.getSymbol();
+        };
     }
 
     /**
