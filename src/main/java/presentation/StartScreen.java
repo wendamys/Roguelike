@@ -136,16 +136,16 @@ public class StartScreen {
         tg.setForegroundColor(TextColor.ANSI.YELLOW);
         tg.enableModifiers(SGR.BOLD);
         for (int i = 0; i < BANNER.length; i++) {
-            tg.putString(2, 1 + i, BANNER[i]);
+            tg.putString(40, 21 + i, BANNER[i]);
         }
         tg.disableModifiers(SGR.BOLD);
 
         tg.setForegroundColor(TextColor.ANSI.BLACK_BRIGHT);
-        tg.putString(2, 2 + BANNER.length, "W/S - выбор, Enter - подтвердить");
+        tg.putString(40, 28 + BANNER.length, "W/S - выбор, Enter - подтвердить");
 
         for (int i = 0; i < MENU_LABELS.length; i++) {
             tg.setForegroundColor(i == selectedIndex ? TextColor.ANSI.YELLOW : TextColor.ANSI.WHITE);
-            tg.putString(2, 4 + BANNER.length + i, (i == selectedIndex ? "> " : "  ") + MENU_LABELS[i]);
+            tg.putString(49, 23 + BANNER.length + i, (i == selectedIndex ? "> " : "  ") + MENU_LABELS[i]);
         }
         screen.refresh();
     }
@@ -157,17 +157,24 @@ public class StartScreen {
         screen.clear();
         TextGraphics tg = screen.newTextGraphics();
 
-        tg.setForegroundColor(TextColor.ANSI.CYAN);
-        tg.putString(2, 2, "Выберите сложность:");
+//        tg.setForegroundColor(TextColor.ANSI.CYAN);
+//        tg.putString(44, 27, "Выберите сложность:");
+
+        tg.setForegroundColor(TextColor.ANSI.YELLOW);
+        tg.enableModifiers(SGR.BOLD);
+        for (int i = 0; i < BANNER.length; i++) {
+            tg.putString(40, 21 + i, BANNER[i]);
+        }
+        tg.disableModifiers(SGR.BOLD);
 
         DifficultyType[] values = DifficultyType.values();
         for (int i = 0; i < values.length; i++) {
             tg.setForegroundColor(i == selectedIndex ? TextColor.ANSI.YELLOW : TextColor.ANSI.WHITE);
-            tg.putString(2, 4 + i, (i == selectedIndex ? "> " : "  ") + values[i].getLabel());
+            tg.putString(49, 28 + i, (i == selectedIndex ? "> " : "  ") + values[i].getLabel());
         }
 
         tg.setForegroundColor(TextColor.ANSI.BLACK_BRIGHT);
-        tg.putString(2, 9, DIFFICULTY_HINTS[selectedIndex]);
+        tg.putString(37, 33, DIFFICULTY_HINTS[selectedIndex]);
         screen.refresh();
     }
 
@@ -177,8 +184,17 @@ public class StartScreen {
     private void drawNamePrompt(String currentInput) throws IOException {
         screen.clear();
         TextGraphics tg = screen.newTextGraphics();
+
+        tg.setForegroundColor(TextColor.ANSI.YELLOW);
+        tg.enableModifiers(SGR.BOLD);
+        for (int i = 0; i < BANNER.length; i++) {
+            tg.putString(40, 21 + i, BANNER[i]);
+        }
+        tg.disableModifiers(SGR.BOLD);
+
         tg.setForegroundColor(TextColor.ANSI.WHITE);
-        tg.putString(2, 2, "Введите имя: " + currentInput);
+        tg.putString(47, 28, "Введите имя:");
+        tg.putString(50, 30, currentInput);
         screen.refresh();
     }
 }

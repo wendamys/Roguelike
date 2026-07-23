@@ -226,7 +226,7 @@ public class Room {
      * метод {@link #randomPosition()} создает рандомную позицию для объекта в комнате
      * @return позиция объекта
      */
-    private Position randomPosition() {
+    protected Position randomPosition() {
         return new Position(
                 randomNumber(position.getX() + 1, position.getX() + width - 1),
                 randomNumber(position.getY() + 1, position.getY() + height - 1)
