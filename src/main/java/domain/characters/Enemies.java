@@ -2,6 +2,7 @@ package domain.characters;
 
 import domain.ai.*;
 import domain.characters.enemies.EnemiesType;
+import domain.gameSession.DifficultyType;
 import domain.navigator.DirectionType;
 import domain.navigator.Position;
 
@@ -19,6 +20,7 @@ abstract public class Enemies extends Character {
     private int agility;
     private int strength;
     private int hostility;
+    private DifficultyType difficulty;
 
 
     protected boolean isInvisible = false;
@@ -27,9 +29,10 @@ abstract public class Enemies extends Character {
 
     protected EnemyAI ai;
 
-    public Enemies(Position position) {
+    public Enemies(Position position, DifficultyType difficulty) {
         super(position);
         this.ai = createAI();
+        this.difficulty = difficulty;
     }
 
     public EnemiesType getType() {return type;}
@@ -66,6 +69,9 @@ abstract public class Enemies extends Character {
 
     public boolean getIsMimicking() { return isMimicking; }
     public void setIsMimicking(boolean mimicking) { isMimicking = mimicking; }
+
+    public DifficultyType getDifficulty() {return difficulty;}
+    public void setDifficulty(DifficultyType difficulty) { this.difficulty = difficulty; }
 
     // setters randomly
     public void setAgilityRand(int agility) {
@@ -171,4 +177,14 @@ abstract public class Enemies extends Character {
         int dy = Math.abs(getPosition().getY() - player.getPosition().getY());
         return dx + dy == 1;
     }
+
+    private double getCoefficientComplexity(DifficultyType difficulty) {
+        return switch (difficulty) {
+            case EASY -> DifficultyType.EASY.getCoef();
+            case HARD -> DifficultyType.HARD.getCoef();
+            default -> DifficultyType.VERY_HARD.getCoef();
+        };
+    }
+
+
 }

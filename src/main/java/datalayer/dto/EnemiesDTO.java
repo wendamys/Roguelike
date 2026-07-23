@@ -10,6 +10,7 @@ public class EnemiesDTO {
     private int agility;
     private int strength;
     private int hostility;
+    private String difficulty;
 
     private boolean isInvisible;
     private boolean isStunned;
@@ -38,6 +39,9 @@ public class EnemiesDTO {
 
     public int getHostility() {return hostility;}
     public void setHostility(int hostility) {this.hostility = hostility;}
+
+    public String getDifficulty() {return difficulty;}
+    public void setDifficulty(String difficulty) {this.difficulty = difficulty;}
 
     public boolean isInvisible() {return isInvisible;}
     public void setInvisible(boolean invisible) {isInvisible = invisible;}

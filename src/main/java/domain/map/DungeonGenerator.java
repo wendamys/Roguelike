@@ -317,7 +317,7 @@ public class DungeonGenerator {
                 if (x == centre.getX() && y == centre.getY()) {
                     continue;
                 }
-                Position candidate = new Position(x, y);
+                Position candidate = room.randomPosition();
                 if (!zone.contains(candidate)) {
                     continue;
                 }
@@ -636,7 +636,6 @@ public class DungeonGenerator {
                 map[enemy.getPosition().getX()][enemy.getPosition().getY()] = ((Mimic) enemy).getTileType();
             } else {
                 switch (enemy.getType()) {
-                    case ZOMBIE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.ZOMBIE; break;
                     case OGRE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.OGRE; break;
                     case VAMPIRE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.VAMPIRE; break;
                     case SNAKE: map[enemy.getPosition().getX()][enemy.getPosition().getY()] = TileType.SNAKE; break;
@@ -787,7 +786,6 @@ public class DungeonGenerator {
                 case GHOST: map[pos.getX()][pos.getY()] = TileType.GHOST; break;
                 case SNAKE: map[pos.getX()][pos.getY()] = TileType.SNAKE; break;
                 case VAMPIRE: map[pos.getX()][pos.getY()] = TileType.VAMPIRE; break;
-                case ZOMBIE: map[pos.getX()][pos.getY()] = TileType.ZOMBIE; break;
                 default: map[pos.getX()][pos.getY()] = TileType.ZOMBIE;
             }
         }

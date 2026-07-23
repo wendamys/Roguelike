@@ -2,6 +2,7 @@ package domain.characters.enemies;
 
 import domain.ai.*;
 import domain.characters.Enemies;
+import domain.gameSession.DifficultyType;
 import domain.map.Level;
 import domain.navigator.Position;
 
@@ -12,12 +13,12 @@ public class Ghost extends Enemies {
     private int agility = 70;
     private int strength = 15;
 
-    public Ghost(Position position) {
-        super(position);
-        super.setHealthBegin((int) (health * Level.getCoefEnemy()));
+    public Ghost(Position position, DifficultyType difficulty) {
+        super(position, difficulty);
+        super.setHealthBegin((int) (health * difficulty.getCoef() * Level.getCoefEnemy()));
         super.setMaxHealth(super.getHealth());
-        super.setAgilityRand((int) (agility * Level.getCoefEnemy()));
-        super.setStrengthRand((int) (strength * Level.getCoefEnemy()));
+        super.setAgilityRand((int) (agility * difficulty.getCoef() * Level.getCoefEnemy()));
+        super.setStrengthRand((int) (strength * difficulty.getCoef() * Level.getCoefEnemy()));
     }
 
     @Override

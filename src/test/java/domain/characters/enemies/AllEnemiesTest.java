@@ -34,12 +34,12 @@ class AllEnemiesTest {
     static Stream<Enemies> enemyProvider() {
         Position mockPos = mock(Position.class);
         return Stream.of(
-                new Ghost(mockPos),
-                new Mimic(mockPos),
-                new Ogre(mockPos),
-                new Snake(mockPos),
-                new Vampire(mockPos),
-                new Zombie(mockPos)
+                new Ghost(mockPos, ),
+                new Mimic(mockPos, ),
+                new Ogre(mockPos, ),
+                new Snake(mockPos, ),
+                new Vampire(mockPos, ),
+                new Zombie(mockPos, )
         );
     }
 
