@@ -94,6 +94,6 @@ public class Key {
 
     @Override
     public String toString() {
-        return String.format("Key: color=%s, position=%s", colorKey, position);
+        return String.format("%s", colorKey);
     }
 }

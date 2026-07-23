@@ -13,6 +13,7 @@ import domain.gameSession.Game;
 import domain.map.FogOfWar;
 import domain.map.Level;
 import domain.map.TileType;
+import domain.shop.Shop;
 
 import java.io.IOException;
 import java.util.List;
@@ -153,7 +154,7 @@ public class UIView {
         tg.putString(panelX, row++, "Gold:     " + player.getGold());
 
         if (!player.getKeys().isEmpty()) {
-            tg.putString(panelX, row++, "Ключи:    " + player.getKeys().size() + "/4");
+            tg.putString(panelX, row++, "Ключи:    " + game.getGenerator().getKeys());
         }
     }
 
@@ -211,18 +212,12 @@ public class UIView {
         tg.putString(panelX, row++, "Магазин:");
 
         // тот же ровный блок, что и у инвентаря: тип, количество, цена за штуку
+        Shop shop = game.getShop();
         tg.setForegroundColor(TextColor.ANSI.WHITE);
-//        for (ItemsType type : ItemsType.values()) {
-//            List<Item> ofType = game.getShop().getItems().stream()
-//                    .filter(item -> item.getType() == type)
-//                    .toList();
-//            String price = ofType.isEmpty()
-//                    ? "--"
-//                    : String.valueOf(ofType.stream()
-//                            .mapToInt(item -> game.getShop().priceOf(item)).min().orElse(0));
-//            tg.putString(panelX, row++, String.format("%-11s%d  от %sз",
-//                    titleFor(type) + ":", ofType.size(), price));
-//        }
+        tg.putString(panelX, row++, "Эликсиры:  " + shop.getElixirList().size());
+        tg.putString(panelX, row++, "Еда:       " + shop.getFoodList().size());
+        tg.putString(panelX, row++, "Свитки:    " + shop.getScrollList().size());
+        tg.putString(panelX, row++, "Оружие:    " + shop.getWeaponList().size());
 
         row++;
         tg.setForegroundColor(TextColor.ANSI.YELLOW);
@@ -237,7 +232,7 @@ public class UIView {
         int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN;
         // лог идёт сразу под инвентарём и магазином, но не вылезает за низ экрана
         int maxRow = screen.getTerminalSize().getRows() - 2 - Game.getMessageLogCapacity();
-        int row = Math.min(startRow, maxRow);
+        int row = 40;
 
         tg.setForegroundColor(TextColor.ANSI.CYAN);
         tg.putString(panelX, row++, "Лог:");

@@ -18,12 +18,12 @@ public class TestDebug2 {
 
     private static List<Enemies> getEnemyList() {
         return List.of(
-            new Vampire(new Position(0, 0), ),
-            new Snake(new Position(0, 0), ),
-            new Zombie(new Position(0, 0), ),
-            new Ogre(new Position(0, 0), ),
-            new Ghost(new Position(0, 0), ),
-            new Mimic(new Position(0, 0), )
+            new Vampire(new Position(0, 0), null),
+            new Snake(new Position(0, 0), null),
+            new Zombie(new Position(0, 0), null),
+            new Ogre(new Position(0, 0), null),
+            new Ghost(new Position(0, 0), null),
+            new Mimic(new Position(0, 0), null)
         );
     }
 

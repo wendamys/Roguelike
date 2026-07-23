@@ -21,30 +21,41 @@ import static domain.MathUtils.MathUtils.randomNumber;
  */
 public class Shop {
 
+    public static final double PRICE_COEFFICIENT = 0.3;
+
     private final ArrayList<Item> elixirList;
     private final ArrayList<Item> foodList;
     private final ArrayList<Item> scrollList;
     private final ArrayList<Item> weaponList;
     private Backpack backpack;
     private Position position;
-    private DifficultyType difficulty;
+    private final DifficultyType difficulty;
 
     public Shop(DifficultyType difficulty) {
         this.difficulty = difficulty;
-        elixirList = new ArrayList<>(randomNumber(difficulty.getShopMin(), difficulty.getShopMax()));
-        foodList = new ArrayList<>(randomNumber(difficulty.getShopMin(), difficulty.getShopMax()));
-        scrollList = new ArrayList<>(randomNumber(difficulty.getShopMin(), difficulty.getShopMax()));
-        weaponList = new ArrayList<>(randomNumber(difficulty.getShopMin(), difficulty.getShopMax()));
+        int elixirCount = randomNumber(difficulty.getShopMin(), difficulty.getShopMax());
+        int foodCount = randomNumber(difficulty.getShopMin(), difficulty.getShopMax());
+        int scrollCount = randomNumber(difficulty.getShopMin(), difficulty.getShopMax());
+        int weaponCount = randomNumber(difficulty.getShopMin(), difficulty.getShopMax());
 
-        fillAllList(); // заполнение магазина предметами
+        elixirList = new ArrayList<>();
+        foodList = new ArrayList<>();
+        scrollList = new ArrayList<>();
+        weaponList = new ArrayList<>();
+
+        // Заполняем списки нужным количеством элементов
+        fillList(elixirList, ItemsType.ELIXIR, elixirCount);
+        fillList(foodList, ItemsType.FOOD, foodCount);
+        fillList(scrollList, ItemsType.SCROLL, scrollCount);
+        fillList(weaponList, ItemsType.WEAPON, weaponCount);
     }
 
     public String getName() {return "$";}
 
-    public ArrayList<Item> getElixirList() {return elixirList;}
-    public ArrayList<Item> getFoodList() {return foodList;}
-    public ArrayList<Item> getScrollList() {return scrollList;}
-    public ArrayList<Item> getWeaponList() {return weaponList;}
+    public ArrayList<Item> getElixirList() {return new ArrayList<>(elixirList);}
+    public ArrayList<Item> getFoodList() {return new ArrayList<>(foodList);}
+    public ArrayList<Item> getScrollList() {return new ArrayList<>(scrollList);}
+    public ArrayList<Item> getWeaponList() {return new ArrayList<>(weaponList);}
 
     public Backpack getBackpack() {return backpack;}
     public void setBackpack(Backpack backpack) {this.backpack = backpack;}
@@ -53,38 +64,13 @@ public class Shop {
     public void setPosition(Position position) {this.position = position;}
 
     public DifficultyType getDifficulty() {return difficulty;}
-    public void setDifficulty(DifficultyType difficulty) {this.difficulty = difficulty;}
 
-    private void fillAllList() {
-        fillElixirList();
-        fillScrollList();
-        fillFoodList();
-        fillWeaponList();
-    }
-
-    private void fillElixirList() {
-        for(int i = 0; i < elixirList.size(); i++) {
-            elixirList.add(createItem(ItemsType.ELIXIR));
+    private void fillList(ArrayList<Item> list, ItemsType type, int count) {
+        for(int i = 0; i < count; i++) {
+            list.add(createItem(type));
         }
     }
 
-    private void fillScrollList() {
-        for(int i = 0; i < scrollList.size(); i++) {
-            scrollList.add(createItem(ItemsType.SCROLL));
-        }
-    }
-
-    private void fillFoodList() {
-        for(int i = 0; i < foodList.size(); i++) {
-            foodList.add(createItem(ItemsType.FOOD));
-        }
-    }
-
-    private void fillWeaponList() {
-        for(int i = 0; i < weaponList.size(); i++) {
-            weaponList.add(createItem(ItemsType.WEAPON));
-        }
-    }
     /**
      * метод создаёт предмет нужного типа вне карты
      * @param type тип предмета
@@ -105,6 +91,6 @@ public class Shop {
      * @return цена в золоте
      */
     public int priceOf(Item item) {
-        return (int) Math.max(1, item.getValue() * 0.3);
+        return (int) Math.max(1, item.getValue() * PRICE_COEFFICIENT);
     }
 }
