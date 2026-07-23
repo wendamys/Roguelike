@@ -1,6 +1,7 @@
 package domain.shop;
 
 import domain.backpack.Backpack;
+import domain.backpack.Item;
 import domain.characters.Player;
 
 public class BuyShop {
@@ -30,10 +31,12 @@ public class BuyShop {
      * метод покупки элексира и переноса его в рюкзак
      */
     public void buyElixirToBackpack() {
-        if (player.getGold() >= shop.priceOf(shop.getElixirList().getFirst()) && !shop.getElixirList().isEmpty()) {
-            backpack.takeItem(shop.getElixirList().getFirst());
-            player.setGold(player.getGold() - shop.priceOf(shop.getElixirList().getFirst()));
-            shop.getElixirList().removeFirst();
+        if (shop.getElixirList().isEmpty() || backpack.getElixirList().size() == 9) return;
+        Item item = shop.getElixirList().getFirst();
+        if (player.getGold() >= shop.priceOf(item)) {
+            backpack.takeItem(item);
+            player.setGold(player.getGold() - shop.priceOf(item));
+            shop.removeElixir();
         }
     }
 
@@ -41,10 +44,12 @@ public class BuyShop {
      * метод покупки свитка и переноса его в рюкзак
      */
     public void buyScrollToBackpack() {
-        if (player.getGold() >= shop.priceOf(shop.getScrollList().getFirst()) && !shop.getScrollList().isEmpty()) {
-            backpack.takeItem(shop.getScrollList().getFirst());
-            player.setGold(player.getGold() - shop.priceOf(shop.getScrollList().getFirst()));
-            shop.getScrollList().removeFirst();
+        if (shop.getScrollList().isEmpty() || backpack.getScrollList().size() == 9) return;
+        Item item = shop.getScrollList().getFirst();
+        if (player.getGold() >= shop.priceOf(item)) {
+            backpack.takeItem(item);
+            player.setGold(player.getGold() - shop.priceOf(item));
+            shop.removeScroll();
         }
     }
 
@@ -52,10 +57,12 @@ public class BuyShop {
      * метод покупки еды и переноса его в рюкзак
      */
     public void buyFoodToBackpack() {
-        if (player.getGold() >= shop.priceOf(shop.getFoodList().getFirst()) && !shop.getFoodList().isEmpty()) {
-            backpack.takeItem(shop.getFoodList().getFirst());
-            player.setGold(player.getGold() - shop.priceOf(shop.getFoodList().getFirst()));
-            shop.getFoodList().removeFirst();
+        if (shop.getFoodList().isEmpty() || backpack.getFoodList().size() == 9) return;
+        Item item = shop.getFoodList().getFirst();
+        if (player.getGold() >= shop.priceOf(item)) {
+            backpack.takeItem(item);
+            player.setGold(player.getGold() - shop.priceOf(item));
+            shop.removeFood();
         }
     }
 
@@ -63,10 +70,12 @@ public class BuyShop {
      * метод покупки оружия и переноса его в рюкзак
      */
     public void buyWeaponToBackpack() {
-        if (player.getGold() >= shop.priceOf(shop.getWeaponList().getFirst()) && !shop.getWeaponList().isEmpty()) {
-            backpack.takeItem(shop.getWeaponList().getFirst());
-            player.setGold(player.getGold() - shop.priceOf(shop.getWeaponList().getFirst()));
-            shop.getWeaponList().removeFirst();
+        if (shop.getWeaponList().isEmpty() || backpack.getWeaponList().size() == 9) return;
+        Item item = shop.getWeaponList().getFirst();
+        if (player.getGold() >= shop.priceOf(item)) {
+            backpack.takeItem(item);
+            player.setGold(player.getGold() - shop.priceOf(item));
+            shop.removeWeapon();
         }
     }
 

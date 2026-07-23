@@ -46,7 +46,7 @@ public class Game {
     private int enemiesKilled = 0;
     private Shop shop;
     private boolean shopOpen = false;
-    private final BuyShop buyShop;
+    private BuyShop buyShop;
     private ItemsType selectedInventoryType = null; // Тип предмета, выбранный для использования
     private static final int MESSAGE_LOG_CAPACITY = 10;
     private final Deque<String> messageLog = new ArrayDeque<>(); // История последних сообщений, для presentation-слоя
@@ -217,6 +217,7 @@ public class Game {
             }
         }
         generator.placeShop();
+        buyShop = new BuyShop(player, shop, backpack);
         fog.update(player, rooms, difficulty, generator.getMap());
     }
 
@@ -498,17 +499,16 @@ public class Game {
     }
 
     private void handleInventoryCommand(String input) {
-        // При открытом магазине цифры пока не покупают - логика покупки не реализована
+        // При открытом магазине цифры покупают предметы
         if (shopOpen && input.length() == 1) {
             char c = input.charAt(0);
             if (c >= '1' && c <= '4') {
                 switch (c) {
                     case '1' -> buyShop.buyElixirToBackpack();
-                    case '2' -> buyShop.buyScrollToBackpack();
-                    case '3' -> buyShop.buyFoodToBackpack();
+                    case '2' -> buyShop.buyFoodToBackpack();
+                    case '3' -> buyShop.buyScrollToBackpack();
                     case '4' -> buyShop.buyWeaponToBackpack();
                 }
-                addMessage("Покупка появится позже");
                 return;
             }
         }

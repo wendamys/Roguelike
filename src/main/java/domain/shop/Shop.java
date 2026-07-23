@@ -57,6 +57,11 @@ public class Shop {
     public ArrayList<Item> getScrollList() {return new ArrayList<>(scrollList);}
     public ArrayList<Item> getWeaponList() {return new ArrayList<>(weaponList);}
 
+    public void removeElixir() { elixirList.removeFirst(); }
+    public void removeFood() { foodList.removeFirst(); }
+    public void removeScroll() { scrollList.removeFirst(); }
+    public void removeWeapon() { weaponList.removeFirst(); }
+
     public Backpack getBackpack() {return backpack;}
     public void setBackpack(Backpack backpack) {this.backpack = backpack;}
 

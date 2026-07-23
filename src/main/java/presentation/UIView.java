@@ -214,10 +214,14 @@ public class UIView {
         // тот же ровный блок, что и у инвентаря: тип, количество, цена за штуку
         Shop shop = game.getShop();
         tg.setForegroundColor(TextColor.ANSI.WHITE);
-        tg.putString(panelX, row++, "Эликсиры:  " + shop.getElixirList().size());
-        tg.putString(panelX, row++, "Еда:       " + shop.getFoodList().size());
-        tg.putString(panelX, row++, "Свитки:    " + shop.getScrollList().size());
-        tg.putString(panelX, row++, "Оружие:    " + shop.getWeaponList().size());
+        tg.putString(panelX, row++, "Эликсиры:  " + shop.getElixirList().size() +
+                (shop.getElixirList().isEmpty() ? "" : " (" + shop.priceOf(shop.getElixirList().getFirst()) + ")"));
+        tg.putString(panelX, row++, "Еда:       " + shop.getFoodList().size() +
+                (shop.getFoodList().isEmpty() ? "" : " (" + shop.priceOf(shop.getFoodList().getFirst()) + ")"));
+        tg.putString(panelX, row++, "Свитки:    " + shop.getScrollList().size() +
+                (shop.getScrollList().isEmpty() ? "" : " (" + shop.priceOf(shop.getScrollList().getFirst()) + ")"));
+        tg.putString(panelX, row++, "Оружие:    " + shop.getWeaponList().size() +
+                (shop.getWeaponList().isEmpty() ? "" : " (" + shop.priceOf(shop.getWeaponList().getFirst()) + ")"));
 
         row++;
         tg.setForegroundColor(TextColor.ANSI.YELLOW);
