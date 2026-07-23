@@ -164,9 +164,13 @@ public class Room {
      */
     private void applyDifficulty(Enemies enemy) {
         double coef = difficulty.getCoef();
-        enemy.setHealth((int) (enemy.getHealth() * coef));
+        if (coef == 1.0) {
+            return;
+        }
+        // масштабируем через штатные *Rand-сеттеры, как требует соглашение проекта
+        enemy.setHealthBegin((int) (enemy.getHealth() * coef));
         enemy.setMaxHealth(enemy.getHealth());
-        enemy.setStrength((int) (enemy.getStrength() * coef));
+        enemy.setStrengthRand((int) (enemy.getStrength() * coef));
     }
 
     /**

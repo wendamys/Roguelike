@@ -213,7 +213,8 @@ public class Game {
                 posLevel = generator.createLevel(room);
             }
         }
-        fog.update(player, rooms, difficulty);
+        generator.placeShop();
+        fog.update(player, rooms, difficulty, generator.getMap());
     }
 
     /**
@@ -236,20 +237,8 @@ public class Game {
      * (используется при загрузке, не добавляет предметы/врагов повторно в комнаты)
      */
     public void placeRestoredEntitiesOnMap() {
-        // rebuildMap рисует только пол и стены, двери с ключами возвращаем на карту сами
-        for (Room room : rooms) {
-            Door door = room.getDoor();
-            if (door != null && door.getIsClose()) {
-                for (Position entrance : door.getEntrances()) {
-                    generator.getMap()[entrance.getX()][entrance.getY()] =
-                            DungeonGenerator.doorTileFor(door.getColorKey());
-                }
-            }
-        }
-        for (Key key : generator.getKeys()) {
-            Position pos = key.getPosition();
-            generator.getMap()[pos.getX()][pos.getY()] = DungeonGenerator.keyTileFor(key.getColorKey());
-        }
+        // rebuildMap рисует только пол и стены, двери с ключами возвращает генератор
+        generator.redrawStaticEntities();
 
         generator.createPlayer(player);
         for (Room room : rooms) {
@@ -261,7 +250,15 @@ public class Game {
                 posLevel = generator.createLevel(room);
             }
         }
-        fog.update(player, rooms, difficulty);
+
+        // старые сохранения не знали про магазин - ставим его заново, иначе уровень будет без него
+        if (generator.getShopPosition() == null) {
+            generator.placeShop();
+        }
+        // состояние панели производное от позиции игрока, отдельно его не храним
+        shopOpen = player.getPosition().equals(generator.getShopPosition());
+
+        fog.update(player, rooms, difficulty, generator.getMap());
     }
 
     /**
@@ -291,7 +288,7 @@ public class Game {
      */
     public void processInput(String input) {
         handleInput(input);
-        fog.update(player, rooms, difficulty);
+        fog.update(player, rooms, difficulty, generator.getMap());
         if (player.getHealth() > 0 && !isGameEnded) {
             enemyTurns();
         }
@@ -367,10 +364,18 @@ public class Game {
         }
 
         generator.deletePosPlayer(player);
+        // игрок затирал собой тайл магазина, возвращаем его на место
+        if (player.getPosition().equals(generator.getShopPosition())) {
+            generator.drawShop();
+        }
+
         player.setPosition(nextPos);
         checkAndCollectItems();
         checkAndCollectKeys();
         generator.createPlayer(player);
+
+        // магазин открыт, пока игрок стоит на его клетке
+        shopOpen = nextPos.equals(generator.getShopPosition());
     }
 
     /**
@@ -490,13 +495,6 @@ public class Game {
     }
 
     private void handleInventoryCommand(String input) {
-        // Открытие/закрытие магазина
-        if (input.equals("i")) {
-            shopOpen = !shopOpen;
-            selectedInventoryType = null;
-            return;
-        }
-
         // При открытом магазине цифры пока не покупают - логика покупки не реализована
         if (shopOpen && input.length() == 1) {
             char c = input.charAt(0);
@@ -578,7 +576,8 @@ public class Game {
                 generator.isPositionWalkable(pos)
                 && !isPositionOccupied(pos)
                 && !pos.equals(posLevel)
-                && !isItemTile(generator.getMap()[pos.getX()][pos.getY()]);
+                && !pos.equals(generator.getShopPosition())
+                && !DungeonGenerator.isPickupTile(generator.getMap()[pos.getX()][pos.getY()]);
 
         for (Enemies enemy : allEnemiesList) {
             if (enemy.getHealth() <= 0) {
@@ -593,8 +592,8 @@ public class Game {
                 generator.createEnemy(enemy);
             }
 
-            // Атака игрока, если враг оказался на соседней клетке
-            if (player.getPosition().distanceTo(enemy.getPosition()) < 2) {
+            // Атака игрока только ортогонально - оттуда, откуда он может ответить
+            if (enemy.canAttack(player)) {
                 // Сброс флага первой атаки вампира при начале боя
                 if (enemy.getType() == EnemiesType.VAMPIRE) {
                     battleInfo.vampireFirstAttack = true;
@@ -613,16 +612,6 @@ public class Game {
             addMessage(event);
         }
         battleInfo.getEvents().clear();
-    }
-
-    /**
-     * метод проверяет, лежит ли на клетке предмет
-     * @param tile тайл карты
-     * @return true если предмет
-     */
-    private boolean isItemTile(TileType tile) {
-        return tile == TileType.ELIXIR || tile == TileType.SCROLL
-                || tile == TileType.WEAPON || tile == TileType.FOOD;
     }
 
     /**

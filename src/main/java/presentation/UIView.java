@@ -27,9 +27,10 @@ public class UIView {
     // строка карты сдвинута на 1 вниз, чтобы наверху был статус игрока
     private static final int MAP_ROW_OFFSET = 1;
     private static final int RIGHT_PANEL_X_MARGIN = 3;   // отступ правой панели от края карты
-    private static final int RIGHT_TOP_ROW = 0;           // статус игрока
+    private static final int RIGHT_TOP_ROW = 1;           // статус игрока, вровень с картой
     private static final int RIGHT_INVENTORY_ROW = 20;    // правая средняя: сводка по инвентарю
     private static final int SHOP_PANEL_X_OFFSET = 18;    // сдвиг панели магазина правее инвентаря
+    private static final int PANEL_GAP = 2;               // отступ логов от блоков выше
 
     private final Screen screen;
 
@@ -65,9 +66,10 @@ public class UIView {
         drawMap(game, tg);
         drawBottomBar(game, tg);
         drawPlayerStatus(game, tg);
-        drawInventory(game, tg);
-        drawShop(game, tg);
-        drawMessageLog(game, tg);
+        // инвентарь и магазин стоят рядом, лог начинается под самым длинным из них
+        int inventoryBottom = drawInventory(game, tg);
+        int shopBottom = drawShop(game, tg);
+        drawMessageLog(game, tg, Math.max(inventoryBottom, shopBottom) + PANEL_GAP);
 
         screen.refresh();
     }
@@ -103,8 +105,9 @@ public class UIView {
      */
     private char geometrySymbolOf(TileType tile) {
         return switch (tile) {
-            // двери - часть геометрии, они должны оставаться видны в разведанной зоне
-            case WALL, FLOOR, LEVEL, DOOR_GREEN, DOOR_BLUE, DOOR_RED, DOOR_YELLOW -> tile.getSymbol();
+            // двери и магазин - часть геометрии, они остаются видны в разведанной зоне
+            case WALL, FLOOR, LEVEL, SHOP,
+                 DOOR_GREEN, DOOR_BLUE, DOOR_RED, DOOR_YELLOW -> tile.getSymbol();
             default -> TileType.FLOOR.getSymbol();
         };
     }
@@ -158,7 +161,7 @@ public class UIView {
      * метод рисует в правой средней части постоянную сводку по инвентарю,
      * а если игрок выбрал тип предмета (e/h/j/k) - детальный список под ней
      */
-    private void drawInventory(Game game, TextGraphics tg) {
+    private int drawInventory(Game game, TextGraphics tg) {
         int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN;
         int row = RIGHT_INVENTORY_ROW;
 
@@ -174,7 +177,7 @@ public class UIView {
 
         ItemsType selected = game.getSelectedInventoryType();
         if (selected == null) {
-            return;
+            return row;
         }
 
         row++;
@@ -185,52 +188,56 @@ public class UIView {
         tg.setForegroundColor(TextColor.ANSI.WHITE);
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
-//            tg.putString(panelX, row++, "[" + (i + 1) + "] " + item.getName() + " (" + item.getValue() + ")");
             tg.putString(panelX, row++, "[" + (i + 1) + "] " + item.toString());
         }
 
         tg.setForegroundColor(TextColor.ANSI.YELLOW);
-        tg.putString(panelX, row + 1, "Нажми 1-9 для выбора предмета");
+        tg.putString(panelX, ++row, "Нажми 1-9 для выбора предмета");
+        return row;
     }
 
     /**
      * метод рисует панель магазина справа от инвентаря, если магазин открыт
      */
-    private void drawShop(Game game, TextGraphics tg) {
+    private int drawShop(Game game, TextGraphics tg) {
         if (!game.isShopOpen()) {
-            return;
+            return RIGHT_INVENTORY_ROW;
         }
 
         int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN + SHOP_PANEL_X_OFFSET;
         int row = RIGHT_INVENTORY_ROW;
 
         tg.setForegroundColor(TextColor.ANSI.CYAN);
-        tg.putString(panelX, row++, "Магазин (i - закрыть)");
+        tg.putString(panelX, row++, "Магазин:");
 
-//        List<Item> items = game.getShop().getItems();
-//        tg.setForegroundColor(TextColor.ANSI.WHITE);
-//        if (items.isEmpty()) {
-//            tg.putString(panelX, row++, "Пусто");
-//        }
-//        for (int i = 0; i < items.size(); i++) {
-//            Item item = items.get(i);
-//            tg.putString(panelX, row++, "[" + (i + 1) + "] " + shopLabelFor(item.getType())
-//                    + " (" + item.getValue() + ") " + game.getShop().priceOf(item) + "з");
-//        }
+        // тот же ровный блок, что и у инвентаря: тип, количество, цена за штуку
+        tg.setForegroundColor(TextColor.ANSI.WHITE);
+        for (ItemsType type : ItemsType.values()) {
+            List<Item> ofType = game.getShop().getItems().stream()
+                    .filter(item -> item.getType() == type)
+                    .toList();
+            String price = ofType.isEmpty()
+                    ? "--"
+                    : String.valueOf(ofType.stream()
+                            .mapToInt(item -> game.getShop().priceOf(item)).min().orElse(0));
+            tg.putString(panelX, row++, String.format("%-11s%d  от %sз",
+                    titleFor(type) + ":", ofType.size(), price));
+        }
 
         row++;
         tg.setForegroundColor(TextColor.ANSI.YELLOW);
-        tg.putString(panelX, row, "Ваше золото: " + game.getPlayer().getGold());
+        tg.putString(panelX, row, "Золото: " + game.getPlayer().getGold());
+        return row;
     }
 
     /**
      * метод рисует в правой нижней части историю последних сообщений игры
      */
-    private void drawMessageLog(Game game, TextGraphics tg) {
+    private void drawMessageLog(Game game, TextGraphics tg, int startRow) {
         int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN;
-        // при высоте 62 строки нумеруются 0..61: заголовок ложится на 50,
-        // десять записей занимают 51-60, последняя - на предпоследней строке экрана
-        int row = screen.getTerminalSize().getRows() - 2 - Game.getMessageLogCapacity();
+        // лог идёт сразу под инвентарём и магазином, но не вылезает за низ экрана
+        int maxRow = screen.getTerminalSize().getRows() - 2 - Game.getMessageLogCapacity();
+        int row = Math.min(startRow, maxRow);
 
         tg.setForegroundColor(TextColor.ANSI.CYAN);
         tg.putString(panelX, row++, "Лог:");
@@ -239,19 +246,6 @@ public class UIView {
         for (String entry : game.getMessageLog()) {
             tg.putString(panelX, row++, "> " + entry);
         }
-    }
-
-    /**
-     * метод возвращает короткое название типа предмета для строки магазина
-     * (getName() у предметов возвращает односимвольную букву, для магазина она нечитаема)
-     */
-    private String shopLabelFor(ItemsType type) {
-        return switch (type) {
-            case ELIXIR -> "Эликсир";
-            case FOOD -> "Еда";
-            case SCROLL -> "Свиток";
-            case WEAPON -> "Оружие";
-        };
     }
 
     /**
@@ -268,7 +262,9 @@ public class UIView {
     }
 
     /**
-     * метод возвращает заголовок панели инвентаря по типу предмета
+     * метод возвращает название типа предмета - единственный маппинг ItemsType на подпись,
+     * его используют и заголовок инвентаря, и строки магазина
+     * (getName() у предметов возвращает односимвольную букву и для панелей не годится)
      */
     private String titleFor(ItemsType type) {
         return switch (type) {
@@ -295,6 +291,7 @@ public class UIView {
             case DOOR_BLUE, KEY_BLUE -> TextColor.ANSI.BLUE;
             case DOOR_RED, KEY_RED -> TextColor.ANSI.RED;
             case DOOR_YELLOW, KEY_YELLOW -> TextColor.ANSI.YELLOW;
+            case SHOP -> TextColor.ANSI.MAGENTA;
             case LEVEL -> TextColor.ANSI.YELLOW;
             case WALL -> TextColor.ANSI.WHITE;
             case FLOOR -> TextColor.ANSI.BLACK_BRIGHT;

@@ -32,6 +32,7 @@ public class GameConverter {
             keysDTO.add(keyDTO);
         });
         dto.setKeysDTO(keysDTO);
+        dto.setShopPositionDTO(PositionConverter.toDTO(game.getGenerator().getShopPosition()));
 
         return dto;
     }
@@ -56,6 +57,10 @@ public class GameConverter {
             dto.getKeysDTO().forEach(keyDTO -> generator.getKeys().add(
                     new Key(PositionConverter.fromDTO(keyDTO.getPositionDTO()),
                             ColorKey.valueOf(keyDTO.getColor()))));
+        }
+
+        if (dto.getShopPositionDTO() != null) {
+            generator.setShopPosition(PositionConverter.fromDTO(dto.getShopPositionDTO()));
         }
 
         game.restoreItemsAndEnemies();

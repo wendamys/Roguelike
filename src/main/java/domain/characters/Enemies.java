@@ -145,6 +145,30 @@ abstract public class Enemies extends Character {
             isStunned = false;
             return null;
         }
-        return ai.decideMove(this, player, walkable);
+        // AI спрашиваем всегда: в decideMove у стратегий живут побочные эффекты
+        // (Ghost переключает инвиз именно при подходе вплотную), и пропуск вызова
+        // сделал бы их недостижимыми
+        DirectionType move = ai.decideMove(this, player, walkable);
+
+        // Стоя вплотную, враг бьёт и не двигается. Иначе он ушёл бы на диагональ
+        // (там расстояние 1.41 против 1.0 у занятой клетки игрока), бил бы оттуда,
+        // а игрок ответить не смог бы - он атакует только по WASD.
+        if (canAttack(player)) {
+            return null;
+        }
+        return move;
+    }
+
+    /**
+     * метод проверяет, может ли враг атаковать игрока с текущей клетки.
+     * Только ортогонально - ровно оттуда, откуда игрок может ударить в ответ.
+     * Считаем в целых числах: сравнивать результат sqrt с 1.0 через == хрупко
+     * @param player игрок
+     * @return true если атака возможна
+     */
+    public boolean canAttack(Player player) {
+        int dx = Math.abs(getPosition().getX() - player.getPosition().getX());
+        int dy = Math.abs(getPosition().getY() - player.getPosition().getY());
+        return dx + dy == 1;
     }
 }
