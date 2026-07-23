@@ -31,24 +31,24 @@ public class EndScreen {
 
         tg.enableModifiers(SGR.BOLD);
         tg.setForegroundColor(win ? TextColor.ANSI.YELLOW : TextColor.ANSI.RED);
-        tg.putString(4, 3, win ? "=== YOU WIN! ===" : "=== GAME OVER ===");
+        tg.putString(48, 22, win ? "=== YOU WIN! ===" : "=== GAME OVER ===");
         tg.disableModifiers(SGR.BOLD);
 
         tg.setForegroundColor(TextColor.ANSI.WHITE);
-        int row = 6;
-        tg.putString(4, row++, "Игрок:        " + game.getPlayer().getName());
-        tg.putString(4, row++, "Уровень:      " + Level.getLevelUp());
-        tg.putString(4, row++, "Золото:       " + game.getPlayer().getGold());
-        tg.putString(4, row++, "Убито врагов: " + game.getEnemiesKilled());
-        tg.putString(4, row++, "Сложность:    " + game.getDifficulty().getLabel());
+        int row = 24;
+        tg.putString(48, row++, "Игрок:        " + game.getPlayer().getName());
+        tg.putString(48, row++, "Уровень:      " + Level.getLevelUp());
+        tg.putString(48, row++, "Золото:       " + game.getPlayer().getGold());
+        tg.putString(48, row++, "Убито врагов: " + game.getEnemiesKilled());
+        tg.putString(48, row++, "Сложность:    " + game.getDifficulty().getLabel());
 
         row++;
         tg.enableModifiers(SGR.BOLD);
-        tg.putString(4, row++, "ИТОГОВЫЙ СЧЁТ: " + game.calculateScore());
+        tg.putString(48, row++, "ИТОГОВЫЙ СЧЁТ: " + game.calculateScore());
         tg.disableModifiers(SGR.BOLD);
 
         tg.setForegroundColor(TextColor.ANSI.CYAN);
-        tg.putString(4, row + 1, "Нажми любую клавишу для выхода...");
+        tg.putString(40, row + 2, "Нажми любую клавишу для выхода...");
         screen.refresh();
     }
 }

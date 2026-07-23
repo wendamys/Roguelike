@@ -3,6 +3,7 @@ package domain.battle;
 import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.characters.enemies.*;
+import domain.gameSession.DifficultyType;
 import domain.navigator.Position;
 import domain.backpack.Backpack;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -193,8 +193,8 @@ public class StartScreen {
         tg.disableModifiers(SGR.BOLD);
 
         tg.setForegroundColor(TextColor.ANSI.WHITE);
-        tg.putString(47, 28, "Введите имя:");
-        tg.putString(50, 30, currentInput);
+        tg.putString(49, 28, "Введите имя:");
+        tg.putString(52, 30, currentInput);
         screen.refresh();
     }
 }
