@@ -3,6 +3,7 @@ package domain.characters.enemies;
 import domain.ai.*;
 import domain.backpack.ItemsType;
 import domain.characters.Enemies;
+import domain.gameSession.DifficultyType;
 import domain.map.TileType;
 import domain.map.Level;
 import domain.navigator.Position;
@@ -17,12 +18,12 @@ public class Mimic extends Enemies {
     private int strength = 10;
     private ItemsType itemsType;
 
-    public Mimic(Position position) {
-        super(position);
-        super.setHealthBegin((int) (health * Level.getCoefEnemy()));
+    public Mimic(Position position, DifficultyType difficulty) {
+        super(position, difficulty);
+        super.setHealthBegin((int) (health * difficulty.getCoef() * Level.getCoefEnemy()));
         super.setMaxHealth(super.getHealth());
-        super.setAgilityRand((int) (agility * Level.getCoefEnemy()));
-        super.setStrengthRand((int) (strength * Level.getCoefEnemy()));
+        super.setAgilityRand((int) (agility * difficulty.getCoef() * Level.getCoefEnemy()));
+        super.setStrengthRand((int) (strength * difficulty.getCoef() * Level.getCoefEnemy()));
         itemsType = randomItem();
     }
 

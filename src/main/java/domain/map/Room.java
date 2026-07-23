@@ -12,7 +12,6 @@ import domain.gameSession.DifficultyType;
 import domain.navigator.Position;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static domain.MathUtils.MathUtils.randomNumber;
 
@@ -145,12 +144,12 @@ public class Room {
      */
     private void addEnemyValue(EnemiesType enemiesType) {
         Enemies enemy = switch (enemiesType) {
-            case ZOMBIE -> new Zombie(randomPosition());
-            case OGRE -> new Ogre(randomPosition());
-            case VAMPIRE -> new Vampire(randomPosition());
-            case SNAKE -> new Snake(randomPosition());
-            case MIMIC -> new Mimic(randomPosition());
-            case GHOST -> new Ghost(randomPosition());
+            case ZOMBIE -> new Zombie(randomPosition(), difficulty);
+            case OGRE -> new Ogre(randomPosition(), difficulty);
+            case VAMPIRE -> new Vampire(randomPosition(), difficulty);
+            case SNAKE -> new Snake(randomPosition(), difficulty);
+            case MIMIC -> new Mimic(randomPosition(), difficulty);
+            case GHOST -> new Ghost(randomPosition(), difficulty);
         };
         applyDifficulty(enemy);
         enemyList.add(enemy);

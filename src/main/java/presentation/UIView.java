@@ -212,17 +212,17 @@ public class UIView {
 
         // тот же ровный блок, что и у инвентаря: тип, количество, цена за штуку
         tg.setForegroundColor(TextColor.ANSI.WHITE);
-        for (ItemsType type : ItemsType.values()) {
-            List<Item> ofType = game.getShop().getItems().stream()
-                    .filter(item -> item.getType() == type)
-                    .toList();
-            String price = ofType.isEmpty()
-                    ? "--"
-                    : String.valueOf(ofType.stream()
-                            .mapToInt(item -> game.getShop().priceOf(item)).min().orElse(0));
-            tg.putString(panelX, row++, String.format("%-11s%d  от %sз",
-                    titleFor(type) + ":", ofType.size(), price));
-        }
+//        for (ItemsType type : ItemsType.values()) {
+//            List<Item> ofType = game.getShop().getItems().stream()
+//                    .filter(item -> item.getType() == type)
+//                    .toList();
+//            String price = ofType.isEmpty()
+//                    ? "--"
+//                    : String.valueOf(ofType.stream()
+//                            .mapToInt(item -> game.getShop().priceOf(item)).min().orElse(0));
+//            tg.putString(panelX, row++, String.format("%-11s%d  от %sз",
+//                    titleFor(type) + ":", ofType.size(), price));
+//        }
 
         row++;
         tg.setForegroundColor(TextColor.ANSI.YELLOW);

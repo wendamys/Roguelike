@@ -29,12 +29,12 @@ public class EnemiesConverter {
 
         Enemies enemy = null;
         switch (dto.getType()) {
-            case ZOMBIE -> enemy = new Zombie(PositionConverter.fromDTO(dto.getPositionDTO()));
-            case OGRE -> enemy = new Ogre(PositionConverter.fromDTO(dto.getPositionDTO()));
-            case VAMPIRE -> enemy = new Vampire(PositionConverter.fromDTO(dto.getPositionDTO()));
-            case SNAKE -> enemy = new Snake(PositionConverter.fromDTO(dto.getPositionDTO()));
-            case GHOST -> enemy = new Ghost(PositionConverter.fromDTO(dto.getPositionDTO()));
-            case MIMIC -> enemy = new Mimic(PositionConverter.fromDTO(dto.getPositionDTO()));
+            case ZOMBIE -> enemy = new Zombie(PositionConverter.fromDTO(dto.getPositionDTO()), null);
+            case OGRE -> enemy = new Ogre(PositionConverter.fromDTO(dto.getPositionDTO()), null);
+            case VAMPIRE -> enemy = new Vampire(PositionConverter.fromDTO(dto.getPositionDTO()), null);
+            case SNAKE -> enemy = new Snake(PositionConverter.fromDTO(dto.getPositionDTO()), null);
+            case GHOST -> enemy = new Ghost(PositionConverter.fromDTO(dto.getPositionDTO()), null);
+            case MIMIC -> enemy = new Mimic(PositionConverter.fromDTO(dto.getPositionDTO()), null);
         }
         if (enemy != null) {
             enemy.setName(dto.getName());
