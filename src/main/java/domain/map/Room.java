@@ -25,7 +25,7 @@ public class Room {
 
     private Position position;
     private RoomType roomType;
-    private final DifficultyType difficulty;
+    private DifficultyType difficulty;
     private Door door; // null, если комната не заперта
 
     private ArrayList<Enemies> enemyList = new ArrayList<>(capacityEnemy);
@@ -66,6 +66,9 @@ public class Room {
 
     public RoomType getRoomType() { return roomType; }
 
+    public DifficultyType getDifficulty() {return difficulty;}
+    public void setDifficulty(DifficultyType difficulty) {this.difficulty = difficulty;}
+
     public Door getDoor() { return door; }
     public void setDoor(Door door) { this.door = door; }
 
@@ -74,6 +77,15 @@ public class Room {
 
     public ArrayList<Item> getItemList() {return itemList;}
     public void setItemList(ArrayList<Item> itemList) {this.itemList = itemList;}
+
+    /**
+     * метод удаляет предмет из списка комнаты
+     * @param item предмет для удаления
+     * @return true если предмет был удален
+     */
+    public boolean removeItem(Item item) {
+        return itemList.remove(item);
+    }
 
 
     public void setCapacityEnemy(int capacity) {

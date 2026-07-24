@@ -10,6 +10,7 @@ public class GameDTO {
     private int enemiesKilled;
     private java.util.ArrayList<KeyDTO> keysDTO = new java.util.ArrayList<>();
     private PositionDTO shopPositionDTO;
+    private ShopDTO shopDTO;
 
     public GameDTO() {}
 
@@ -38,5 +39,8 @@ public class GameDTO {
     public void setLevelDTO(LevelDTO levelDTO) {this.levelDTO = levelDTO;}
 
     public DungeDTO getDungeDTO() {return dungeDTO;}
-    public void setDungeDTO(DungeDTO dungeDTO) {this.dungeDTO = dungeDTO;}
+    public void setDungeDTO(DungeDTO dungeDTO) {this.dungeDTO = dungeDTO; }
+
+    public ShopDTO getShopDTO() { return shopDTO; }
+    public void setShopDTO(ShopDTO shopDTO) { this.shopDTO = shopDTO; }
 }

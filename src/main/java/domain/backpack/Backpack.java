@@ -3,6 +3,8 @@ package domain.backpack;
 import domain.characters.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class Backpack {
@@ -84,6 +86,8 @@ public class Backpack {
      * @return true если предмет успешно использован, false иначе
      */
     public boolean useItemByIndex(int index, ItemsType type, Player player) {
+        if (index < 0) return false;
+        
         Item item = getItem(index, type);
         if (item == null) return false;
         
@@ -96,24 +100,56 @@ public class Backpack {
         return true;
     }
 
-    public void useItemFood(int numItem, Player player) {
+    /**
+     * Использует еду по индексу
+     * @param numItem индекс предмета
+     * @param player игрок
+     * @return true если еда использована, false если индекс вне диапазона
+     */
+    public boolean useItemFood(int numItem, Player player) {
+        if (numItem < 0 || numItem >= foodList.size()) return false;
         player.useItemValue(foodList.get(numItem));
         foodList.remove(numItem);
+        return true;
     }
 
-    public void useItemScroll(int numItem, Player player) {
+    /**
+     * Использует свиток по индексу
+     * @param numItem индекс предмета
+     * @param player игрок
+     * @return true если свиток использован, false если индекс вне диапазона
+     */
+    public boolean useItemScroll(int numItem, Player player) {
+        if (numItem < 0 || numItem >= scrollList.size()) return false;
         player.useItemValue(scrollList.get(numItem));
         scrollList.remove(numItem);
+        return true;
     }
 
-    public void useItemElixir(int numItem, Player player) {
+    /**
+     * Использует эликсир по индексу
+     * @param numItem индекс предмета
+     * @param player игрок
+     * @return true если эликсир использован, false если индекс вне диапазона
+     */
+    public boolean useItemElixir(int numItem, Player player) {
+        if (numItem < 0 || numItem >= elixirList.size()) return false;
         player.useItemValue(elixirList.get(numItem));
         elixirList.remove(numItem);
+        return true;
     }
 
-    public void useItemWeapon(int numItem, Player player) {
+    /**
+     * Использует оружие по индексу
+     * @param numItem индекс предмета
+     * @param player игрок
+     * @return true если оружие использовано, false если индекс вне диапазона
+     */
+    public boolean useItemWeapon(int numItem, Player player) {
+        if (numItem < 0 || numItem >= weaponList.size()) return false;
         player.useItemValue(weaponList.get(numItem));
         weaponList.remove(numItem);
+        return true;
     }
     
     private void addIfPossible(ArrayList<Item> list, Item item) {
@@ -145,9 +181,35 @@ public class Backpack {
         weaponList.clear();
     }
 
-    // DTO getters
-    public ArrayList<Item> getElixirList() { return elixirList; }
-    public ArrayList<Item> getFoodList() { return foodList; }
-    public ArrayList<Item> getScrollList() { return scrollList; }
-    public ArrayList<Item> getWeaponList() { return weaponList; }
+    /**
+     * Получает неизменяемый список эликтиров
+     * @return неизменяемый список эликтиров
+     */
+    public List<Item> getElixirList() { 
+        return Collections.unmodifiableList(elixirList); 
+    }
+    
+    /**
+     * Получает неизменяемый список еды
+     * @return неизменяемый список еды
+     */
+    public List<Item> getFoodList() { 
+        return Collections.unmodifiableList(foodList); 
+    }
+    
+    /**
+     * Получает неизменяемый список свитков
+     * @return неизменяемый список свитков
+     */
+    public List<Item> getScrollList() { 
+        return Collections.unmodifiableList(scrollList); 
+    }
+    
+    /**
+     * Получает неизменяемый список оружия
+     * @return неизменяемый список оружия
+     */
+    public List<Item> getWeaponList() { 
+        return Collections.unmodifiableList(weaponList); 
+    }
 }

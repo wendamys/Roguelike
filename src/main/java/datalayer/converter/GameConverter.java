@@ -1,5 +1,11 @@
 package datalayer.converter;
 
+import datalayer.converter.BackpackConverter;
+import datalayer.converter.DungeConverter;
+import datalayer.converter.LevelConverter;
+import datalayer.converter.PlayerConverter;
+import datalayer.converter.PositionConverter;
+import datalayer.converter.ShopConverter;
 import datalayer.dto.GameDTO;
 import datalayer.dto.KeyDTO;
 import domain.gameSession.DifficultyType;
@@ -7,6 +13,8 @@ import domain.gameSession.Game;
 import domain.map.ColorKey;
 import domain.map.DungeonGenerator;
 import domain.map.Key;
+import domain.shop.Shop;
+import domain.shop.BuyShop;
 
 import java.util.ArrayList;
 
@@ -33,6 +41,7 @@ public class GameConverter {
         });
         dto.setKeysDTO(keysDTO);
         dto.setShopPositionDTO(PositionConverter.toDTO(game.getGenerator().getShopPosition()));
+        dto.setShopDTO(ShopConverter.toDTO(game.getShop()));
 
         return dto;
     }
@@ -61,6 +70,15 @@ public class GameConverter {
 
         if (dto.getShopPositionDTO() != null) {
             generator.setShopPosition(PositionConverter.fromDTO(dto.getShopPositionDTO()));
+        }
+
+        if (dto.getShopDTO() != null) {
+            game.setShop(ShopConverter.fromDTO(dto.getShopDTO()));
+        }
+
+        // Обновляем buyShop после загрузки магазина
+        if (game.getShop() != null) {
+            game.setBuyShop(new BuyShop(game.getPlayer(), game.getShop(), game.getBackpack()));
         }
 
         game.restoreItemsAndEnemies();

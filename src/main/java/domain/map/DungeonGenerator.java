@@ -619,6 +619,8 @@ public class DungeonGenerator {
     public void createItem(Room room) {
         ArrayList <Item> itemList = room.getItemList();
         for (Item item : itemList) {
+            // Пропускаем предметы без позиции (например, подобранные предметы)
+            if (item.getPosition() == null) continue;
             switch (item.getType()) {
                 case ELIXIR: map[item.getPosition().getX()][item.getPosition().getY()] = TileType.ELIXIR; break;
                 case SCROLL: map[item.getPosition().getX()][item.getPosition().getY()] = TileType.SCROLL; break;
@@ -635,6 +637,8 @@ public class DungeonGenerator {
     public void createEnemies(Room room) {
         ArrayList <Enemies> enemyList = room.getEnemyList();
         for (Enemies enemy : enemyList) {
+            // Пропускаем врагов без позиции (например, убитых врагов)
+            if (enemy.getPosition() == null) continue;
             if (enemy.getType() == EnemiesType.MIMIC) {
                 // Для мимика используем динамический TileType
                 map[enemy.getPosition().getX()][enemy.getPosition().getY()] = ((Mimic) enemy).getTileType();

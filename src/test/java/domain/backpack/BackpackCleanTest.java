@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BackpackTest {
@@ -37,47 +38,21 @@ class BackpackTest {
         backpack.takeItem(scroll);
         backpack.takeItem(weapon);
 
+        // Проверяем, что списки не пусты (использование предмета возвращает true)
+        assertTrue(backpack.useItemFood(0, Mockito.mock(Player.class)), "Еда должна быть использована");
+        assertTrue(backpack.useItemScroll(0, Mockito.mock(Player.class)), "Свиток должен быть использован");
+        assertTrue(backpack.useItemElixir(0, Mockito.mock(Player.class)), "Эликсир должен быть использован");
+        assertTrue(backpack.useItemWeapon(0, Mockito.mock(Player.class)), "Оружие должно быть использовано");
+
         // Вызываем тестируемый метод очистки
         backpack.clearLists();
 
-        // 4. Проверяем, что списки пусты
-        // методы получения списков скрыты,
-        // проверим пустоту через попытку использования предметов.
-        // Если список пуст, обращение по индексу 0 вызовет IndexOutOfBoundsException.
+        // Проверяем, что списки пусты (использование предмета возвращает false)
+        boolean isFoodListEmpty = !backpack.useItemFood(0, Mockito.mock(Player.class));
+        boolean isScrollListEmpty = !backpack.useItemScroll(0, Mockito.mock(Player.class));
+        boolean isElixirListEmpty = !backpack.useItemElixir(0, Mockito.mock(Player.class));
+        boolean isWeaponListEmpty = !backpack.useItemWeapon(0, Mockito.mock(Player.class));
 
-        boolean isFoodListEmpty = false;
-        try {
-            Player mockPlayer = Mockito.mock(Player.class);
-            backpack.useItemFood(0, mockPlayer);
-        } catch (IndexOutOfBoundsException e) {
-            isFoodListEmpty = true;
-        }
-
-        boolean isScrollListEmpty = false;
-        try {
-            Player mockPlayer = Mockito.mock(Player.class);
-            backpack.useItemScroll(0, mockPlayer);
-        } catch (IndexOutOfBoundsException e) {
-            isScrollListEmpty = true;
-        }
-
-        boolean isElixirListEmpty = false;
-        try {
-            Player mockPlayer = Mockito.mock(Player.class);
-            backpack.useItemElixir(0, mockPlayer);
-        } catch (IndexOutOfBoundsException e) {
-            isElixirListEmpty = true;
-        }
-
-        boolean isWeaponListEmpty = false;
-        try {
-            Player mockPlayer = Mockito.mock(Player.class);
-            backpack.useItemWeapon(0, mockPlayer);
-        } catch (IndexOutOfBoundsException e) {
-            isWeaponListEmpty = true;
-        }
-
-        // каждый список выбросил ошибку (значит, они пусты)
         assertTrue(isFoodListEmpty, "Список еды должен быть пуст");
         assertTrue(isScrollListEmpty, "Список свитков должен быть пуст");
         assertTrue(isElixirListEmpty, "Список эликсиров должен быть пуст");

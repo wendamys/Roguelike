@@ -51,6 +51,10 @@ public class Game {
     private static final int MESSAGE_LOG_CAPACITY = 10;
     private final Deque<String> messageLog = new ArrayDeque<>(); // История последних сообщений, для presentation-слоя
 
+    public BuyShop getBuyShop() { return buyShop; }
+
+    public void setBuyShop(BuyShop buyShop) { this.buyShop = buyShop; }
+
     public Game() {
         this(DifficultyType.EASY);
     }
@@ -80,6 +84,10 @@ public class Game {
 
     public Shop getShop() {
         return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 
     public boolean isShopOpen() {
@@ -497,6 +505,12 @@ public class Game {
         allItemList.removeIf(item -> {
             if (player.getPosition().equals(item.getPosition())) {
                 backpack.takeItem(item);
+                // Удаляем предмет из комнаты, чтобы избежать NullPointerException при загрузке
+                for (Room room : rooms) {
+                    if (room.removeItem(item)) {
+                        break;
+                    }
+                }
                 return true;
             }
             return false;
