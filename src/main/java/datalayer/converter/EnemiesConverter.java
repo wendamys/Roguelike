@@ -17,6 +17,7 @@ public class EnemiesConverter {
         dto.setAgility(enemies.getAgility());
         dto.setStrength(enemies.getStrength());
         dto.setHostility(enemies.getHostility());
+        dto.setDifficulty(enemies.getDifficulty());
         dto.setInvisible(enemies.getIsInvisible());
         dto.setStunned(enemies.getIsStunned());
         dto.setMimicking(enemies.getIsMimicking());
@@ -29,12 +30,12 @@ public class EnemiesConverter {
 
         Enemies enemy = null;
         switch (dto.getType()) {
-            case ZOMBIE -> enemy = new Zombie(PositionConverter.fromDTO(dto.getPositionDTO()), null);
-            case OGRE -> enemy = new Ogre(PositionConverter.fromDTO(dto.getPositionDTO()), null);
-            case VAMPIRE -> enemy = new Vampire(PositionConverter.fromDTO(dto.getPositionDTO()), null);
-            case SNAKE -> enemy = new Snake(PositionConverter.fromDTO(dto.getPositionDTO()), null);
-            case GHOST -> enemy = new Ghost(PositionConverter.fromDTO(dto.getPositionDTO()), null);
-            case MIMIC -> enemy = new Mimic(PositionConverter.fromDTO(dto.getPositionDTO()), null);
+            case ZOMBIE -> enemy = new Zombie(PositionConverter.fromDTO(dto.getPositionDTO()), dto.getDifficulty());
+            case OGRE -> enemy = new Ogre(PositionConverter.fromDTO(dto.getPositionDTO()), dto.getDifficulty());
+            case VAMPIRE -> enemy = new Vampire(PositionConverter.fromDTO(dto.getPositionDTO()), dto.getDifficulty());
+            case SNAKE -> enemy = new Snake(PositionConverter.fromDTO(dto.getPositionDTO()), dto.getDifficulty());
+            case GHOST -> enemy = new Ghost(PositionConverter.fromDTO(dto.getPositionDTO()), dto.getDifficulty());
+            case MIMIC -> enemy = new Mimic(PositionConverter.fromDTO(dto.getPositionDTO()), dto.getDifficulty());
         }
         if (enemy != null) {
             enemy.setName(dto.getName());
