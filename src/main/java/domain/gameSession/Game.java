@@ -489,6 +489,8 @@ public class Game {
         // считаем только переход из живого в мёртвого, чтобы добивание не накручивало счётчик
         if (wasAlive && enemy.getHealth() <= 0) {
             enemiesKilled++;
+            // Удаляем убитого врага из списков
+            removeDeadEnemies();
         }
 
         // Если мимик раскрылся, обновляем его отображение на карте
@@ -515,6 +517,16 @@ public class Game {
             }
             return false;
         });
+    }
+
+    /**
+     * метод удаляет убитых врагов из списков
+     */
+    private void removeDeadEnemies() {
+        allEnemiesList.removeIf(enemy -> enemy.getHealth() <= 0);
+        for (Room room : rooms) {
+            room.getEnemyList().removeIf(enemy -> enemy.getHealth() <= 0);
+        }
     }
 
     private void handleInventoryCommand(String input) {
@@ -630,6 +642,9 @@ public class Game {
                 drainBattleEvents();
             }
         }
+        
+        // Удаляем врагов, которые умерли во время своего хода
+        removeDeadEnemies();
     }
 
     /**
