@@ -66,25 +66,6 @@ public class Key {
     }
 
     /**
-     * метод выводит список еще не найденных ключей
-     */
-    public void seeColorKeyList() {
-        for(var i: colorKeyList) {
-            System.out.println(i);
-        }
-    }
-
-    /**
-     * метод заполняет список цветов ключей, которые требуется найти
-     */
-    private void fillColorKeyList() {
-        colorKeyList.add(ColorKey.GREEN);
-        colorKeyList.add(ColorKey.BLUE);
-        colorKeyList.add(ColorKey.RED);
-        colorKeyList.add(ColorKey.YELLOW);
-    }
-
-    /**
      * метод удаляет цвет ключа из списка
      * @param colorKey цвет ключа
      */

@@ -17,6 +17,7 @@ public class PlayerConverter {
         dto.setHealth(player.getHealth());
         dto.setBuffAgility(player.getBuffAgility());
         dto.setBuffStrength(player.getBuffStrength());
+        dto.setCurrentWeaponValue(player.getCurrentWeaponValue());
         dto.setGold(player.getGold());
         dto.setIsStunned(player.getIsStunned());
         dto.setPositionDTO(PositionConverter.toDTO(player.getPosition()));
@@ -37,6 +38,7 @@ public class PlayerConverter {
         player.setHealth(dto.getHealth());
         player.setBuffAgility(dto.getBuffAgility());
         player.setBuffStrength(dto.getBuffStrength());
+        player.setCurrentWeaponValue(dto.getCurrentWeaponValue());
         player.setGold(dto.getGold());
         player.setIsStunned(dto.getIsStunned());
 

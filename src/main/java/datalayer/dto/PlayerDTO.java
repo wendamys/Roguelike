@@ -1,20 +1,20 @@
 package datalayer.dto;
 
+import java.util.ArrayList;
+
 public class PlayerDTO {
     private String name;
     private int maxHealth;
     private int health;
     private int buffAgility;
     private int buffStrength;
+    private int currentWeaponValue;
     private int gold;
     private boolean isStunned;
     private PositionDTO positionDTO;
-    private java.util.ArrayList<String> keys = new java.util.ArrayList<>();
+    private ArrayList<String> keys = new ArrayList<>();
 
     public PlayerDTO() {}
-
-    public java.util.ArrayList<String> getKeys() { return keys; }
-    public void setKeys(java.util.ArrayList<String> keys) { this.keys = keys; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -31,6 +31,9 @@ public class PlayerDTO {
     public int getBuffStrength() { return buffStrength; }
     public void setBuffStrength(int buffStrength) { this.buffStrength = buffStrength; }
 
+    public int getCurrentWeaponValue() {return currentWeaponValue;}
+    public void setCurrentWeaponValue(int currentWeaponValue) {this.currentWeaponValue = currentWeaponValue;}
+
     public int getGold() { return gold; }
     public void setGold(int gold) { this.gold = gold; }
 
@@ -39,4 +42,7 @@ public class PlayerDTO {
 
     public PositionDTO getPositionDTO() { return positionDTO; }
     public void setPositionDTO(PositionDTO positionDTO) { this.positionDTO = positionDTO; }
+
+    public ArrayList<String> getKeys() { return keys; }
+    public void setKeys(ArrayList<String> keys) { this.keys = keys; }
 }

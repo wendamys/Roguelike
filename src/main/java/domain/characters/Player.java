@@ -69,6 +69,7 @@ public class Player extends Character {
     }
 
     public int getCurrentWeaponValue() {return currentWeaponValue;}
+    public void setCurrentWeaponValue(int currentWeaponValue) {this.currentWeaponValue = currentWeaponValue;}
 
     public int getGold() {
         return gold;
