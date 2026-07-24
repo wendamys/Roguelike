@@ -104,6 +104,10 @@ public class DungeonGenerator {
     private void placeDoorsAndKeys() {
         keys.clear();
         lockedRooms.clear();
+        // Сбрасываем двери у всех комнат перед новой генерацией
+        for (Room room : rooms) {
+            room.setDoor(null);
+        }
         if (rooms.size() < 2) {
             return;
         }

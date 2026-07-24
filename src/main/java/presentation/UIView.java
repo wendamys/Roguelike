@@ -10,6 +10,7 @@ import domain.backpack.Item;
 import domain.backpack.ItemsType;
 import domain.characters.Player;
 import domain.gameSession.Game;
+import domain.map.ColorKey;
 import domain.map.FogOfWar;
 import domain.map.Level;
 import domain.map.TileType;
@@ -121,18 +122,15 @@ public class UIView {
                 .filter(enemy -> enemy.getHealth() > 0)
                 .count();
         int remainingItems = game.getAllItemList().size();
-        String text = "Уровень: " + Level.getLevelUp() +
-                "   Предметов: " + remainingItems +
-                "   Врагов: " + aliveEnemies;
 
-        int width = game.getGenerator().getMapWidth();
-        if (text.length() > width) {
-            text = text.substring(0, width);
-        }
-        int startX = Math.max(0, (width - text.length()) / 2);
+        int panelX = game.getGenerator().getMapWidth() + RIGHT_PANEL_X_MARGIN;
+        int row = RIGHT_TOP_ROW + 12;
 
         tg.setForegroundColor(TextColor.ANSI.WHITE);
-        tg.putString(startX, game.getGenerator().getMapHeight() + MAP_ROW_OFFSET, text);
+        tg.putString(panelX, row++, "Уровень:   " + Level.getLevelUp());
+        tg.putString(panelX, row + 1, "Предметов: " + remainingItems);
+        tg.putString(panelX, row, "Врагов:    " + aliveEnemies);
+
     }
 
     /**
@@ -147,14 +145,20 @@ public class UIView {
         tg.putString(panelX, row++, player.getName());
 
         tg.setForegroundColor(TextColor.ANSI.WHITE);
-        tg.putString(panelX, row++, "Health:   " + player.getHealth() + "/" + player.getMaxHealth());
-        tg.putString(panelX, row++, "Agility:  " + player.getBuffAgility());
-        tg.putString(panelX, row++, "Strength: " + player.getBuffStrength());
-        tg.putString(panelX, row++, "Weapon:   +" + player.getCurrentWeaponValue());
-        tg.putString(panelX, row++, "Gold:     " + player.getGold());
+        tg.putString(panelX, row++, "Health:    " + player.getHealth() + "/" + player.getMaxHealth());
+        tg.putString(panelX, row++, "Agility:   " + player.getBuffAgility());
+        tg.putString(panelX, row++, "Strength:  " + player.getBuffStrength());
+        tg.putString(panelX, row++, "Weapon:    +" + player.getCurrentWeaponValue());
+        tg.putString(panelX, row++, "Gold:      " + player.getGold());
 
         if (!player.getKeys().isEmpty()) {
-            tg.putString(panelX, row++, "Ключи:    " + game.getGenerator().getKeys());
+            // Рисуем каждый ключ своим цветом
+            tg.putString(panelX, row, "Ключи: ");
+            for (var key : player.getKeys()) {
+                tg.setForegroundColor(colorForKey(key));
+                tg.putString(panelX + 11, row, key.getRuName());
+                row++;
+            }
         }
     }
 
@@ -295,6 +299,18 @@ public class UIView {
             case WALL -> TextColor.ANSI.WHITE;
             case FLOOR -> TextColor.ANSI.BLACK_BRIGHT;
             default -> TextColor.ANSI.WHITE;
+        };
+    }
+
+    /**
+     * метод возвращает цвет для отображения ключа
+     */
+    private TextColor colorForKey(ColorKey color) {
+        return switch (color) {
+            case GREEN -> TextColor.ANSI.GREEN;
+            case BLUE -> TextColor.ANSI.BLUE;
+            case RED -> TextColor.ANSI.RED;
+            case YELLOW -> TextColor.ANSI.YELLOW;
         };
     }
 }

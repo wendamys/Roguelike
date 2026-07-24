@@ -196,6 +196,8 @@ public class Game {
         this.corridors = generator.getCorridors();
         this.fog = new FogOfWar(generator.getMapWidth(), generator.getMapHeight());
         this.shop = new Shop(difficulty);
+        // Сбрасываем выбор типа предмета
+        selectedInventoryType = null;
         allEnemiesList.clear();
         allItemList.clear();
     }
@@ -363,6 +365,9 @@ public class Game {
             }
             generateNewLevel();
             player.setPosition(rooms.getFirst().getCentreRoom());
+            // Сбрасываем ключи игрока — на каждом уровне нужно искать заново
+            player.getKeys().clear();
+            selectedInventoryType = null;
             initializeGame();
             return;
         }
