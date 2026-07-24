@@ -32,8 +32,8 @@ public class ItemConverter {
             case WEAPON -> item = new Weapon(PositionConverter.fromDTO(dto.getPositionDTO()));
         }
         item.setName(dto.getName());
-        item.setSubType(item.getSubType());
-        item.setValueRand(item.getValue());
+        item.setSubType(dto.getSubtype());
+        item.setValueRand(dto.getValue());
         return item;
     }
 }
