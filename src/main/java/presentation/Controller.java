@@ -3,23 +3,26 @@ package presentation;
 import datalayer.DataLayer;
 import domain.gameSession.DifficultyType;
 import domain.gameSession.Game;
+import domain.leaderboard.LeaderboardEntry;
 
 import java.io.IOException;
 
 /**
  * Controller ведёт весь жизненный цикл приложения: стартовое меню, игровые сессии, экран конца игры.
- * Ничего не знает о Lanterna - только о StartScreen/UIView/EndScreen и RawKey.
+ * Ничего не знает о Lanterna - только о StartScreen/UIView/EndScreen/LeaderboardScreen и RawKey.
  */
 public class Controller {
 
     private final StartScreen startScreen;
     private final UIView uiView;
     private final EndScreen endScreen;
+    private final LeaderboardScreen leaderboardScreen;
 
-    public Controller(StartScreen startScreen, UIView uiView, EndScreen endScreen) {
+    public Controller(StartScreen startScreen, UIView uiView, EndScreen endScreen, LeaderboardScreen leaderboardScreen) {
         this.startScreen = startScreen;
         this.uiView = uiView;
         this.endScreen = endScreen;
+        this.leaderboardScreen = leaderboardScreen;
     }
 
     /**
@@ -35,7 +38,7 @@ public class Controller {
     }
 
     /**
-     * метод ведёт цикл стартового меню: выбор Start/Load/Exit и запуск игровой сессии
+     * метод ведёт цикл стартового меню: выбор Start/Load/Leaderboard/Exit и запуск игровой сессии
      */
     private void appLoop() throws IOException {
         boolean appRunning = true;
@@ -57,6 +60,7 @@ public class Controller {
                         runGameSession(loaded);
                     }
                 }
+                case LEADERBOARD -> leaderboardScreen.render(DataLayer.loadLeaderboard());
             }
         }
     }
@@ -70,6 +74,7 @@ public class Controller {
             uiView.render(game);
 
             if (game.getPlayer().getHealth() <= 0 || game.isGameEnded()) {
+                DataLayer.addLeaderboardEntry(new LeaderboardEntry(game.getPlayer().getName(), game.calculateScore()));
                 endScreen.render(game);
                 uiView.readKey();
                 break;

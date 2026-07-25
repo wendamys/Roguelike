@@ -2,6 +2,7 @@ package domain.navigator;
 
 import domain.characters.Player;
 import domain.characters.enemies.Zombie;
+import domain.gameSession.DifficultyType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ public class EnemiesConvergenceTest {
     void convergenceMovesTowardPlayer() {
         MovementSystem mv = new MovementSystem();
 
-        Zombie zombie = new Zombie(new Position(0, 0), null);
+        Zombie zombie = new Zombie(new Position(0, 0), DifficultyType.EASY);
         Player player = new Player(new Position(0, 1));
 
         DirectionType dt = zombie.convergence(player, ALL_WALKABLE);
@@ -34,7 +35,7 @@ public class EnemiesConvergenceTest {
     @Test
     @DisplayName("Враг не выбирает направление в стену, а обходит её")
     void convergenceAvoidsWalls() {
-        Zombie zombie = new Zombie(new Position(5, 5), null);
+        Zombie zombie = new Zombie(new Position(5, 5), DifficultyType.EASY);
         Player player = new Player(new Position(5, 9));
 
         // Прямой путь вниз перекрыт, свободны только LEFT и RIGHT
@@ -51,7 +52,7 @@ public class EnemiesConvergenceTest {
     @Test
     @DisplayName("Если все соседние клетки заняты, враг остаётся на месте")
     void convergenceReturnsNullWhenTrapped() {
-        Zombie zombie = new Zombie(new Position(3, 3), null);
+        Zombie zombie = new Zombie(new Position(3, 3), DifficultyType.EASY);
         Player player = new Player(new Position(9, 9));
 
         assertNull(zombie.convergence(player, pos -> false));
