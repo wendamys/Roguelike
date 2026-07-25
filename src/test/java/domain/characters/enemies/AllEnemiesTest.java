@@ -2,6 +2,7 @@ package domain.characters.enemies;
 import domain.characters.Enemies;
 
 
+import domain.gameSession.DifficultyType;
 import domain.map.Level;
 import domain.navigator.Position;
 import org.junit.jupiter.api.AfterEach;
@@ -34,12 +35,12 @@ class AllEnemiesTest {
     static Stream<Enemies> enemyProvider() {
         Position mockPos = mock(Position.class);
         return Stream.of(
-                new Ghost(mockPos, null),
-                new Mimic(mockPos, null),
-                new Ogre(mockPos, null),
-                new Snake(mockPos, null),
-                new Vampire(mockPos, null),
-                new Zombie(mockPos, null)
+                new Ghost(mockPos, DifficultyType.EASY),
+                new Mimic(mockPos, DifficultyType.EASY),
+                new Ogre(mockPos, DifficultyType.EASY),
+                new Snake(mockPos, DifficultyType.EASY),
+                new Vampire(mockPos, DifficultyType.EASY),
+                new Zombie(mockPos, DifficultyType.EASY)
         );
     }
 

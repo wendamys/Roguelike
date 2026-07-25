@@ -3,6 +3,7 @@ package domain.battle;
 import domain.characters.Enemies;
 import domain.characters.Player;
 import domain.characters.enemies.*;
+import domain.gameSession.DifficultyType;
 import domain.navigator.Position;
 import domain.backpack.Backpack;
 import org.junit.jupiter.api.Test;
@@ -18,12 +19,12 @@ public class TestDebug2 {
 
     private static List<Enemies> getEnemyList() {
         return List.of(
-            new Vampire(new Position(0, 0), null),
-            new Snake(new Position(0, 0), null),
-            new Zombie(new Position(0, 0), null),
-            new Ogre(new Position(0, 0), null),
-            new Ghost(new Position(0, 0), null),
-            new Mimic(new Position(0, 0), null)
+            new Vampire(new Position(0, 0), DifficultyType.EASY),
+            new Snake(new Position(0, 0), DifficultyType.EASY),
+            new Zombie(new Position(0, 0), DifficultyType.EASY),
+            new Ogre(new Position(0, 0), DifficultyType.EASY),
+            new Ghost(new Position(0, 0), DifficultyType.EASY),
+            new Mimic(new Position(0, 0), DifficultyType.EASY)
         );
     }
 

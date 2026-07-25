@@ -22,12 +22,12 @@ public class AttackEnemiesForPlayerTest {
 
     static Stream<Enemies> enemyProvider() {
         return Stream.of(
-                new Vampire(new Position(0, 0), null),
-                new Snake(new Position(0, 0), null),
-                new Zombie(new Position(0, 0), null),
-                new Ogre(new Position(0, 0), null),
-                new Ghost(new Position(0, 0), null),
-                new Mimic(new Position(0, 0), null)
+                new Vampire(new Position(0, 0), DifficultyType.EASY),
+                new Snake(new Position(0, 0), DifficultyType.EASY),
+                new Zombie(new Position(0, 0), DifficultyType.EASY),
+                new Ogre(new Position(0, 0), DifficultyType.EASY),
+                new Ghost(new Position(0, 0), DifficultyType.EASY),
+                new Mimic(new Position(0, 0), DifficultyType.EASY)
         );
     }
 

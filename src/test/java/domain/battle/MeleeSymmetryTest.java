@@ -27,7 +27,7 @@ public class MeleeSymmetryTest {
     @DisplayName("Враг вплотную к игроку не отходит в сторону")
     void adjacentEnemyStandsStill() {
         Player player = new Player(new Position(10, 10));
-        Zombie zombie = new Zombie(new Position(10, 11), null);
+        Zombie zombie = new Zombie(new Position(10, 11), DifficultyType.EASY);
 
         // клетка игрока занята, остальное свободно - как в реальном ходу
         Predicate<Position> walkable = pos -> !pos.equals(player.getPosition());
@@ -40,7 +40,7 @@ public class MeleeSymmetryTest {
     @DisplayName("Враг с диагонали подходит ортогонально, а не топчется")
     void diagonalEnemyStepsToOrthogonal() {
         Player player = new Player(new Position(10, 10));
-        Zombie zombie = new Zombie(new Position(11, 11), null);
+        Zombie zombie = new Zombie(new Position(11, 11), DifficultyType.EASY);
 
         Predicate<Position> walkable = pos -> !pos.equals(player.getPosition());
         DirectionType dir = zombie.decideMove(player, walkable);
@@ -56,14 +56,14 @@ public class MeleeSymmetryTest {
     void enemyAttacksOnlyOrthogonally() {
         Player player = new Player(new Position(10, 10));
 
-        Zombie orthogonal = new Zombie(new Position(10, 11), null);
+        Zombie orthogonal = new Zombie(new Position(10, 11), DifficultyType.EASY);
         assertTrue(orthogonal.canAttack(player), "Соседняя клетка - атака возможна");
 
-        Zombie diagonal = new Zombie(new Position(11, 11), null);
+        Zombie diagonal = new Zombie(new Position(11, 11), DifficultyType.EASY);
         assertFalse(diagonal.canAttack(player),
                 "По диагонали игрок ответить не может, значит и враг бить не должен");
 
-        Zombie far = new Zombie(new Position(10, 13), null);
+        Zombie far = new Zombie(new Position(10, 13), DifficultyType.EASY);
         assertFalse(far.canAttack(player), "Издалека атаки нет");
     }
 
