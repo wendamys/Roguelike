@@ -18,7 +18,8 @@ public class Main {
         StartScreen startScreen = new StartScreen(screen);
         UIView uiView = new UIView(screen);
         EndScreen endScreen = new EndScreen(screen);
+        LeaderboardScreen leaderboardScreen = new LeaderboardScreen(screen);
 
-        new Controller(startScreen, uiView, endScreen).run();
+        new Controller(startScreen, uiView, endScreen, leaderboardScreen).run();
     }
 }

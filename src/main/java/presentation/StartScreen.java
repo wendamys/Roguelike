@@ -17,9 +17,9 @@ import java.io.IOException;
  */
 public class StartScreen {
 
-    public enum Choice { START, LOAD, EXIT }
+    public enum Choice { START, LOAD, LEADERBOARD, EXIT }
 
-    private static final String[] MENU_LABELS = {"Start game", "Load game", "Exit"};
+    private static final String[] MENU_LABELS = {"Start game", "Load game", "Leaderboard", "Exit"};
 
     private static final String[] BANNER = {
             " ____   ___   ____ _   _ _____ ",
